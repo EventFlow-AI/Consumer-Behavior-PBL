@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import authRoutes from "./modules/auth/auth.routes.js";
 
 dotenv.config();
 
@@ -15,5 +16,5 @@ app.get("/api/v1/health", (_req, res) => {
     message: "EventFlow AI API is running",
   });
 });
-
+app.use("/api/v1/auth", authRoutes);
 export default app;
