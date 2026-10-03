@@ -1,12 +1,13 @@
-# Dependencies
+# ==========================================
+# Node / Web / Server Dependencies & Build
+# ==========================================
 node_modules/
-
-# Build output
 dist/
 build/
 .vite/
+coverage/
 
-# Environment variables
+# Environment Variables
 .env
 .env.*
 !.env.example
@@ -18,17 +19,75 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# Coverage
-coverage/
+# ==========================================
+# Flutter / Dart
+# ==========================================
+**/doc/api/
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+apps/mobile/build/
+apps/mobile/.dart_tool/
 
-# IDE
-.vscode/
+# Android build outputs & local config
+apps/mobile/android/app/debug/
+apps/mobile/android/app/profile/
+apps/mobile/android/app/release/
+apps/mobile/android/.gradle/
+apps/mobile/android/local.properties
+**/android/local.properties
+**/android/.gradle/
+
+# iOS / macOS build outputs
+apps/mobile/ios/Flutter/Generated.xcconfig
+apps/mobile/ios/Flutter/app.framework
+apps/mobile/ios/Pods/
+apps/mobile/macos/Flutter/ephemeral/
+apps/mobile/macos/Pods/
+
+# Windows / Linux build
+apps/mobile/windows/flutter/ephemeral/
+apps/mobile/linux/flutter/ephemeral/
+
+# ==========================================
+# Python / Machine Learning
+# ==========================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+.venv/
+env/
+ENV/
+.ipynb_checkpoints/
+
+# Datasets & Heavy Model Weights (Keep repo lightweight)
+model-training/datasets/*
+!model-training/datasets/.gitkeep
+model-training/models/*
+!model-training/models/.gitkeep
+*.pt
+*.pth
+*.onnx
+*.bin
+*.h5
+*.joblib
+*.pkl
+
+# ==========================================
+# IDE & System Files
+# ==========================================
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
 .idea/
-
-# OS
+*.iml
 .DS_Store
 Thumbs.db
-
-# Temporary files
 *.tmp
 *.temp
