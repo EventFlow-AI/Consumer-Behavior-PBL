@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" name="viewport"/><meta content="mobile_tab" name="shell-type"/><title>Rahat Setu</title><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Plus+Jakarta+Sans:wght@700;800&amp;display=swap" rel="stylesheet"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { colors: { "primary-container": "#0a2540", "surface-bright": "#faf8ff", "surface": "#faf8ff", "surface-tint": "#49607e", "on-secondary-fixed-variant": "#005137", "background": "#faf8ff", "error": "#ba1a1a", "on-primary": "#ffffff", "surface-container-lowest": "#ffffff", "on-surface-variant": "#43474d", "on-tertiary-container": "#d27200", "on-error": "#ffffff", "on-secondary-container": "#00714e", "error-container": "#ffdad6", "inverse-primary": "#b0c8eb", "on-tertiary-fixed": "#2f1500", "primary": "#000f22", "on-primary-fixed": "#001c37", "primary-fixed-dim": "#b0c8eb", "secondary-container": "#82f5c1", "inverse-on-surface": "#eef0ff", "on-secondary-fixed": "#002114", "surface-dim": "#d2d9f4", "on-error-container": "#93000a", "outline-variant": "#c4c6ce", "surface-container": "#eaedff", "on-tertiary": "#ffffff", "tertiary-container": "#3b1c00", "on-surface": "#131b2e", "on-primary-fixed-variant": "#314865", "surface-variant": "#dae2fd", "on-background": "#131b2e", "primary-fixed": "#d2e4ff", "tertiary": "#1c0a00", "tertiary-fixed": "#ffdcc3", "tertiary-fixed-dim": "#ffb77d", "secondary-fixed-dim": "#68dba9", "secondary": "#006c4a", "inverse-surface": "#283044", "surface-container-low": "#f2f3ff", "on-secondary": "#ffffff", "outline": "#74777e", "on-tertiary-fixed-variant": "#6e3900", "surface-container-highest": "#dae2fd", "on-primary-container": "#768dad", "surface-container-high": "#e2e7ff", "secondary-fixed": "#85f8c4" }, borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, spacing: { "space-xs": "0.25rem", "space-lg": "1.25rem", "space-md": "0.75rem", "margin": "1rem", "space-xl": "2rem", "gutter": "1rem", "space-sm": "0.5rem" }, fontFamily: { "headline-xl": ["Plus Jakarta Sans"], "stat-display-mobile": ["Plus Jakarta Sans"], "body-lg": ["Inter"], "headline-lg-mobile": ["Plus Jakarta Sans"], "headline-md": ["Plus Jakarta Sans"], "headline-lg": ["Plus Jakarta Sans"], "headline-xl-mobile": ["Plus Jakarta Sans"], "label-caps": ["Inter"], "label-md": ["Inter"], "body-sm": ["Inter"], "label-lg": ["Inter"], "stat-display": ["Plus Jakarta Sans"], "body-md": ["Inter"] }, fontSize: { "headline-xl": ["36px", { lineHeight: "44px", letterSpacing: "-0.02em", fontWeight: "800" }], "stat-display-mobile": ["32px", { lineHeight: "36px", letterSpacing: "-0.02em", fontWeight: "800" }], "body-lg": ["17px", { lineHeight: "26px", letterSpacing: "-0.01em", fontWeight: "500" }], "headline-lg-mobile": ["22px", { lineHeight: "28px", letterSpacing: "-0.01em", fontWeight: "700" }], "headline-md": ["20px", { lineHeight: "26px", letterSpacing: "0em", fontWeight: "700" }], "headline-lg": ["28px", { lineHeight: "36px", letterSpacing: "-0.01em", fontWeight: "700" }], "headline-xl-mobile": ["28px", { lineHeight: "34px", letterSpacing: "-0.01em", fontWeight: "800" }], "label-caps": ["11px", { lineHeight: "14px", letterSpacing: "0.08em", fontWeight: "700" }], "label-md": ["12px", { lineHeight: "16px", letterSpacing: "0.02em", fontWeight: "600" }], "body-sm": ["13px", { lineHeight: "18px", letterSpacing: "0.01em", fontWeight: "400" }], "label-lg": ["14px", { lineHeight: "20px", letterSpacing: "0.01em", fontWeight: "600" }], "stat-display": ["40px", { lineHeight: "44px", letterSpacing: "-0.03em", fontWeight: "800" }], "body-md": ["15px", { lineHeight: "22px", letterSpacing: "0em", fontWeight: "400" }] } } } }</script><style>@layer base{html,body{width:100vw;margin:0;padding:0;}body{overscroll-behavior:none;}.pb-safe{padding-bottom:env(safe-area-inset-bottom,0px);}.pt-safe{padding-top:env(safe-area-inset-top,0px);}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head><body class="bg-surface font-body-md text-body-md text-on-surface flex flex-col min-h-screen"><header class="fixed top-0 w-full z-50 bg-surface/90 backdrop-blur-xl shadow-[0_1px_8px_rgba(0,0,0,0.04)] pt-safe"><div class="h-16 px-space-md flex items-center justify-between gap-space-xs"><div class="flex items-center gap-space-sm min-w-0 flex-shrink-0"><img alt="Rahat Setu Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/AEtjO1XMfAhxv-r58LNU2PcchM4D_kPQtiXO19JtgADfHIyhWj6WKYrbfKfMcwepkFZqqaroYcM2n2dIUIgNMqdc1Rve4tnBQar0w0KQuoF4Tnxy5i-onXpNg0G2i8DhUgU3PW7l1gHovtMctC1owuX7MXYKqPwEwgzbm3jQhzmrm_9MAs4C-sGnKrJlF3iQq4JeSikOzdyjgY9iBtecrvhcq0ZF7pXQKQB7PzSCyIxp9beTj-XmRbuPUW2_HpM"/><div class="flex flex-col leading-none"><span class="font-headline-md text-headline-md text-primary tracking-tight">Rahat Setu</span><span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">EventFlow AI</span></div></div><div class="flex-1 flex justify-center px-space-xs min-w-0"><div class="inline-flex items-center gap-space-xs px-space-sm py-1 rounded-full bg-surface-container-low shadow-[0_1px_4px_rgba(0,0,0,0.03)] truncate max-w-full"><span class="relative flex h-2 w-2 flex-shrink-0"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-secondary"></span></span><span class="font-label-caps text-label-caps text-on-surface truncate">Maha Kumbh 2025 • Sec 4</span></div></div><div class="flex items-center gap-space-xs flex-shrink-0"><div class="relative flex items-center justify-center"><button aria-label="Profile &amp; Network Health" class="w-11 h-11 flex items-center justify-center rounded-full focus:outline-none"><img alt="Profile" class="w-8 h-8 rounded-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC-p4Vru00yQvgRvhgS0j2A3OS0IxOx4r5LhJCTpL7cxIQvI6nHr0Y4ao09BMQN_giNU9YTh2LkGx3b_vyTByIQ3hljWTzGwGOokUom1H8beeBLHvutUuJRsYgLz6Q8me2zEnJXX2Q5Z_JrXg8QfblfkeIW126XWjkletyDzN5fD6QQBtyGVxQ3rn7Zhz-3u6ENtOCC86qgrj7n7WEfTfh4dV6HhpOqR4i-4YU6iB0QTk-IgxkCwJ1-9g"/></button><span class="absolute top-1 right-1 flex h-3 w-3 items-center justify-center rounded-full bg-secondary ring-2 ring-surface" title="Mesh Offline Sync Active"><span class="material-symbols-outlined text-[8px] text-on-secondary font-bold">wifi_tethering</span></span></div></div></div><div class="hidden"><span class="font-headline-lg-mobile text-headline-lg-mobile">My Group</span></div></header><main class="flex flex-col relative w-full pt-16 pb-24 bg-surface min-h-screen"><div class="flex flex-col w-full px-margin pb-space-xl space-y-space-md">
+<div class="w-full bg-surface-container-lowest rounded-xl p-space-md shadow-sm">
+<div class="flex items-center justify-between gap-space-xs mb-space-xs">
+<div class="flex items-center gap-space-xs min-w-0">
+<span class="material-symbols-outlined text-secondary text-2xl" style="font-variation-settings: 'FILL' 1;">supervised_user_circle</span>
+<h2 class="font-headline-md text-headline-md text-primary truncate">Sharma Family Pilgrimage</h2>
+</div>
+<span class="inline-flex items-center gap-1 px-space-xs py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-caps text-label-caps whitespace-nowrap">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+        4/4 Safe
+      </span>
+</div>
+<div class="flex items-start gap-space-xs p-space-xs rounded-lg bg-surface-container-low mb-space-sm text-on-surface-variant">
+<span class="material-symbols-outlined text-primary-container text-lg mt-0.5">hub</span>
+<p class="font-body-sm text-body-sm leading-tight text-on-surface">
+<span class="font-label-md text-label-md text-secondary">Peer-to-Peer Mesh Active:</span> 4 Devices Linked via BLE &amp; UWB. No cellular tower signal needed.
+      </p>
+</div>
+<div class="flex items-center justify-between p-space-sm rounded-lg bg-surface-container gap-space-sm">
+<div class="flex items-center gap-space-xs min-w-0">
+<div class="w-9 h-9 rounded-full bg-primary-container text-on-primary flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-xl">flag</span>
+</div>
+<div class="min-w-0">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider block">Meeting Point</span>
+<p class="font-label-lg text-label-lg text-primary truncate font-semibold">Camp 4 Clock Tower (Pillar B-14)</p>
+<span class="font-body-sm text-body-sm text-on-surface-variant">210m West • Est. 4 min</span>
+</div>
+</div>
+<button aria-label="Navigate to meeting point" class="flex-shrink-0 h-10 px-space-sm rounded-lg bg-primary-container text-on-primary font-label-md text-label-md flex items-center gap-1 shadow-sm active:scale-95 transition-transform" id="guideMeetingPointBtn">
+<span class="material-symbols-outlined text-base">near_me</span>
+<span>Route</span>
+</button>
+</div>
+</div>
+<div class="w-full bg-surface-container-lowest rounded-xl p-space-md shadow-sm relative overflow-hidden">
+<div class="flex items-center justify-between mb-space-sm">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary-container text-xl">screen_rotation</span>
+<h3 class="font-headline-md text-headline-md text-primary">Live UWB Compass</h3>
+</div>
+<span class="font-label-caps text-label-caps text-secondary font-bold uppercase tracking-wider flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+        Zero-Lag Mesh
+      </span>
+</div>
+<div class="relative w-full aspect-square max-w-[320px] mx-auto flex items-center justify-center my-space-xs">
+<div class="absolute inset-0 rounded-full bg-surface-container-low"></div>
+<div class="absolute inset-4 rounded-full bg-surface-container"></div>
+<div class="absolute inset-16 rounded-full bg-surface-container-high"></div>
+<div class="absolute inset-28 rounded-full bg-surface-container-highest"></div>
+<div class="absolute top-2 font-label-caps text-label-caps font-bold text-on-surface-variant">N (Ghats)</div>
+<div class="absolute bottom-2 font-label-caps text-label-caps font-bold text-on-surface-variant">S (Camp Gate)</div>
+<div class="absolute left-2 font-label-caps text-label-caps font-bold text-on-surface-variant">W</div>
+<div class="absolute right-2 font-label-caps text-label-caps font-bold text-on-surface-variant">E</div>
+<div class="absolute w-full h-[1px] bg-outline-variant/30"></div>
+<div class="absolute h-full w-[1px] bg-outline-variant/30"></div>
+<div class="relative z-20 flex flex-col items-center">
+<div class="w-12 h-12 rounded-full bg-primary-container text-on-primary shadow-lg flex items-center justify-center ring-4 ring-primary-fixed-dim/40">
+<span class="material-symbols-outlined text-2xl">navigation</span>
+</div>
+<span class="font-label-caps text-label-caps text-primary font-bold mt-1 bg-surface-container-lowest/90 px-1.5 py-0.5 rounded shadow-sm">You</span>
+</div>
+<button aria-label="Aarav: 85m North-East" class="absolute top-10 right-12 z-30 flex flex-col items-center group focus:outline-none transition-transform active:scale-95" id="radar-aarav" onclick="selectMember('aarav')">
+<div class="relative">
+<div class="w-9 h-9 rounded-full overflow-hidden shadow-md ring-2 ring-secondary bg-surface-container-lowest">
+<img class="w-full h-full object-cover" data-alt="Portrait photo of an energetic young Indian boy Aarav wearing a saffron scarf outdoors during Maha Kumbh festival under bright sunlight" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCKHBc6oCO3YTmxgDadSZa720_xqVIDd_RPDowPmwNJptSA9Md-uw23LiAE2A9BRO_qlziPEGeRMqIjj-HuBM07uay0cD9q-0gXEI9Hp1U5kb_5DGxjdYUtndrzVJfWDgmL4ChXWxbM-MY2uof4XpJElkQia3F-IJZhGAxikSFxvNNQb3dP1-Rg15pyX-PsVPwh2DHNRfl2h0nOUp3imuYx2kLDNt7MLukzjy3QIrawFyGHO1k2OwM-4g"/>
+</div>
+<span class="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-secondary flex items-center justify-center text-[9px] text-on-secondary font-bold">1</span>
+</div>
+<span class="font-label-caps text-label-caps text-primary font-bold bg-surface-container-lowest px-1 py-0.2 rounded shadow-xs mt-0.5 whitespace-nowrap">Aarav (85m)</span>
+</button>
+<button aria-label="Sunita: 12m Behind you" class="absolute bottom-16 left-20 z-30 flex flex-col items-center group focus:outline-none transition-transform active:scale-95" id="radar-sunita" onclick="selectMember('sunita')">
+<div class="relative">
+<div class="w-9 h-9 rounded-full overflow-hidden shadow-md ring-2 ring-secondary-container bg-surface-container-lowest">
+<img class="w-full h-full object-cover" data-alt="Warm smiling middle-aged Indian woman Sunita in traditional marigold saree at an outdoor peaceful pavilion during day" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzSdCTbIw6Kz-CrHNJheEgvAH4CKS-wqaoz8VjA1OrUQxUd0QAfOw4VRxNuFcidhWP-cXNZNZ7sGa2sMpp3VPjWrE885TsndL1sYJznr0aE3Me0qTRU9DB7DE6-2_wTRdh5fseRlkHY33k_KIjiHl3Iz9FNzHcbzYSIf96jVLunoCM_syK0WujlQ3oDmVFY-ug3xIEWUkE2o78CbqPOKKcNqx47eh_7eJnKcrkDeUdIzigvl3ysfzSqw"/>
+</div>
+<span class="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-secondary flex items-center justify-center text-[9px] text-on-secondary font-bold">2</span>
+</div>
+<span class="font-label-caps text-label-caps text-primary font-bold bg-surface-container-lowest px-1 py-0.2 rounded shadow-xs mt-0.5 whitespace-nowrap">Sunita (12m)</span>
+</button>
+<button aria-label="Ramesh: 140m South" class="absolute bottom-6 right-24 z-30 flex flex-col items-center group focus:outline-none transition-transform active:scale-95" id="radar-ramesh" onclick="selectMember('ramesh')">
+<div class="relative">
+<div class="w-9 h-9 rounded-full overflow-hidden shadow-md ring-2 ring-tertiary-fixed-dim bg-surface-container-lowest">
+<img class="w-full h-full object-cover" data-alt="Senior Indian gentleman Ramesh with glasses and white kurta smiling kindly at a festival pavilion with sunlight" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD9DmcjSlfi5Ourwzm6dxaei8PxcBxWqno2bo4H3HAOYR5cA-M2keogxh__Khgg5UWFXMHJJLRiK5eqYHP1IwzrnEdj33icFrmjyuE5weE3UcBe7HNH_8PsgXPIpl9u-89JXcSrHPEu3yJcYCsADk2ud2kVIWabyhsPUu6pBywOkW7ngRucfWf9cpgA6JIwXR9Sxrb6KUTsDSWwdmqJhzSboXaJnJwx6a0YjZuwjfj_33L1mMo-KmjE2Q"/>
+</div>
+<span class="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-on-tertiary-container flex items-center justify-center text-[9px] text-on-primary font-bold">3</span>
+</div>
+<span class="font-label-caps text-label-caps text-primary font-bold bg-surface-container-lowest px-1 py-0.2 rounded shadow-xs mt-0.5 whitespace-nowrap">Ramesh (140m)</span>
+</button>
+</div>
+<div class="text-center pt-space-xs">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Tap radar avatar or cards below for instant ping telemetry</span>
+</div>
+</div>
+<div class="w-full bg-surface-container-low rounded-xl p-space-md transition-all" id="memberTelemetryContainer">
+<div class="flex items-center justify-between mb-space-xs">
+<span class="font-label-caps text-label-caps text-primary font-bold uppercase tracking-wider">Mesh Telemetry &amp; Location Tag</span>
+<span class="font-label-caps text-label-caps text-secondary font-semibold" id="memberLastPing">12s ago via BLE Mesh</span>
+</div>
+<div class="flex items-start gap-space-sm">
+<div class="w-12 h-12 rounded-full overflow-hidden flex-shrink-0 shadow-sm bg-surface-container-lowest" id="memberAvatarRing">
+<img class="w-full h-full object-cover" data-alt="Headshot of Aarav in orange festival attire looking ahead happily in outdoor festival ambiance" id="memberImg" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCCg_spR626d8b6TzTuWmdh5ryrp-UKKF43P92gPR4OLTry92CRf3PAISp9IUjlRl9Bg3k3XseAbXxCA5FnmXPpUwMv7Z9IufSp6Fn3AkiALRz9AZxO6OqoVdW65FLwPip_n7icPnXDuKFOe9I6okpcEeKzM0gEZSq5fTGvEK8azWP6Qhg0jFcbVeonL2LPUkPmtuihwZpHg53m0_yvzCcxt7s-Iu5tPARxqY2RfC8G5Ig7IuGpKj40HA"/>
+</div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between gap-space-xs">
+<h4 class="font-headline-md text-headline-md text-primary truncate" id="memberName">Aarav (Son)</h4>
+<div class="flex items-center gap-1 text-on-surface">
+<span class="material-symbols-outlined text-base text-secondary">battery_5_bar</span>
+<span class="font-label-md text-label-md" id="memberBattery">84%</span>
+</div>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface font-medium" id="memberVector">85m North-East • Moving toward Food Stall 3</p>
+<div class="mt-1 flex items-center gap-1 text-on-surface-variant font-label-md text-label-md">
+<span class="material-symbols-outlined text-base text-primary-container">near_me</span>
+<span class="truncate" id="memberTag">Next to Yellow Help Pole 9 (Sector 4)</span>
+</div>
+</div>
+</div>
+</div>
+<div class="w-full space-y-space-xs">
+<div class="flex items-center justify-between px-space-xs">
+<h3 class="font-headline-md text-headline-md text-primary">All Pilgrims (4)</h3>
+<span class="font-label-caps text-label-caps text-on-surface-variant">Tap to inspect</span>
+</div>
+<div class="space-y-space-xs">
+<div class="w-full p-space-sm rounded-lg bg-surface-container-lowest flex items-center justify-between shadow-xs cursor-pointer hover:bg-surface-container active:scale-[0.99] transition-transform" onclick="selectMember('aarav')">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="Headshot of Aarav in orange festival attire outdoors" src="https://lh3.googleusercontent.com/aida-public/AB6AXuChzK9D-RkiX4rHMAUADYCWufY-23NYgIp3ypWTbvxztZUiv5XyAJsRFMfcy3HHygxap7rfUbxsGmQWmX6Ot3Z1wzMSoy4_PdMPIhnd3pNDNlHSgBDqaYd1GeyuTkBZh-7bOvRfiSO6Yezd-6KgVPqOuk77XNCiWMAA2J-vCbzmA-yfX_R4dBuSUlmQz_X9P4pMQxQZVok83UnbpB6a6sJWJ1JH_9bO-HzJovHuuZU0YYzcUV2vQkNu0g"/>
+</div>
+<div class="min-w-0">
+<p class="font-label-lg text-label-lg text-primary font-bold truncate">Aarav (Son)</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate">85m NE • Moving to Food Stall 3</p>
+</div>
+</div>
+<div class="flex items-center gap-space-xs flex-shrink-0">
+<span class="px-space-xs py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-caps text-label-caps font-bold">UWB 85m</span>
+<span class="material-symbols-outlined text-on-surface-variant text-lg">chevron_right</span>
+</div>
+</div>
+<div class="w-full p-space-sm rounded-lg bg-surface-container-lowest flex items-center justify-between shadow-xs cursor-pointer hover:bg-surface-container active:scale-[0.99] transition-transform" onclick="selectMember('sunita')">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="Smiling portrait of Sunita in yellow saree at holy gathering pavilion" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDVjIdgvAPgnIPha_FCPAgvMKmlm7vaLlqMsuZeNIfz_i0hmV3v6j2VYZuEDXA7bYpugXwmXAKO6z6UuKHuZOOLcC9N-yEqbikKw42XARIlDL1cEF-nLJosxNyIJ0meP6K6qSEX9ZrbAWCD1NfiTaKkX7TmaixyofQ4QMDOa_WTWVqFzboXPhvnrjNaZ20aFxjYCqitaLefEUq3i1tmXZ5YSHQt4171RC7BdXVDgMfSpPj1XWe3FbtA3g"/>
+</div>
+<div class="min-w-0">
+<p class="font-label-lg text-label-lg text-primary font-bold truncate">Sunita (Mother)</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate">12m behind you • Near Shade Tent</p>
+</div>
+</div>
+<div class="flex items-center gap-space-xs flex-shrink-0">
+<span class="px-space-xs py-0.5 rounded-full bg-secondary-container text-on-secondary-container font-label-caps text-label-caps font-bold">Close 12m</span>
+<span class="material-symbols-outlined text-on-surface-variant text-lg">chevron_right</span>
+</div>
+</div>
+<div class="w-full p-space-sm rounded-lg bg-surface-container-lowest flex items-center justify-between shadow-xs cursor-pointer hover:bg-surface-container active:scale-[0.99] transition-transform" onclick="selectMember('ramesh')">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="Senior Indian man Ramesh portrait with spectacles outdoors smiling warmly" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBw6q7OS1oblNxdfleMDy-uyCxPr9_4V9_Vci0s5PWceCBeoWVnFdF917P_OgpuBSYuMRYs3gO5pkVCRdTQFJc6LfOC6ab4eVRKxoU908DzNK2473yJ2v9dWH3BZS-qNljaxVylHnSCnwukLrub0pNY2bjwCTSfT7b0BYaMQmrYMkvOGePqt2Xuab0H0sgYQcksugo7Ejc9-BhewVB1Gg7i0jJhKPKV7N-oSGguaRWRksWxwVLM-klIFA"/>
+</div>
+<div class="min-w-0">
+<p class="font-label-lg text-label-lg text-primary font-bold truncate">Ramesh (Father)</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate">140m South • At Medical Rest Area</p>
+</div>
+</div>
+<div class="flex items-center gap-space-xs flex-shrink-0">
+<span class="px-space-xs py-0.5 rounded-full bg-surface-container-highest text-on-surface font-label-caps text-label-caps font-bold">Mesh 140m</span>
+<span class="material-symbols-outlined text-on-surface-variant text-lg">chevron_right</span>
+</div>
+</div>
+</div>
+</div>
+<div class="w-full bg-surface-container-lowest rounded-xl p-space-md shadow-sm space-y-space-sm">
+<div class="flex items-center justify-between">
+<h3 class="font-headline-md text-headline-md text-primary">Separation Safety Controls</h3>
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-wider">Mesh Direct</span>
+</div>
+<div class="grid grid-cols-1 gap-space-xs">
+<button class="w-full min-h-[52px] px-space-md py-space-xs rounded-lg bg-primary-container text-on-primary flex items-center justify-between active:scale-[0.98] transition-transform shadow-xs" id="rendezvousBtn">
+<div class="flex items-center gap-space-sm text-left min-w-0">
+<div class="w-9 h-9 rounded-full bg-surface-bright/20 flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-xl">alt_route</span>
+</div>
+<div class="min-w-0">
+<p class="font-label-lg text-label-lg font-bold truncate">Trigger Rendezvous Beacon</p>
+<p class="font-body-sm text-body-sm text-primary-fixed-dim truncate">Sends haptic directions to meet at Pillar B-14</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-xl flex-shrink-0">arrow_forward</span>
+</button>
+<button class="w-full min-h-[52px] px-space-md py-space-xs rounded-lg bg-surface-container text-on-surface flex items-center justify-between active:scale-[0.98] transition-transform" id="sirenBtn">
+<div class="flex items-center gap-space-sm text-left min-w-0">
+<div class="w-9 h-9 rounded-full bg-surface-container-highest flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-xl text-error">volume_up</span>
+</div>
+<div class="min-w-0">
+<p class="font-label-lg text-label-lg font-bold text-primary truncate">Sound Local Piercing Siren</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate">Rings separated member's phone even on Silent</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-xl text-on-surface-variant flex-shrink-0">notifications_active</span>
+</button>
+<button class="w-full min-h-[52px] px-space-md py-space-xs rounded-lg bg-surface-container text-on-surface flex items-center justify-between active:scale-[0.98] transition-transform" id="torchBtn">
+<div class="flex items-center gap-space-sm text-left min-w-0">
+<div class="w-9 h-9 rounded-full bg-surface-container-highest flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-xl text-on-tertiary-container">flashlight_on</span>
+</div>
+<div class="min-w-0">
+<p class="font-label-lg text-label-lg font-bold text-primary truncate">Flash Screen Torch Beacon</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate">High-intensity colored strobe for night crowds</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-xl text-on-surface-variant flex-shrink-0">flare</span>
+</button>
+</div>
+</div>
+<div class="w-full bg-error-container text-on-error-container rounded-xl p-space-md shadow-sm">
+<div class="flex items-start gap-space-sm">
+<div class="w-10 h-10 rounded-full bg-error text-on-error flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">person_search</span>
+</div>
+<div class="flex-1 min-w-0">
+<h4 class="font-headline-md text-headline-md text-on-error-container font-bold leading-snug">Mark Member as Separated / Lost</h4>
+<p class="font-body-sm text-body-sm text-on-error-container/90 mt-0.5">
+          Instantly flashes member profile to Sector 4 volunteer handhelds, lost-child desks &amp; 14 digital display towers across the grounds.
+        </p>
+<div class="mt-space-sm flex flex-col gap-space-xs">
+<button aria-label="Broadcast separation alert to volunteer network" class="w-full min-h-[48px] px-space-md rounded-lg bg-error text-on-error font-label-lg text-label-lg font-bold flex items-center justify-center gap-space-xs shadow-sm active:scale-95 transition-transform" id="broadcastSeparationBtn">
+<span class="material-symbols-outlined text-xl">broadcast_on_home</span>
+<span>Broadcast Sector 4 Alert</span>
+</button>
+<span class="font-label-caps text-label-caps text-center text-on-error-container/80 uppercase tracking-wider">Encrypted Offline P2P Broadcast Protocol</span>
+</div>
+</div>
+</div>
+</div>
+<div class="fixed inset-0 z-50 hidden flex-col items-center justify-between p-space-xl transition-colors duration-150" id="strobeOverlay">
+<div class="text-center pt-safe mt-space-lg">
+<h2 class="font-headline-xl-mobile text-headline-xl-mobile font-black drop-shadow-md" id="strobeTitle">HIGH-VIS STROBE</h2>
+<p class="font-headline-md text-headline-md font-bold mt-1">HOLD PHONE HIGH ABOVE CROWD</p>
+</div>
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-7xl animate-bounce">screen_rotation_up</span>
+<p class="font-label-lg text-label-lg font-bold uppercase tracking-widest mt-space-sm bg-surface/90 px-3 py-1 rounded-full text-on-surface">Visual Beacon Active</p>
+</div>
+<button class="w-full max-w-xs min-h-[52px] rounded-full bg-primary-container text-on-primary font-headline-md text-headline-md shadow-xl active:scale-95 transition-transform mb-safe" id="closeStrobeBtn">
+      Turn Off Beacon
+    </button>
+</div>
+<div class="fixed bottom-20 left-4 right-4 z-40 transform translate-y-32 transition-transform duration-300 ease-out bg-primary-container text-on-primary p-space-md rounded-xl shadow-xl flex items-center justify-between gap-space-sm" id="toastNotification">
+<div class="flex items-center gap-space-xs min-w-0">
+<span class="material-symbols-outlined text-secondary-container text-2xl flex-shrink-0" id="toastIcon">check_circle</span>
+<div class="min-w-0">
+<p class="font-label-lg text-label-lg truncate" id="toastMessage">Command sent via BLE Mesh</p>
+<span class="font-body-sm text-body-sm text-on-primary-container truncate block" id="toastDetail">Acknowledged by 3 peer nodes</span>
+</div>
+</div>
+<button aria-label="Dismiss message" class="text-on-primary p-1 rounded-full flex-shrink-0" id="toastDismissBtn">
+<span class="material-symbols-outlined text-xl">close</span>
+</button>
+</div>
+</div>
+<script>
+(function() {
+  const members = {
+    aarav: {
+      name: "Aarav (Son)",
+      battery: "84%",
+      vector: "85m North-East • Moving towards Food Stall 3",
+      tag: "Next to Yellow Help Pole 9 (Sector 4)",
+      lastPing: "12s ago via BLE Mesh",
+      imgAlt: "Headshot of young Indian boy Aarav smiling in saffron clothing during outdoor daylight festival"
+    },
+    sunita: {
+      name: "Sunita (Mother)",
+      battery: "92%",
+      vector: "12m behind you • Standing near Shade Tent",
+      tag: "Shade Canopy C-2 (Resting)",
+      lastPing: "3s ago via Ultra-Wideband (UWB)",
+      imgAlt: "Portrait of Indian mother Sunita with warm smile in marigold yellow festival sari"
+    },
+    ramesh: {
+      name: "Ramesh (Father)",
+      battery: "68%",
+      vector: "140m South • At Medical Rest Area",
+      tag: "Medical Tent 2 Checkpost bench",
+      lastPing: "28s ago via Mesh Relay (Node 14)",
+      imgAlt: "Portrait of senior Indian gentleman Ramesh with glasses and white kurta in soft daylight"
+    }
+  };
+
+  window.selectMember = function(key) {
+    const data = members[key];
+    if (!data) return;
+    const nameEl = document.getElementById('memberName');
+    const batteryEl = document.getElementById('memberBattery');
+    const vectorEl = document.getElementById('memberVector');
+    const tagEl = document.getElementById('memberTag');
+    const pingEl = document.getElementById('memberLastPing');
+    const imgEl = document.getElementById('memberImg');
+
+    if (nameEl) nameEl.textContent = data.name;
+    if (batteryEl) batteryEl.textContent = data.battery;
+    if (vectorEl) vectorEl.textContent = data.vector;
+    if (tagEl) tagEl.textContent = data.tag;
+    if (pingEl) pingEl.textContent = data.lastPing;
+    if (imgEl) imgEl.setAttribute('data-alt', data.imgAlt);
+
+    showToast(`Focused on ${data.name}`, `Vector: ${data.vector}`);
+  };
+
+  const toast = document.getElementById('toastNotification');
+  const toastMsg = document.getElementById('toastMessage');
+  const toastDet = document.getElementById('toastDetail');
+  const toastIcon = document.getElementById('toastIcon');
+  let toastTimer = null;
+
+  function showToast(message, detail, isAlert = false) {
+    if (!toast) return;
+    if (toastTimer) clearTimeout(toastTimer);
+
+    toastMsg.textContent = message;
+    toastDet.textContent = detail;
+
+    if (isAlert) {
+      toast.className = "fixed bottom-20 left-4 right-4 z-40 transform translate-y-0 transition-transform duration-300 ease-out bg-error text-on-error p-space-md rounded-xl shadow-xl flex items-center justify-between gap-space-sm";
+      toastIcon.className = "material-symbols-outlined text-white text-2xl flex-shrink-0";
+      toastIcon.textContent = "emergency";
+    } else {
+      toast.className = "fixed bottom-20 left-4 right-4 z-40 transform translate-y-0 transition-transform duration-300 ease-out bg-primary-container text-on-primary p-space-md rounded-xl shadow-xl flex items-center justify-between gap-space-sm";
+      toastIcon.className = "material-symbols-outlined text-secondary-container text-2xl flex-shrink-0";
+      toastIcon.textContent = "check_circle";
+    }
+
+    toastTimer = setTimeout(() => {
+      hideToast();
+    }, 4000);
+  }
+
+  function hideToast() {
+    if (!toast) return;
+    toast.classList.add('translate-y-32');
+    toast.classList.remove('translate-y-0');
+  }
+
+  const dismissBtn = document.getElementById('toastDismissBtn');
+  if (dismissBtn) {
+    dismissBtn.addEventListener('click', hideToast);
+  }
+
+  const guideBtn = document.getElementById('guideMeetingPointBtn');
+  if (guideBtn) {
+    guideBtn.addEventListener('click', function() {
+      showToast("Walking Guidance Engaged", "Follow arrow towards Camp 4 Clock Tower (Pillar B-14)");
+    });
+  }
+
+  const rendezvousBtn = document.getElementById('rendezvousBtn');
+  if (rendezvousBtn) {
+    rendezvousBtn.addEventListener('click', function() {
+      showToast("Rendezvous Beacon Dispatched", "All 3 devices prompted with haptic guidance to Pillar B-14");
+    });
+  }
+
+  const sirenBtn = document.getElementById('sirenBtn');
+  if (sirenBtn) {
+    sirenBtn.addEventListener('click', function() {
+      showToast("Piercing Siren Triggered", "Chime emitted on all 3 handsets at max hardware volume");
+    });
+  }
+
+  const broadcastBtn = document.getElementById('broadcastSeparationBtn');
+  if (broadcastBtn) {
+    broadcastBtn.addEventListener('click', function() {
+      showToast("BROADCAST PUBLISHED", "Sector 4 digital screens & 84 patrol volunteers alerted", true);
+    });
+  }
+
+  const torchBtn = document.getElementById('torchBtn');
+  const strobeOverlay = document.getElementById('strobeOverlay');
+  const closeStrobeBtn = document.getElementById('closeStrobeBtn');
+  let strobeInterval = null;
+
+  if (torchBtn && strobeOverlay && closeStrobeBtn) {
+    const strobeColors = ['#DC2626', '#FFFFFF', '#059669', '#2563EB', '#F59E0B'];
+    let colorIdx = 0;
+
+    torchBtn.addEventListener('click', function() {
+      strobeOverlay.classList.remove('hidden');
+      strobeOverlay.classList.add('flex');
+
+      strobeInterval = setInterval(() => {
+        colorIdx = (colorIdx + 1) % strobeColors.length;
+        strobeOverlay.style.backgroundColor = strobeColors[colorIdx];
+        strobeOverlay.style.color = (colorIdx === 1) ? '#111827' : '#FFFFFF';
+      }, 140);
+    });
+
+    closeStrobeBtn.addEventListener('click', function() {
+      if (strobeInterval) clearInterval(strobeInterval);
+      strobeOverlay.classList.add('hidden');
+      strobeOverlay.classList.remove('flex');
+      strobeOverlay.style.backgroundColor = '';
+      showToast("Torch Beacon Deactivated", "Screen restored to standard view");
+    });
+  }
+})();
+</script></main><nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/90 backdrop-blur-xl shadow-[0_-2px_12px_rgba(0,0,0,0.04)]" data-active-classes="text-primary-container font-semibold"><div class="flex justify-around items-center h-16 px-space-sm"><a class="flex flex-col items-center justify-center gap-1 min-w-[56px] min-h-[44px] px-space-xs py-1 rounded-lg text-on-surface-variant hover:text-on-surface transition-colors" data-path="home" href="#"><span class="material-symbols-outlined text-2xl">radar</span><span class="font-label-caps text-label-caps">Home</span></a><a class="flex flex-col items-center justify-center gap-1 min-w-[56px] min-h-[44px] px-space-xs py-1 rounded-lg text-on-surface-variant hover:text-on-surface transition-colors" data-path="crowd-map" href="#"><span class="material-symbols-outlined text-2xl">map</span><span class="font-label-caps text-label-caps">Crowd Map</span></a><a aria-current="page" class="flex flex-col items-center justify-center gap-1 min-w-[56px] min-h-[44px] px-space-xs py-1 rounded-lg transition-colors text-primary-container font-semibold" data-path="my-group" href="#"><span class="material-symbols-outlined text-2xl">groups</span><span class="font-label-caps text-label-caps">My Group</span></a><a class="flex flex-col items-center justify-center gap-1 min-w-[56px] min-h-[44px] px-space-xs py-1 rounded-lg text-error hover:text-on-surface transition-colors" data-path="sos-and-help" href="#"><span class="material-symbols-outlined text-2xl fill-1">emergency</span><span class="font-label-caps text-label-caps">SOS &amp; Help</span></a></div></nav></body></html>

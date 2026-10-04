@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@500;600&amp;family=Space+Grotesk:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "on-error": "#690005", "tertiary-fixed": "#ffdeac", "primary-container": "#0d99ff", "primary-fixed-dim": "#9fcaff", "on-secondary-fixed-variant": "#92001f", "surface-container-high": "#252a33", "on-surface-variant": "#bfc7d5", "on-secondary": "#680013", "tertiary-container": "#c68a00", "primary": "#9fcaff", "surface-container-highest": "#30353e", "on-primary-fixed-variant": "#00497e", "on-secondary-container": "#ffe1e0", "error": "#ffb4ab", "surface-variant": "#30353e", "surface-container-low": "#171c24", "inverse-primary": "#0061a5", "on-background": "#dee2ee", "surface-container": "#1b2028", "on-tertiary-container": "#402a00", "surface-container-lowest": "#090e16", "background": "#0f141c", "on-tertiary-fixed": "#281900", "error-container": "#93000a", "secondary-container": "#d10030", "secondary-fixed": "#ffdad9", "on-surface": "#dee2ee", "on-error-container": "#ffdad6", "on-tertiary-fixed-variant": "#604100", "secondary": "#ffb3b2", "on-secondary-fixed": "#410008", "surface": "#0f141c", "surface-tint": "#9fcaff", "tertiary-fixed-dim": "#ffba38", "on-primary-fixed": "#001c37", "on-tertiary": "#432c00", "outline": "#89919e", "tertiary": "#ffba38", "surface-bright": "#343942", "surface-dim": "#0f141c", "inverse-on-surface": "#2c3139", "on-primary-container": "#002f55", "on-primary": "#003259", "secondary-fixed-dim": "#ffb3b2", "inverse-surface": "#dee2ee", "primary-fixed": "#d2e4ff", "outline-variant": "#3f4753" }, "borderRadius": { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" }, "spacing": { "space-lg": "1.5rem", "margin": "1rem", "gutter-desktop": "1.5rem", "space-md": "1rem", "space-sm": "0.5rem", "space-xs": "0.25rem", "gutter": "1rem", "space-xl": "2.5rem", "margin-desktop": "2rem" }, "fontFamily": { "label-lg": [ "JetBrains Mono" ], "headline-xl": [ "Space Grotesk" ], "label-sm": [ "JetBrains Mono" ], "headline-xl-mobile": [ "Space Grotesk" ], "headline-md": [ "Space Grotesk" ], "headline-sm": [ "Space Grotesk" ], "label-md": [ "JetBrains Mono" ], "body-md": [ "Inter" ], "body-lg": [ "Inter" ], "display-lg-mobile": [ "Space Grotesk" ], "headline-lg": [ "Space Grotesk" ], "body-sm": [ "Inter" ], "display-lg": [ "Space Grotesk" ] }, "fontSize": { "label-lg": [ "0.875rem", { "lineHeight": "1.25rem", "letterSpacing": "0.02em", "fontWeight": "500" } ], "headline-xl": [ "2.5rem", { "lineHeight": "3rem", "letterSpacing": "-0.02em", "fontWeight": "600" } ], "label-sm": [ "0.625rem", { "lineHeight": "0.875rem", "letterSpacing": "0.06em", "fontWeight": "600" } ], "headline-xl-mobile": [ "1.75rem", { "lineHeight": "2.25rem", "letterSpacing": "-0.01em", "fontWeight": "600" } ], "headline-md": [ "1.5rem", { "lineHeight": "2rem", "letterSpacing": "-0.01em", "fontWeight": "600" } ], "headline-sm": [ "1.25rem", { "lineHeight": "1.75rem", "letterSpacing": "0em", "fontWeight": "600" } ], "label-md": [ "0.75rem", { "lineHeight": "1rem", "letterSpacing": "0.04em", "fontWeight": "500" } ], "body-md": [ "1rem", { "lineHeight": "1.5rem", "letterSpacing": "0em", "fontWeight": "400" } ], "body-lg": [ "1.125rem", { "lineHeight": "1.75rem", "letterSpacing": "0em", "fontWeight": "400" } ], "display-lg-mobile": [ "2.25rem", { "lineHeight": "2.75rem", "letterSpacing": "-0.02em", "fontWeight": "700" } ], "headline-lg": [ "2rem", { "lineHeight": "2.5rem", "letterSpacing": "-0.015em", "fontWeight": "600" } ], "body-sm": [ "0.875rem", { "lineHeight": "1.25rem", "letterSpacing": "0.005em", "fontWeight": "400" } ], "display-lg": [ "3.5rem", { "lineHeight": "4rem", "letterSpacing": "-0.03em", "fontWeight": "700" } ] } } } };</script></head><body class="bg-surface font-body-md text-on-surface antialiased selection:bg-primary-container selection:text-on-primary-container"><header class="fixed top-0 left-0 right-0 z-50 bg-surface-container-lowest/95 backdrop-blur-xl"><div class="h-20 w-full px-gutter-desktop flex items-center justify-between gap-space-md"><div class="flex items-center gap-space-lg"><div class="flex items-center gap-space-sm"><div class="w-9 h-9 rounded bg-surface-container-high flex items-center justify-center"><span class="material-symbols-outlined text-primary text-[22px]">shield_with_heart</span></div><div class="flex flex-col"><div class="flex items-center gap-space-xs"><span class="font-headline-sm text-headline-sm text-on-surface uppercase tracking-tight">RAHAT SETU</span><span class="font-label-sm text-label-sm bg-surface-container-high text-primary px-1.5 py-0.5 rounded font-semibold">MISSION COMMAND</span></div><span class="font-label-sm text-label-sm text-on-surface-variant">POWERED BY EVENTFLOW AI</span></div></div><div class="h-8 w-px bg-surface-container-highest hidden 2xl:block"></div><div class="hidden xl:flex items-center gap-space-xs bg-surface-container-low px-space-md py-1.5 rounded"><span class="material-symbols-outlined text-tertiary text-[18px]">location_on</span><div class="flex flex-col"><span class="font-label-md text-label-md text-on-surface uppercase font-medium">Mahakumbh 2025 - Prayagraj Sector 1-14</span><span class="font-label-sm text-label-sm text-tertiary">Active Crowd: 4.8M Est.</span></div><span class="material-symbols-outlined text-on-surface-variant text-[16px] ml-space-xs cursor-pointer">arrow_drop_down</span></div><div class="hidden 2xl:flex items-center gap-space-md bg-surface-container-lowest px-space-md py-1.5 rounded"><div class="flex items-center gap-space-xs"><span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span><span class="font-label-sm text-label-sm text-on-surface-variant">AI FLOW:</span><span class="font-label-sm text-label-sm text-primary font-semibold">ONLINE</span></div><div class="flex items-center gap-space-xs"><span class="w-2 h-2 rounded-full bg-primary"></span><span class="font-label-sm text-label-sm text-on-surface-variant">LORA MESH:</span><span class="font-label-sm text-label-sm text-on-surface font-semibold">99.4%</span></div><div class="flex items-center gap-space-xs"><span class="w-2 h-2 rounded-full bg-secondary-container animate-ping"></span><span class="font-label-sm text-label-sm text-on-surface-variant">DRONES:</span><span class="font-label-sm text-label-sm text-secondary font-semibold">18 LIVE</span></div></div></div><div class="flex items-center gap-space-md"><div class="hidden lg:flex items-center p-0.5 bg-surface-container-low rounded"><a class="px-space-md py-1.5 rounded font-label-md text-label-md text-on-primary bg-primary font-semibold transition-all" data-path="tactical-command-overview" href="#">Authority Command</a><a class="px-space-md py-1.5 rounded font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-all" data-path="citizen-simulator" href="#">Citizen App Sim</a></div><button class="flex items-center gap-space-xs px-space-md py-2 rounded bg-secondary-container hover:bg-on-secondary-fixed-variant text-on-error transition-colors font-headline-sm text-label-lg font-bold shadow-lg" type="button"><span class="material-symbols-outlined text-[18px]">campaign</span><span>BROADCAST PA</span></button><div class="flex items-center gap-space-sm pl-space-xs"><div class="flex flex-col text-right hidden sm:flex"><span class="font-label-md text-label-md text-on-surface font-medium">Cdr. R. Sharma</span><span class="font-label-sm text-label-sm text-on-surface-variant">Duty Chief (SEC-01)</span></div><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></div></header><aside class="fixed left-0 top-20 bottom-0 w-64 bg-surface-container-lowest z-40 flex flex-col justify-between py-space-md"><div class="flex flex-col gap-space-md px-space-sm"><div class="px-space-sm"><span class="font-label-sm text-label-sm text-on-surface-variant tracking-wider uppercase font-semibold">Mission Sectors</span></div><nav class="flex flex-col gap-space-xs" data-active-classes="bg-primary-container text-on-primary-container font-semibold rounded"><a aria-current="page" class="flex items-center gap-space-sm px-space-sm py-2 transition-all bg-primary-container text-on-primary-container font-semibold rounded" data-path="tactical-command-overview" href="#"><span class="material-symbols-outlined text-[20px]">grid_view</span>Tactical Command</a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="geospatial-crowd-density" href="#"><span class="material-symbols-outlined text-[20px]">hub</span>Density &amp; Corridors</a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="incident-dispatch-queue" href="#"><span class="material-symbols-outlined text-[20px]">emergency</span>Incident Dispatch</a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="surveillance-telemetry" href="#"><span class="material-symbols-outlined text-[20px]">videocam</span>Surveillance Feeds</a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="lora-mesh-infrastructure" href="#"><span class="material-symbols-outlined text-[20px]">sensors</span>LoRa Nodes &amp; Mesh</a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="citizen-simulator" href="#"><span class="material-symbols-outlined text-[20px]">smartphone</span>Citizen Sim View</a></nav></div><div class="flex flex-col gap-space-sm px-space-sm"><div class="p-space-sm rounded bg-surface-container-low flex flex-col gap-space-xs"><span class="font-label-sm text-label-sm text-on-surface-variant">SANGAM DISPATCH LOAD</span><div class="w-full h-1.5 rounded-full bg-surface-container-highest overflow-hidden"><div class="bg-tertiary h-full w-[78%]"></div></div><div class="flex justify-between font-label-sm text-label-sm"><span class="text-tertiary">78% Ingress</span><span class="text-on-surface-variant">Sector 04 Hot</span></div></div><nav class="flex flex-col gap-space-xs" data-active-classes="bg-primary-container text-on-primary-container font-semibold rounded"><a class="flex items-center gap-space-sm px-space-sm py-2 rounded font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="system-telemetry-settings" href="#"><span class="material-symbols-outlined text-[20px]">tune</span>Node Ops Config</a></nav></div></aside><div class="pl-64"><main class="relative pt-20 w-full min-h-screen bg-surface"><div class="flex flex-col w-full">
+<div class="p-gutter-desktop flex flex-col gap-space-lg max-w-[1920px] mx-auto w-full">
+<!-- TOP OPERATIONAL KPI MATRIX -->
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-space-sm">
+<!-- KPI 1: Crowd Count -->
+<div class="bg-surface-container-low p-space-md rounded flex flex-col justify-between shadow-sm relative overflow-hidden group">
+<div class="absolute -right-4 -bottom-4 w-20 h-20 bg-primary/5 rounded-full blur-xl group-hover:bg-primary/10 transition-colors"></div>
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Total Crowd Monitored</span>
+<span class="material-symbols-outlined text-primary text-[18px]">groups</span>
+</div>
+<div class="my-space-xs">
+<div class="font-headline-lg text-headline-lg text-on-surface font-bold tracking-tight">4,821,490</div>
+<div class="flex items-center gap-space-xs mt-1">
+<span class="font-label-sm text-label-sm text-secondary bg-secondary-container/20 px-1 py-0.5 rounded flex items-center font-bold">
+<span class="material-symbols-outlined text-[14px]">trending_up</span> +12.4%
+            </span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">vs last hour surge</span>
+</div>
+</div>
+<div class="w-full bg-surface-container-highest h-1 rounded-full overflow-hidden mt-space-xs">
+<div class="bg-primary h-full w-[84%]"></div>
+</div>
+</div>
+<!-- KPI 2: Choke Point Alert Index -->
+<div class="bg-surface-container-low p-space-md rounded flex flex-col justify-between shadow-sm relative overflow-hidden group">
+<div class="absolute -right-4 -bottom-4 w-20 h-20 bg-secondary-container/10 rounded-full blur-xl group-hover:bg-secondary-container/20 transition-colors"></div>
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Choke Point Status</span>
+<span class="w-2.5 h-2.5 rounded-full bg-secondary-container animate-ping"></span>
+</div>
+<div class="my-space-xs">
+<div class="flex items-baseline gap-space-xs">
+<span class="font-headline-lg text-headline-lg text-secondary font-bold">2</span>
+<span class="font-label-md text-label-md text-secondary font-semibold uppercase">Critical Bottlenecks</span>
+</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant mt-1 truncate">
+            Sec-04 Sangam Ghat &amp; Gate 7 North
+          </div>
+</div>
+<div class="flex items-center justify-between font-label-sm text-label-sm">
+<span class="text-secondary font-bold">INDEX 8.9/10</span>
+<span class="text-on-surface-variant">Reroute Active</span>
+</div>
+</div>
+<!-- KPI 3: Gate Throughput -->
+<div class="bg-surface-container-low p-space-md rounded flex flex-col justify-between shadow-sm relative overflow-hidden group">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Total Ingress Rate</span>
+<span class="material-symbols-outlined text-tertiary text-[18px]">speed</span>
+</div>
+<div class="my-space-xs">
+<div class="font-headline-lg text-headline-lg text-on-surface font-bold tracking-tight">24,120</div>
+<div class="flex items-center gap-space-xs mt-1">
+<span class="font-label-sm text-label-sm text-tertiary font-bold">attendees / min</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">· 16 Portals</span>
+</div>
+</div>
+<div class="w-full bg-surface-container-highest h-1 rounded-full overflow-hidden mt-space-xs">
+<div class="bg-tertiary h-full w-[65%]"></div>
+</div>
+</div>
+<!-- KPI 4: Mean Incident Response Time -->
+<div class="bg-surface-container-low p-space-md rounded flex flex-col justify-between shadow-sm relative overflow-hidden group">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Mean Response SLA</span>
+<span class="material-symbols-outlined text-primary text-[18px]">timer</span>
+</div>
+<div class="my-space-xs">
+<div class="font-headline-lg text-headline-lg text-primary font-bold tracking-tight">3m 42s</div>
+<div class="flex items-center gap-space-xs mt-1">
+<span class="font-label-sm text-label-sm text-primary font-semibold">Triage Target: &lt;5m 00s</span>
+<span class="material-symbols-outlined text-primary text-[14px]">verified</span>
+</div>
+</div>
+<div class="w-full bg-surface-container-highest h-1 rounded-full overflow-hidden mt-space-xs">
+<div class="bg-primary h-full w-[74%]"></div>
+</div>
+</div>
+<!-- KPI 5: LoRa Mesh Pings -->
+<div class="bg-surface-container-low p-space-md rounded flex flex-col justify-between shadow-sm relative overflow-hidden group">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">LoRa RF Grid</span>
+<span class="material-symbols-outlined text-primary text-[18px]">cell_tower</span>
+</div>
+<div class="my-space-xs">
+<div class="flex items-baseline gap-space-xs">
+<span class="font-headline-lg text-headline-lg text-on-surface font-bold">142</span>
+<span class="font-label-md text-label-md text-on-surface-variant">/ 145 Active</span>
+</div>
+<div class="flex items-center gap-space-xs mt-1">
+<span class="font-label-sm text-label-sm text-primary font-bold">97.9% Relay Uplink</span>
+<span class="text-on-surface-variant font-label-sm text-label-sm">· 3 Retrying</span>
+</div>
+</div>
+<div class="w-full bg-surface-container-highest h-1 rounded-full overflow-hidden mt-space-xs">
+<div class="bg-primary h-full w-[98%]"></div>
+</div>
+</div>
+<!-- KPI 6: Milap AI Reunions -->
+<div class="bg-surface-container-low p-space-md rounded flex flex-col justify-between shadow-sm relative overflow-hidden group">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Milap AI Reunions</span>
+<span class="material-symbols-outlined text-tertiary text-[18px]">family_restroom</span>
+</div>
+<div class="my-space-xs">
+<div class="flex items-baseline gap-space-xs">
+<span class="font-headline-lg text-headline-lg text-tertiary font-bold">184</span>
+<span class="font-label-md text-label-md text-on-surface font-semibold">Resolved</span>
+</div>
+<div class="flex items-center gap-space-xs mt-1">
+<span class="font-label-sm text-label-sm text-secondary bg-secondary-container/20 px-1 py-0.5 rounded font-bold">12 In Progress</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">CCTV Live Scan</span>
+</div>
+</div>
+<div class="w-full bg-surface-container-highest h-1 rounded-full overflow-hidden mt-space-xs">
+<div class="bg-tertiary h-full w-[94%]"></div>
+</div>
+</div>
+</section>
+<!-- MAIN MIDDLE SECTION: VECTOR HEATMAP RADAR (LEFT/CENTER) + INCIDENT DISPATCH AI (RIGHT) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-md items-start">
+<!-- LEFT & CENTER: GEOSPATIAL CROWD HEATMAP & RADAR (8 COLS) -->
+<div class="lg:col-span-8 flex flex-col gap-space-sm">
+<!-- Map Console Container -->
+<div class="bg-surface-container-lowest rounded overflow-hidden shadow-xl flex flex-col relative">
+<!-- Tactical HUD Bar -->
+<div class="bg-surface-container-high px-space-md py-space-sm flex flex-wrap items-center justify-between gap-space-sm z-20">
+<div class="flex items-center gap-space-md">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[18px]">satellite_alt</span>
+<span class="font-label-md text-label-md text-on-surface font-bold uppercase tracking-wider">GEOSPATIAL VECTOR MAP · SECTOR 1-12</span>
+</div>
+<span class="bg-surface-container-lowest text-primary font-label-sm text-label-sm px-2 py-0.5 rounded font-semibold">GIS-RT-LAYER: ACTIVE</span>
+</div>
+<!-- Map View Layer Controls -->
+<div class="flex items-center gap-space-xs">
+<button class="bg-surface-container text-on-surface font-label-sm text-label-sm px-space-sm py-1 rounded flex items-center gap-1 hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-[14px] text-secondary">local_fire_department</span> Heatmap On
+              </button>
+<button class="bg-surface-container text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm px-space-sm py-1 rounded flex items-center gap-1 hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-[14px] text-primary">navigation</span> Flow Vectors
+              </button>
+<button class="bg-surface-container text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm px-space-sm py-1 rounded flex items-center gap-1 hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-[14px] text-tertiary">flight</span> Drones (2)
+              </button>
+<button class="bg-surface-container text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm px-2 py-1 rounded hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-[16px]">fullscreen</span>
+</button>
+</div>
+</div>
+<!-- Synthetic Tactical Map Visual Canvas -->
+<div class="relative w-full h-[580px] bg-[#070b11] overflow-hidden select-none">
+<!-- Map Base Grid Pattern SVG -->
+<svg class="absolute inset-0 w-full h-full opacity-35" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<pattern height="48" id="tactical-grid" patternunits="userSpaceOnUse" width="48">
+<path d="M 48 0 L 0 0 0 48" fill="none" stroke="#252a33" stroke-width="0.8"></path>
+<circle cx="0" cy="0" fill="#3f4753" r="1.5"></circle>
+</pattern>
+<!-- Radial Thermal Gradients for Heatmap Hotspots -->
+<radialgradient cx="50%" cy="50%" id="sangam-extreme-heat" r="50%">
+<stop offset="0%" stop-color="#ff1a3c" stop-opacity="0.85"></stop>
+<stop offset="45%" stop-color="#ff7300" stop-opacity="0.55"></stop>
+<stop offset="75%" stop-color="#ffba38" stop-opacity="0.25"></stop>
+<stop offset="100%" stop-color="#ff1a3c" stop-opacity="0"></stop>
+</radialgradient>
+<radialgradient cx="50%" cy="50%" id="pontoon-amber-heat" r="50%">
+<stop offset="0%" stop-color="#ffba38" stop-opacity="0.75"></stop>
+<stop offset="55%" stop-color="#ff8c00" stop-opacity="0.35"></stop>
+<stop offset="100%" stop-color="#ffba38" stop-opacity="0"></stop>
+</radialgradient>
+<radialgradient cx="50%" cy="50%" id="bypass-green-flow" r="50%">
+<stop offset="0%" stop-color="#00e599" stop-opacity="0.5"></stop>
+<stop offset="60%" stop-color="#00a86b" stop-opacity="0.2"></stop>
+<stop offset="100%" stop-color="#00e599" stop-opacity="0"></stop>
+</radialgradient>
+</defs>
+<rect fill="url(#tactical-grid)" height="100%" width="100%"></rect>
+<!-- River Ganga & Yamuna Sangam Contours -->
+<path d="M -20,240 Q 220,200 440,290 T 960,320 L 1100,340" fill="none" opacity="0.45" stroke="#00497e" stroke-linecap="round" stroke-width="36"></path>
+<path d="M 280,-40 Q 320,140 440,290 T 680,620" fill="none" opacity="0.35" stroke="#00497e" stroke-linecap="round" stroke-width="28"></path>
+<!-- Pontoon Bridges Vector Lines -->
+<line stroke="#89919e" stroke-dasharray="4,4" stroke-width="4" x1="380" x2="470" y1="230" y2="350"></line>
+<line stroke="#89919e" stroke-dasharray="4,4" stroke-width="4" x1="560" x2="620" y1="270" y2="380"></line>
+<line stroke="#89919e" stroke-dasharray="4,4" stroke-width="4" x1="260" x2="310" y1="210" y2="300"></line>
+<!-- Main Pilgrimage Corridors -->
+<path d="M 120,40 L 260,210 L 410,270" fill="none" stroke="#30353e" stroke-linejoin="round" stroke-width="12"></path>
+<path d="M 780,80 L 640,220 L 460,280" fill="none" stroke="#30353e" stroke-linejoin="round" stroke-width="14"></path>
+<path d="M 180,520 L 360,420 L 450,330" fill="none" stroke="#30353e" stroke-linejoin="round" stroke-width="10"></path>
+<path d="M 850,480 L 620,380 L 490,320" fill="none" stroke="#30353e" stroke-linejoin="round" stroke-width="12"></path>
+<!-- DYNAMIC HEATMAP OVERLAYS -->
+<!-- 1. Sangam Ghat Approach (EXTREME HEAT) -->
+<circle cx="450" cy="290" fill="url(#sangam-extreme-heat)" r="140"></circle>
+<circle cx="445" cy="285" fill="url(#sangam-extreme-heat)" r="70"></circle>
+<!-- 2. Pontoon Bridge 4 (AMBER CONGESTION) -->
+<circle cx="580" cy="310" fill="url(#pontoon-amber-heat)" r="90"></circle>
+<!-- 3. Bypass Corridor West (GREEN NOMINAL) -->
+<circle cx="210" cy="140" fill="url(#bypass-green-flow)" r="80"></circle>
+<circle cx="160" cy="460" fill="url(#bypass-green-flow)" r="75"></circle>
+<!-- Drone Flight Paths -->
+<!-- DRONE-ALPHA Path -->
+<path d="M 280,180 Q 420,130 520,230 T 430,340 Z" fill="none" opacity="0.8" stroke="#9fcaff" stroke-dasharray="6,4" stroke-width="1.5"></path>
+<!-- DRONE-GAMMA Path -->
+<path d="M 500,320 Q 640,240 720,380 T 560,440 Z" fill="none" opacity="0.8" stroke="#ffba38" stroke-dasharray="6,4" stroke-width="1.5"></path>
+</svg>
+<!-- Interactive Vector Hotspot Overlays & UI Labels -->
+<!-- CRITICAL HOTSPOT: Sangam Approach Ghat 3 -->
+<div class="absolute top-[230px] left-[380px] z-10 flex flex-col items-center pointer-events-auto cursor-pointer group">
+<div class="relative flex items-center justify-center">
+<span class="w-12 h-12 rounded-full bg-secondary-container/40 animate-ping absolute"></span>
+<span class="w-7 h-7 rounded-full bg-secondary-container text-on-error flex items-center justify-center font-bold text-[13px] shadow-lg">
+<span class="material-symbols-outlined text-[16px]">warning</span>
+</span>
+</div>
+<div class="mt-1 bg-surface-container-lowest/95 backdrop-blur-md px-space-sm py-1 rounded shadow-xl flex flex-col items-center">
+<span class="font-headline-sm text-label-sm text-secondary font-bold uppercase tracking-wide">GHAT 3 SANGAM NOZZLE</span>
+<div class="flex items-center gap-space-xs font-label-sm text-label-sm">
+<span class="text-secondary font-bold">6.8 p/m²</span>
+<span class="text-on-surface-variant">· CRITICAL SURGE</span>
+</div>
+</div>
+</div>
+<!-- MODERATE HOTSPOT: Pontoon Bridge 4 -->
+<div class="absolute top-[280px] left-[540px] z-10 flex flex-col items-center">
+<div class="w-5 h-5 rounded-full bg-tertiary-container flex items-center justify-center text-on-tertiary font-bold shadow-md">
+<span class="material-symbols-outlined text-[12px]">priority_high</span>
+</div>
+<div class="mt-1 bg-surface-container-lowest/90 px-space-xs py-0.5 rounded shadow flex flex-col items-center">
+<span class="font-headline-sm text-label-sm text-tertiary font-semibold uppercase">Pontoon Bridge #4</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">3.9 p/m² (Slow Velocity)</span>
+</div>
+</div>
+<!-- NOMINAL CORRIDOR: Bypass West -->
+<div class="absolute top-[100px] left-[150px] z-10 flex flex-col items-center opacity-85">
+<div class="w-3.5 h-3.5 rounded-full bg-[#00e599] flex items-center justify-center"></div>
+<div class="mt-1 bg-surface-container-lowest/80 px-space-xs py-0.5 rounded">
+<span class="font-label-sm text-label-sm text-[#00e599] font-medium">Bypass West (1.2 p/m²)</span>
+</div>
+</div>
+<!-- LIVE DRONE 1: DRONE-ALPHA -->
+<div class="absolute top-[160px] left-[460px] z-10 flex items-center gap-space-xs bg-surface-container-high/90 backdrop-blur-sm px-2 py-1 rounded shadow-lg animate-pulse">
+<span class="material-symbols-outlined text-primary text-[14px]">flight</span>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-primary font-bold">UAV-ALPHA · ALT 120m</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-mono">FLOW: 0.42 m/s NW</span>
+</div>
+</div>
+<!-- LIVE DRONE 2: DRONE-GAMMA -->
+<div class="absolute top-[340px] left-[650px] z-10 flex items-center gap-space-xs bg-surface-container-high/90 backdrop-blur-sm px-2 py-1 rounded shadow-lg">
+<span class="material-symbols-outlined text-tertiary text-[14px]">flight</span>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm text-tertiary font-bold">UAV-GAMMA · ALT 90m</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-mono">FLOW: 1.18 m/s SE</span>
+</div>
+</div>
+<!-- Sector Grid Labels in Field -->
+<div class="absolute top-4 left-6 font-label-sm text-label-sm text-on-surface-variant/60 font-mono tracking-widest">ZONE A · SECTOR 01 [VIP ENCLAVE]</div>
+<div class="absolute top-4 right-6 font-label-sm text-label-sm text-on-surface-variant/60 font-mono tracking-widest">ZONE B · SECTOR 04 [SANGAM BATHING]</div>
+<div class="absolute bottom-6 left-6 font-label-sm text-label-sm text-on-surface-variant/60 font-mono tracking-widest">ZONE C · SECTOR 08 [ANNAKSHETRA CAMPS]</div>
+<div class="absolute bottom-6 right-6 font-label-sm text-label-sm text-on-surface-variant/60 font-mono tracking-widest">ZONE D · SECTOR 11 [TRANSIT RAILWAY]</div>
+<!-- Compass & Radar Scale HUD Overlay -->
+<div class="absolute bottom-4 left-1/2 -translate-x-1/2 bg-surface-container-low/90 backdrop-blur px-space-md py-1 rounded flex items-center gap-space-md text-on-surface-variant font-label-sm text-label-sm">
+<div class="flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span>Extreme (&gt;5.5/m²)</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+<span>Warning (3.0-5.4)</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-[#00e599]"></span>
+<span>Nominal (&lt;3.0)</span>
+</div>
+<span class="text-outline">|</span>
+<span class="font-mono text-on-surface">RADAR FPS: 58.4</span>
+</div>
+</div>
+<!-- Bottom Map Action Bar: Dynamic Crowd Flow Redirection Controls -->
+<div class="bg-surface-container-low p-space-md flex flex-col md:flex-row items-stretch md:items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-sm">
+<div class="w-8 h-8 rounded bg-surface-container-high flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-[18px]">swap_calls</span>
+</div>
+<div>
+<div class="font-headline-sm text-label-md text-on-surface uppercase font-bold tracking-tight">Active Tactical Intervention Override</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">Selected Target: Sector 04 / Ghat Approach 3 Ingress Axis</div>
+</div>
+</div>
+<!-- Intervention Buttons -->
+<div class="flex flex-wrap items-center gap-space-xs">
+<button class="px-space-md py-2 rounded bg-primary text-on-primary font-headline-sm text-label-md font-bold hover:bg-primary-fixed-dim transition-all flex items-center gap-1 shadow" id="btn-gate-4b">
+<span class="material-symbols-outlined text-[16px]">call_split</span>
+<span>Activate Gate 4B Diversion</span>
+</button>
+<button class="px-space-md py-2 rounded bg-secondary-container hover:bg-on-secondary-fixed-variant text-on-error font-headline-sm text-label-md font-bold transition-all flex items-center gap-1 shadow" id="btn-evac-flap">
+<span class="material-symbols-outlined text-[16px]">door_open</span>
+<span>Open Flap 03 Ingress Evac</span>
+</button>
+<button class="px-space-md py-2 rounded bg-surface-container-high hover:bg-surface-container-highest text-tertiary font-headline-sm text-label-md font-semibold transition-all flex items-center gap-1" id="btn-audio-beacon">
+<span class="material-symbols-outlined text-[16px]">volume_up</span>
+<span>Trigger Directional Audio</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Real-Time Telemetry Micro-Cards below Map -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-sm">
+<!-- Corridor 1 Telemetry -->
+<div class="bg-surface-container-low p-space-sm rounded flex items-center justify-between shadow-sm">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-[20px]">directions_walk</span>
+<div>
+<div class="font-label-sm text-label-sm font-bold text-on-surface">GHAT 3 MAIN INFLOW</div>
+<div class="font-label-sm text-label-sm text-secondary">380 pilgrims/sec</div>
+</div>
+</div>
+<span class="bg-secondary-container/20 text-secondary font-label-sm text-label-sm px-1.5 py-0.5 rounded font-bold">+28% SURGE</span>
+</div>
+<!-- Corridor 2 Telemetry -->
+<div class="bg-surface-container-low p-space-sm rounded flex items-center justify-between shadow-sm">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-tertiary text-[20px]">linear_scale</span>
+<div>
+<div class="font-label-sm text-label-sm font-bold text-on-surface">PONTOON BRIDGE VELOCITY</div>
+<div class="font-label-sm text-label-sm text-tertiary">0.31 m/s (Near Stall)</div>
+</div>
+</div>
+<span class="bg-tertiary-container/20 text-tertiary font-label-sm text-label-sm px-1.5 py-0.5 rounded font-bold">WARNING</span>
+</div>
+<!-- Corridor 3 Telemetry -->
+<div class="bg-surface-container-low p-space-sm rounded flex items-center justify-between shadow-sm">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[20px]">alt_route</span>
+<div>
+<div class="font-label-sm text-label-sm font-bold text-on-surface">DIVERSION PASS CLEARANCE</div>
+<div class="font-label-sm text-label-sm text-primary">Capacity at 31% Free</div>
+</div>
+</div>
+<span class="bg-primary/10 text-primary font-label-sm text-label-sm px-1.5 py-0.5 rounded font-bold">READY</span>
+</div>
+</div>
+</div>
+<!-- RIGHT RAIL: LIVE INCIDENT DISPATCH & AUTOMATED AI RECOMMENDATIONS (4 COLS) -->
+<div class="lg:col-span-4 flex flex-col gap-space-md">
+<!-- Actionable AI Recommendations Dock -->
+<div class="bg-surface-container-low rounded p-space-md flex flex-col gap-space-md shadow-xl">
+<div class="flex items-center justify-between pb-space-xs">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-secondary text-[20px] animate-pulse">psychology</span>
+<span class="font-headline-sm text-label-lg text-on-surface font-bold tracking-tight uppercase">EventFlow AI Engine</span>
+</div>
+<span class="bg-secondary-container text-on-error font-label-sm text-label-sm px-1.5 py-0.5 rounded font-bold uppercase animate-pulse">HIGH URGENCY</span>
+</div>
+<!-- Urgent Priority Card 1: Stampede Precursor -->
+<div class="bg-surface-container rounded p-space-md flex flex-col gap-space-sm shadow-md relative overflow-hidden">
+<div class="flex items-start justify-between gap-space-xs">
+<div class="flex items-center gap-space-xs">
+<span class="w-2 h-2 rounded-full bg-secondary-container animate-ping"></span>
+<span class="font-label-sm text-label-sm text-secondary font-bold uppercase tracking-wider">Stampede Precursor Flagged</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-mono">T -00:45s</span>
+</div>
+<div class="font-body-sm text-body-sm text-on-surface">
+              Density compression spike detected at <span class="text-secondary font-semibold">Ghat 4 Choke Point</span>. Pedestrian turbulence vector exceeding safety threshold (6.8 p/m²).
+            </div>
+<!-- Recommendation Box -->
+<div class="bg-surface-container-lowest p-space-sm rounded flex flex-col gap-space-xs">
+<span class="font-label-sm text-label-sm text-primary font-bold uppercase flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">auto_fix_high</span> Prescribed Tactical Action:
+              </span>
+<p class="font-label-sm text-label-sm text-on-surface-variant leading-relaxed">
+                Reroute 40% incoming pilgrimage flow via Sector 2 Boulevard; Dispatch 2 NDRF Quick Reaction Teams for counter-flow management.
+              </p>
+</div>
+<!-- Dispatch Approval Button -->
+<div class="flex items-center gap-space-xs pt-1">
+<button class="flex-1 py-2 rounded bg-secondary-container hover:bg-on-secondary-fixed-variant text-on-error font-headline-sm text-label-md font-bold transition-all flex items-center justify-center gap-space-xs shadow-lg" id="dispatch-action-btn">
+<span class="material-symbols-outlined text-[18px]">verified_user</span>
+<span>APPROVE DISPATCH (NDRF QRT #3)</span>
+</button>
+<button class="p-2 rounded bg-surface-container-high hover:bg-surface-container-highest text-on-surface-variant hover:text-on-surface transition-colors" title="Decline suggestion">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+</div>
+</div>
+<!-- Urgent Priority Card 2: Medical Dispatch -->
+<div class="bg-surface-container rounded p-space-md flex flex-col gap-space-sm shadow-md">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-tertiary text-[18px]">medical_services</span>
+<span class="font-label-sm text-label-sm text-tertiary font-bold uppercase">Medical Urgent</span>
+</div>
+<span class="font-label-sm text-label-sm text-tertiary bg-tertiary-container/20 px-1 py-0.5 rounded font-mono font-bold">ETA 90s</span>
+</div>
+<div>
+<div class="font-headline-sm text-label-md text-on-surface font-semibold">Heat Exhaustion Cluster at Post Beta</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-0.5">
+                Two elderly pilgrims collapsed near Sector 5 Medical Aid Booth. Oxygen support required.
+              </p>
+</div>
+<div class="flex items-center justify-between text-label-sm font-label-sm bg-surface-container-lowest p-2 rounded">
+<span class="text-on-surface-variant">Unit Assigned: <strong class="text-on-surface font-semibold">Paramedic Bike #04</strong></span>
+<span class="text-primary font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">two_wheeler</span> EN ROUTE
+              </span>
+</div>
+</div>
+<!-- Priority Card 3: Milap AI Facial Recognition Match -->
+<div class="bg-surface-container rounded p-space-md flex flex-col gap-space-sm shadow-md">
+<div class="flex items-start justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[18px]">face</span>
+<span class="font-label-sm text-label-sm text-primary font-bold uppercase">Milap AI · Positive Match (98.4%)</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant font-mono">13:42:04</span>
+</div>
+<div class="flex gap-space-sm">
+<img class="w-16 h-16 rounded object-cover flex-shrink-0 bg-surface-container-highest" data-alt="High contrast thermal CCTV surveillance snapshot of a young child in traditional blue festival kurta standing near an Indian mega event food tent entrance with security personnel blurred in the background, sharp tactical monochrome tone" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCRmJ1F3l1e_dF0Pnm3ZuUc65eB28bVIPFkNrPgqY2p4lrtqSiAKfcFa2HQvEs3oV_u1DRU-jGOz7LWTXBaAqOR27I5pPlTFVCWtsW3TWwHEK31s5lBEUl__3ru4oqv9BIts6_Y2LYwRyWLay-GOjTeRpNDwGaZz9lhiD_MH1KPIiZs-m07SdZBCK3YfO4siMGK09P_nhWkyzRYiwiRF8muztKx7Sh_Dp69qNjZEjcYrV6tfFyHDFCHnw"/>
+<div class="flex flex-col justify-between">
+<div>
+<div class="font-headline-sm text-label-md text-on-surface font-bold">Aarav (Age 7) · Blue Kurta</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">Matched at Cam-09Annakshetra Entrance</div>
+</div>
+<div class="font-label-sm text-label-sm text-primary">Sector 8 Civil Volunteers Notified</div>
+</div>
+</div>
+<div class="flex items-center gap-space-xs pt-1">
+<button class="flex-1 py-1.5 rounded bg-primary text-on-primary font-headline-sm text-label-sm font-bold hover:bg-primary-fixed-dim transition-colors flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-[16px]">call</span>
+<span>Connect Parent (Camp 04)</span>
+</button>
+<button class="px-space-sm py-1.5 rounded bg-surface-container-high text-on-surface-variant hover:text-on-surface font-label-sm text-label-sm">
+                View Stream
+              </button>
+</div>
+</div>
+</div>
+<!-- LoRa Mesh & Sensor Infrastructure Health mini-panel -->
+<div class="bg-surface-container-low rounded p-space-md flex flex-col gap-space-sm shadow">
+<div class="flex items-center justify-between">
+<span class="font-headline-sm text-label-md text-on-surface font-bold uppercase tracking-tight">LoRa Perimeter Health</span>
+<span class="font-label-sm text-label-sm text-primary font-bold">ALL RELAYS SYNCED</span>
+</div>
+<div class="grid grid-cols-4 gap-space-xs text-center">
+<div class="bg-surface-container p-2 rounded flex flex-col items-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant font-mono">N-HUB</span>
+<span class="font-headline-sm text-label-md text-on-surface font-bold">99.8%</span>
+<span class="w-1.5 h-1.5 rounded-full bg-primary mt-1"></span>
+</div>
+<div class="bg-surface-container p-2 rounded flex flex-col items-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant font-mono">GHAT-RF</span>
+<span class="font-headline-sm text-label-md text-on-surface font-bold">94.2%</span>
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary mt-1"></span>
+</div>
+<div class="bg-surface-container p-2 rounded flex flex-col items-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant font-mono">RAIL-02</span>
+<span class="font-headline-sm text-label-md text-on-surface font-bold">100%</span>
+<span class="w-1.5 h-1.5 rounded-full bg-primary mt-1"></span>
+</div>
+<div class="bg-surface-container p-2 rounded flex flex-col items-center">
+<span class="font-label-sm text-label-sm text-on-surface-variant font-mono">CAMP-W</span>
+<span class="font-headline-sm text-label-md text-on-surface font-bold">89.4%</span>
+<span class="w-1.5 h-1.5 rounded-full bg-secondary mt-1"></span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- BOTTOM SECTION: GATE & QUEUE FLOW OPTIMIZATION MATRIX -->
+<section class="bg-surface-container-low rounded p-space-md flex flex-col gap-space-md shadow-xl overflow-hidden">
+<!-- Table Header & Filter Bar -->
+<div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-space-sm pb-space-xs">
+<div class="flex items-center gap-space-sm">
+<div class="w-8 h-8 rounded bg-surface-container-high flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-[20px]">sensor_door</span>
+</div>
+<div>
+<div class="font-headline-sm text-headline-sm text-on-surface font-bold uppercase tracking-tight">Access Gate &amp; Queue Flow Optimization Matrix</div>
+<div class="font-label-sm text-label-sm text-on-surface-variant">Real-time throughput analysis and automated crowd balancing across 8 major perimeters</div>
+</div>
+</div>
+<div class="flex items-center gap-space-xs self-stretch sm:self-auto">
+<div class="bg-surface-container px-space-sm py-1.5 rounded flex items-center gap-space-xs flex-1 sm:flex-initial">
+<span class="material-symbols-outlined text-on-surface-variant text-[16px]">filter_list</span>
+<input class="bg-transparent font-label-sm text-label-sm text-on-surface focus:outline-none w-28 placeholder:text-outline" placeholder="Filter gate..." type="text"/>
+</div>
+<button class="bg-surface-container-high hover:bg-surface-container-highest px-space-sm py-1.5 rounded font-label-sm text-label-sm text-on-surface font-semibold flex items-center gap-1 transition-colors">
+<span class="material-symbols-outlined text-[16px]">file_download</span> Export Log
+          </button>
+</div>
+</div>
+<!-- Flow Table Responsive Wrapper -->
+<div class="w-full overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container text-on-surface-variant font-label-sm text-label-sm uppercase tracking-wider">
+<th class="py-space-sm px-space-md rounded-l">Access Portal &amp; Sector</th>
+<th class="py-space-sm px-space-md">Real-Time Wait</th>
+<th class="py-space-sm px-space-md">Current Throughput</th>
+<th class="py-space-sm px-space-md">Density Saturation</th>
+<th class="py-space-sm px-space-md">Staffing / Security Unit</th>
+<th class="py-space-sm px-space-md">Flow Status</th>
+<th class="py-space-sm px-space-md text-right rounded-r">Action: Traffic Reroute</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container-high text-body-sm font-body-sm">
+<!-- Gate 1 -->
+<tr class="hover:bg-surface-container/50 transition-colors">
+<td class="py-space-sm px-space-md font-medium text-on-surface">
+<div class="flex items-center gap-space-xs">
+<span class="font-headline-sm text-label-md font-bold text-on-surface">GATE 01</span>
+<span class="text-on-surface-variant font-label-sm text-label-sm">· North Boulevard (Sec-01)</span>
+</div>
+</td>
+<td class="py-space-sm px-space-md">
+<span class="font-mono font-bold text-on-surface">4 mins</span>
+</td>
+<td class="py-space-sm px-space-md font-mono text-on-surface-variant">
+                3,420 / min
+              </td>
+<td class="py-space-sm px-space-md">
+<div class="flex items-center gap-space-xs">
+<div class="w-24 bg-surface-container-highest h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[35%]"></div>
+</div>
+<span class="font-mono text-label-sm font-semibold text-primary">35%</span>
+</div>
+</td>
+<td class="py-space-sm px-space-md text-on-surface-variant">
+<span class="font-label-sm text-label-sm">48 CRPF + 12 Marshals</span>
+</td>
+<td class="py-space-sm px-space-md">
+<span class="bg-surface-container-high text-primary font-label-sm text-label-sm px-2 py-0.5 rounded font-bold">NOMINAL</span>
+</td>
+<td class="py-space-sm px-space-md text-right">
+<button class="text-on-surface-variant hover:text-on-surface bg-surface-container px-space-sm py-1 rounded text-label-sm font-label-sm">Hold Normal</button>
+</td>
+</tr>
+<!-- Gate 2 -->
+<tr class="hover:bg-surface-container/50 transition-colors">
+<td class="py-space-sm px-space-md font-medium text-on-surface">
+<div class="flex items-center gap-space-xs">
+<span class="font-headline-sm text-label-md font-bold text-on-surface">GATE 02</span>
+<span class="text-on-surface-variant font-label-sm text-label-sm">· Daraganj Rail Approach (Sec-02)</span>
+</div>
+</td>
+<td class="py-space-sm px-space-md">
+<span class="font-mono font-bold text-tertiary">14 mins</span>
+</td>
+<td class="py-space-sm px-space-md font-mono text-on-surface-variant">
+                4,150 / min
+              </td>
+<td class="py-space-sm px-space-md">
+<div class="flex items-center gap-space-xs">
+<div class="w-24 bg-surface-container-highest h-1.5 rounded-full overflow-hidden">
+<div class="bg-tertiary h-full w-[62%]"></div>
+</div>
+<span class="font-mono text-label-sm font-semibold text-tertiary">62%</span>
+</div>
+</td>
+<td class="py-space-sm px-space-md text-on-surface-variant">
+<span class="font-label-sm text-label-sm">60 State Police + Rapid Force</span>
+</td>
+<td class="py-space-sm px-space-md">
+<span class="bg-tertiary-container/20 text-tertiary font-label-sm text-label-sm px-2 py-0.5 rounded font-bold">ELEVATED</span>
+</td>
+<td class="py-space-sm px-space-md text-right">
+<button class="text-tertiary hover:bg-tertiary/20 bg-surface-container px-space-sm py-1 rounded text-label-sm font-label-sm font-semibold transition-colors">Throttle 15%</button>
+</td>
+</tr>
+<!-- Gate 3 CRITICAL OVERFLOW -->
+<tr class="bg-secondary-container/10 hover:bg-secondary-container/15 transition-colors">
+<td class="py-space-sm px-space-md font-medium text-on-surface">
+<div class="flex items-center gap-space-xs">
+<span class="font-headline-sm text-label-md font-bold text-secondary">GATE 03</span>
+<span class="text-secondary font-label-sm text-label-sm font-semibold">· Sangam Ghat Main Axis (Sec-04)</span>
+<span class="w-2 h-2 rounded-full bg-secondary-container animate-ping ml-1"></span>
+</div>
+</td>
+<td class="py-space-sm px-space-md">
+<span class="font-mono font-bold text-secondary text-label-lg">42 mins</span>
+</td>
+<td class="py-space-sm px-space-md font-mono text-secondary font-bold">
+                6,890 / min (MAX)
+              </td>
+<td class="py-space-sm px-space-md">
+<div class="flex items-center gap-space-xs">
+<div class="w-24 bg-surface-container-highest h-1.5 rounded-full overflow-hidden">
+<div class="bg-secondary-container h-full w-[96%]"></div>
+</div>
+<span class="font-mono text-label-sm font-bold text-secondary">96% CRIT</span>
+</div>
+</td>
+<td class="py-space-sm px-space-md text-on-surface">
+<span class="font-label-sm text-label-sm font-bold text-secondary">NDRF Coy 2 + 80 Pac Troops</span>
+</td>
+<td class="py-space-sm px-space-md">
+<span class="bg-secondary-container text-on-error font-label-sm text-label-sm px-2 py-0.5 rounded font-bold">OVERFLOW BLOCK</span>
+</td>
+<td class="py-space-sm px-space-md text-right">
+<button class="bg-secondary-container hover:bg-on-secondary-fixed-variant text-on-error px-space-md py-1.5 rounded text-label-sm font-label-sm font-bold transition-all shadow">
+                  FORCE DIVERSION
+                </button>
+</td>
+</tr>
+<!-- Gate 4 -->
+<tr class="hover:bg-surface-container/50 transition-colors">
+<td class="py-space-sm px-space-md font-medium text-on-surface">
+<div class="flex items-center gap-space-xs">
+<span class="font-headline-sm text-label-md font-bold text-on-surface">GATE 04</span>
+<span class="text-on-surface-variant font-label-sm text-label-sm">· Akshayavat Enclave (Sec-05)</span>
+</div>
+</td>
+<td class="py-space-sm px-space-md">
+<span class="font-mono font-bold text-on-surface">9 mins</span>
+</td>
+<td class="py-space-sm px-space-md font-mono text-on-surface-variant">
+                2,100 / min
+              </td>
+<td class="py-space-sm px-space-md">
+<div class="flex items-center gap-space-xs">
+<div class="w-24 bg-surface-container-highest h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[45%]"></div>
+</div>
+<span class="font-mono text-label-sm font-semibold text-primary">45%</span>
+</div>
+</td>
+<td class="py-space-sm px-space-md text-on-surface-variant">
+<span class="font-label-sm text-label-sm">35 Volunteers + 10 Officers</span>
+</td>
+<td class="py-space-sm px-space-md">
+<span class="bg-surface-container-high text-primary font-label-sm text-label-sm px-2 py-0.5 rounded font-bold">NOMINAL</span>
+</td>
+<td class="py-space-sm px-space-md text-right">
+<button class="text-primary hover:bg-primary/20 bg-surface-container px-space-sm py-1 rounded text-label-sm font-label-sm font-semibold transition-colors">Open Feed 4B</button>
+</td>
+</tr>
+<!-- Gate 5 -->
+<tr class="hover:bg-surface-container/50 transition-colors">
+<td class="py-space-sm px-space-md font-medium text-on-surface">
+<div class="flex items-center gap-space-xs">
+<span class="font-headline-sm text-label-md font-bold text-on-surface">GATE 05</span>
+<span class="text-on-surface-variant font-label-sm text-label-sm">· Shastri Bridge Flyover Link (Sec-06)</span>
+</div>
+</td>
+<td class="py-space-sm px-space-md">
+<span class="font-mono font-bold text-tertiary">18 mins</span>
+</td>
+<td class="py-space-sm px-space-md font-mono text-on-surface-variant">
+                3,740 / min
+              </td>
+<td class="py-space-sm px-space-md">
+<div class="flex items-center gap-space-xs">
+<div class="w-24 bg-surface-container-highest h-1.5 rounded-full overflow-hidden">
+<div class="bg-tertiary h-full w-[70%]"></div>
+</div>
+<span class="font-mono text-label-sm font-semibold text-tertiary">70%</span>
+</div>
+</td>
+<td class="py-space-sm px-space-md text-on-surface-variant">
+<span class="font-label-sm text-label-sm">50 Home Guards + Traffic Police</span>
+</td>
+<td class="py-space-sm px-space-md">
+<span class="bg-tertiary-container/20 text-tertiary font-label-sm text-label-sm px-2 py-0.5 rounded font-bold">HIGH QUEUE</span>
+</td>
+<td class="py-space-sm px-space-md text-right">
+<button class="text-tertiary hover:bg-tertiary/20 bg-surface-container px-space-sm py-1 rounded text-label-sm font-label-sm font-semibold transition-colors">Stagger Waves</button>
+</td>
+</tr>
+<!-- Gate 6 -->
+<tr class="hover:bg-surface-container/50 transition-colors">
+<td class="py-space-sm px-space-md font-medium text-on-surface">
+<div class="flex items-center gap-space-xs">
+<span class="font-headline-sm text-label-md font-bold text-on-surface">GATE 06</span>
+<span class="text-on-surface-variant font-label-sm text-label-sm">· Parade Ground Parking (Sec-07)</span>
+</div>
+</td>
+<td class="py-space-sm px-space-md">
+<span class="font-mono font-bold text-on-surface">6 mins</span>
+</td>
+<td class="py-space-sm px-space-md font-mono text-on-surface-variant">
+                1,980 / min
+              </td>
+<td class="py-space-sm px-space-md">
+<div class="flex items-center gap-space-xs">
+<div class="w-24 bg-surface-container-highest h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[40%]"></div>
+</div>
+<span class="font-mono text-label-sm font-semibold text-primary">40%</span>
+</div>
+</td>
+<td class="py-space-sm px-space-md text-on-surface-variant">
+<span class="font-label-sm text-label-sm">24 Civil Volunteers</span>
+</td>
+<td class="py-space-sm px-space-md">
+<span class="bg-surface-container-high text-primary font-label-sm text-label-sm px-2 py-0.5 rounded font-bold">NOMINAL</span>
+</td>
+<td class="py-space-sm px-space-md text-right">
+<button class="text-on-surface-variant hover:text-on-surface bg-surface-container px-space-sm py-1 rounded text-label-sm font-label-sm">Accept Inflow</button>
+</td>
+</tr>
+<!-- Gate 7 CRITICAL BOTTLENECK -->
+<tr class="bg-secondary-container/5 hover:bg-secondary-container/10 transition-colors">
+<td class="py-space-sm px-space-md font-medium text-on-surface">
+<div class="flex items-center gap-space-xs">
+<span class="font-headline-sm text-label-md font-bold text-secondary">GATE 07</span>
+<span class="text-secondary font-label-sm text-label-sm font-semibold">· North Ghat Pontoon (Sec-09)</span>
+</div>
+</td>
+<td class="py-space-sm px-space-md">
+<span class="font-mono font-bold text-secondary text-label-lg">26 mins</span>
+</td>
+<td class="py-space-sm px-space-md font-mono text-secondary font-bold">
+                4,890 / min
+              </td>
+<td class="py-space-sm px-space-md">
+<div class="flex items-center gap-space-xs">
+<div class="w-24 bg-surface-container-highest h-1.5 rounded-full overflow-hidden">
+<div class="bg-secondary-container h-full w-[88%]"></div>
+</div>
+<span class="font-mono text-label-sm font-bold text-secondary">88%</span>
+</div>
+</td>
+<td class="py-space-sm px-space-md text-on-surface">
+<span class="font-label-sm text-label-sm font-semibold text-secondary">40 State Police + Marine QRT</span>
+</td>
+<td class="py-space-sm px-space-md">
+<span class="bg-secondary-container text-on-error font-label-sm text-label-sm px-2 py-0.5 rounded font-bold">BOTTLENECK</span>
+</td>
+<td class="py-space-sm px-space-md text-right">
+<button class="bg-secondary-container hover:bg-on-secondary-fixed-variant text-on-error px-space-sm py-1.5 rounded text-label-sm font-label-sm font-bold transition-all shadow">
+                  DIVERT TO GATE 6
+                </button>
+</td>
+</tr>
+<!-- Gate 8 -->
+<tr class="hover:bg-surface-container/50 transition-colors">
+<td class="py-space-sm px-space-md font-medium text-on-surface">
+<div class="flex items-center gap-space-xs">
+<span class="font-headline-sm text-label-md font-bold text-on-surface">GATE 08</span>
+<span class="text-on-surface-variant font-label-sm text-label-sm">· Southern Ring Expressway Bypass (Sec-12)</span>
+</div>
+</td>
+<td class="py-space-sm px-space-md">
+<span class="font-mono font-bold text-on-surface">5 mins</span>
+</td>
+<td class="py-space-sm px-space-md font-mono text-on-surface-variant">
+                2,480 / min
+              </td>
+<td class="py-space-sm px-space-md">
+<div class="flex items-center gap-space-xs">
+<div class="w-24 bg-surface-container-highest h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[28%]"></div>
+</div>
+<span class="font-mono text-label-sm font-semibold text-primary">28%</span>
+</div>
+</td>
+<td class="py-space-sm px-space-md text-on-surface-variant">
+<span class="font-label-sm text-label-sm">30 Traffic Marshals</span>
+</td>
+<td class="py-space-sm px-space-md">
+<span class="bg-surface-container-high text-primary font-label-sm text-label-sm px-2 py-0.5 rounded font-bold">NOMINAL</span>
+</td>
+<td class="py-space-sm px-space-md text-right">
+<button class="text-on-surface-variant hover:text-on-surface bg-surface-container px-space-sm py-1 rounded text-label-sm font-label-sm">Ready Inflow</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Footer Telemetry Audit Log Row -->
+<div class="pt-space-xs flex flex-col md:flex-row items-center justify-between text-on-surface-variant font-label-sm text-label-sm gap-space-xs">
+<div class="flex items-center gap-space-md">
+<span class="flex items-center gap-1"><span class="w-2 h-2 rounded-full bg-primary"></span> AUTO-DYNAMIC LOAD BALANCER: ENGAGED</span>
+<span>CYCLE INTERVAL: 15s</span>
+<span>LAST GIS RASTER PULSE: 4s AGO</span>
+</div>
+<div class="font-mono">
+          SERVER TIMESTAMP: 2025-02-14 13:42:19 IST [AUTH: SEC-OPS-CHIEF]
+        </div>
+</div>
+</section>
+</div>
+<!-- INTERACTIVE CLIENT-SIDE BEHAVIOR SCRIPT -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Dynamic Dispatch Approval Confirmation Feedback
+      const dispatchBtn = document.getElementById('dispatch-action-btn');
+      if (dispatchBtn) {
+        dispatchBtn.addEventListener('click', function() {
+          this.innerHTML = '<span class="material-symbols-outlined text-[18px]">done_all</span><span>DISPATCH TRANSMITTED TO QRT #3</span>';
+          this.classList.remove('bg-secondary-container', 'hover:bg-on-secondary-fixed-variant', 'text-on-error');
+          this.classList.add('bg-primary-container', 'text-on-primary-container');
+          
+          setTimeout(() => {
+            const card = this.closest('.bg-surface-container');
+            if (card) {
+              card.style.opacity = '0.75';
+            }
+          }, 600);
+        });
+      }
+
+      // Map Tactical Diversion Buttons Feedback
+      const btnGate4b = document.getElementById('btn-gate-4b');
+      if (btnGate4b) {
+        btnGate4b.addEventListener('click', function() {
+          this.classList.toggle('bg-primary');
+          this.classList.toggle('bg-tertiary');
+          this.innerHTML = this.innerHTML.includes('Active') 
+            ? '<span class="material-symbols-outlined text-[16px]">call_split</span><span>Gate 4B Diverted (LIVE)</span>'
+            : '<span class="material-symbols-outlined text-[16px]">call_split</span><span>Activate Gate 4B Diversion</span>';
+        });
+      }
+
+      const btnAudio = document.getElementById('btn-audio-beacon');
+      if (btnAudio) {
+        btnAudio.addEventListener('click', function() {
+          const original = this.innerHTML;
+          this.innerHTML = '<span class="material-symbols-outlined text-[16px] animate-spin">sync</span><span>Broadcasting Audio PA...</span>';
+          setTimeout(() => {
+            this.innerHTML = '<span class="material-symbols-outlined text-[16px]">done</span><span>Beacons Activated</span>';
+          }, 1200);
+        });
+      }
+
+      const btnEvac = document.getElementById('btn-evac-flap');
+      if (btnEvac) {
+        btnEvac.addEventListener('click', function() {
+          if (confirm('TACTICAL OVERRIDE: Confirm manual emergency evacuation flap release for Sector 04?')) {
+            this.innerText = 'FLAP RELEASED (SAFE)';
+            this.classList.remove('bg-secondary-container');
+            this.classList.add('bg-surface-container-high', 'text-on-surface');
+          }
+        });
+      }
+    });
+  </script>
+</div></main></div></body></html>

@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@500;600&amp;family=Space+Grotesk:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "on-error": "#690005", "tertiary-fixed": "#ffdeac", "primary-container": "#0d99ff", "primary-fixed-dim": "#9fcaff", "on-secondary-fixed-variant": "#92001f", "surface-container-high": "#252a33", "on-surface-variant": "#bfc7d5", "on-secondary": "#680013", "tertiary-container": "#c68a00", "primary": "#9fcaff", "surface-container-highest": "#30353e", "on-primary-fixed-variant": "#00497e", "on-secondary-container": "#ffe1e0", "error": "#ffb4ab", "surface-variant": "#30353e", "surface-container-low": "#171c24", "inverse-primary": "#0061a5", "on-background": "#dee2ee", "surface-container": "#1b2028", "on-tertiary-container": "#402a00", "surface-container-lowest": "#090e16", "background": "#0f141c", "on-tertiary-fixed": "#281900", "error-container": "#93000a", "secondary-container": "#d10030", "secondary-fixed": "#ffdad9", "on-surface": "#dee2ee", "on-error-container": "#ffdad6", "on-tertiary-fixed-variant": "#604100", "secondary": "#ffb3b2", "on-secondary-fixed": "#410008", "surface": "#0f141c", "surface-tint": "#9fcaff", "tertiary-fixed-dim": "#ffba38", "on-primary-fixed": "#001c37", "on-tertiary": "#432c00", "outline": "#89919e", "tertiary": "#ffba38", "surface-bright": "#343942", "surface-dim": "#0f141c", "inverse-on-surface": "#2c3139", "on-primary-container": "#002f55", "on-primary": "#003259", "secondary-fixed-dim": "#ffb3b2", "inverse-surface": "#dee2ee", "primary-fixed": "#d2e4ff", "outline-variant": "#3f4753" }, "borderRadius": { "DEFAULT": "0.125rem", "lg": "0.25rem", "xl": "0.5rem", "full": "0.75rem" }, "spacing": { "space-lg": "1.5rem", "margin": "1rem", "gutter-desktop": "1.5rem", "space-md": "1rem", "space-sm": "0.5rem", "space-xs": "0.25rem", "gutter": "1rem", "space-xl": "2.5rem", "margin-desktop": "2rem" }, "fontFamily": { "label-lg": [ "JetBrains Mono" ], "headline-xl": [ "Space Grotesk" ], "label-sm": [ "JetBrains Mono" ], "headline-xl-mobile": [ "Space Grotesk" ], "headline-md": [ "Space Grotesk" ], "headline-sm": [ "Space Grotesk" ], "label-md": [ "JetBrains Mono" ], "body-md": [ "Inter" ], "body-lg": [ "Inter" ], "display-lg-mobile": [ "Space Grotesk" ], "headline-lg": [ "Space Grotesk" ], "body-sm": [ "Inter" ], "display-lg": [ "Space Grotesk" ] }, "fontSize": { "label-lg": [ "0.875rem", { "lineHeight": "1.25rem", "letterSpacing": "0.02em", "fontWeight": "500" } ], "headline-xl": [ "2.5rem", { "lineHeight": "3rem", "letterSpacing": "-0.02em", "fontWeight": "600" } ], "label-sm": [ "0.625rem", { "lineHeight": "0.875rem", "letterSpacing": "0.06em", "fontWeight": "600" } ], "headline-xl-mobile": [ "1.75rem", { "lineHeight": "2.25rem", "letterSpacing": "-0.01em", "fontWeight": "600" } ], "headline-md": [ "1.5rem", { "lineHeight": "2rem", "letterSpacing": "-0.01em", "fontWeight": "600" } ], "headline-sm": [ "1.25rem", { "lineHeight": "1.75rem", "letterSpacing": "0em", "fontWeight": "600" } ], "label-md": [ "0.75rem", { "lineHeight": "1rem", "letterSpacing": "0.04em", "fontWeight": "500" } ], "body-md": [ "1rem", { "lineHeight": "1.5rem", "letterSpacing": "0em", "fontWeight": "400" } ], "body-lg": [ "1.125rem", { "lineHeight": "1.75rem", "letterSpacing": "0em", "fontWeight": "400" } ], "display-lg-mobile": [ "2.25rem", { "lineHeight": "2.75rem", "letterSpacing": "-0.02em", "fontWeight": "700" } ], "headline-lg": [ "2rem", { "lineHeight": "2.5rem", "letterSpacing": "-0.015em", "fontWeight": "600" } ], "body-sm": [ "0.875rem", { "lineHeight": "1.25rem", "letterSpacing": "0.005em", "fontWeight": "400" } ], "display-lg": [ "3.5rem", { "lineHeight": "4rem", "letterSpacing": "-0.03em", "fontWeight": "700" } ] } } } };</script></head><body class="bg-surface font-body-md text-on-surface antialiased selection:bg-primary-container selection:text-on-primary-container"><header class="fixed top-0 left-0 right-0 z-50 bg-surface-container-lowest/95 backdrop-blur-xl"><div class="h-20 w-full px-gutter-desktop flex items-center justify-between gap-space-md"><div class="flex items-center gap-space-lg"><div class="flex items-center gap-space-sm"><div class="w-9 h-9 rounded bg-surface-container-high flex items-center justify-center"><span class="material-symbols-outlined text-primary text-[22px]">shield_with_heart</span></div><div class="flex flex-col"><div class="flex items-center gap-space-xs"><span class="font-headline-sm text-headline-sm text-on-surface uppercase tracking-tight">RAHAT SETU</span><span class="font-label-sm text-label-sm bg-surface-container-high text-primary px-1.5 py-0.5 rounded font-semibold">MISSION COMMAND</span></div><span class="font-label-sm text-label-sm text-on-surface-variant">POWERED BY EVENTFLOW AI</span></div></div><div class="h-8 w-px bg-surface-container-highest hidden 2xl:block"></div><div class="hidden xl:flex items-center gap-space-xs bg-surface-container-low px-space-md py-1.5 rounded"><span class="material-symbols-outlined text-tertiary text-[18px]">location_on</span><div class="flex flex-col"><span class="font-label-md text-label-md text-on-surface uppercase font-medium">Mahakumbh 2025 - Prayagraj Sector 1-14</span><span class="font-label-sm text-label-sm text-tertiary">Active Crowd: 4.8M Est.</span></div><span class="material-symbols-outlined text-on-surface-variant text-[16px] ml-space-xs cursor-pointer">arrow_drop_down</span></div><div class="hidden 2xl:flex items-center gap-space-md bg-surface-container-lowest px-space-md py-1.5 rounded"><div class="flex items-center gap-space-xs"><span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span><span class="font-label-sm text-label-sm text-on-surface-variant">AI FLOW:</span><span class="font-label-sm text-label-sm text-primary font-semibold">ONLINE</span></div><div class="flex items-center gap-space-xs"><span class="w-2 h-2 rounded-full bg-primary"></span><span class="font-label-sm text-label-sm text-on-surface-variant">LORA MESH:</span><span class="font-label-sm text-label-sm text-on-surface font-semibold">99.4%</span></div><div class="flex items-center gap-space-xs"><span class="w-2 h-2 rounded-full bg-secondary-container animate-ping"></span><span class="font-label-sm text-label-sm text-on-surface-variant">DRONES:</span><span class="font-label-sm text-label-sm text-secondary font-semibold">18 LIVE</span></div></div></div><div class="flex items-center gap-space-md"><div class="hidden lg:flex items-center p-0.5 bg-surface-container-low rounded"><a class="px-space-md py-1.5 rounded font-label-md text-label-md text-on-primary bg-primary font-semibold transition-all" data-path="tactical-command-overview" href="#">Authority Command</a><a class="px-space-md py-1.5 rounded font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-all" data-path="citizen-simulator" href="#">Citizen App Sim</a></div><button class="flex items-center gap-space-xs px-space-md py-2 rounded bg-secondary-container hover:bg-on-secondary-fixed-variant text-on-error transition-colors font-headline-sm text-label-lg font-bold shadow-lg" type="button"><span class="material-symbols-outlined text-[18px]">campaign</span><span>BROADCAST PA</span></button><div class="flex items-center gap-space-sm pl-space-xs"><div class="flex flex-col text-right hidden sm:flex"><span class="font-label-md text-label-md text-on-surface font-medium">Cdr. R. Sharma</span><span class="font-label-sm text-label-sm text-on-surface-variant">Duty Chief (SEC-01)</span></div><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div></div></div></div></header><aside class="fixed left-0 top-20 bottom-0 w-64 bg-surface-container-lowest z-40 flex flex-col justify-between py-space-md"><div class="flex flex-col gap-space-md px-space-sm"><div class="px-space-sm"><span class="font-label-sm text-label-sm text-on-surface-variant tracking-wider uppercase font-semibold">Mission Sectors</span></div><nav class="flex flex-col gap-space-xs" data-active-classes="bg-primary-container text-on-primary-container font-semibold rounded"><a class="flex items-center gap-space-sm px-space-sm py-2 rounded font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="tactical-command-overview" href="#"><span class="material-symbols-outlined text-[20px]">grid_view</span>Tactical Command</a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="geospatial-crowd-density" href="#"><span class="material-symbols-outlined text-[20px]">hub</span>Density &amp; Corridors</a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="incident-dispatch-queue" href="#"><span class="material-symbols-outlined text-[20px]">emergency</span>Incident Dispatch</a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="surveillance-telemetry" href="#"><span class="material-symbols-outlined text-[20px]">videocam</span>Surveillance Feeds</a><a class="flex items-center gap-space-sm px-space-sm py-2 rounded font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="lora-mesh-infrastructure" href="#"><span class="material-symbols-outlined text-[20px]">sensors</span>LoRa Nodes &amp; Mesh</a><a aria-current="page" class="flex items-center gap-space-sm px-space-sm py-2 transition-all bg-primary-container text-on-primary-container font-semibold rounded" data-path="citizen-simulator" href="#"><span class="material-symbols-outlined text-[20px]">smartphone</span>Citizen Sim View</a></nav></div><div class="flex flex-col gap-space-sm px-space-sm"><div class="p-space-sm rounded bg-surface-container-low flex flex-col gap-space-xs"><span class="font-label-sm text-label-sm text-on-surface-variant">SANGAM DISPATCH LOAD</span><div class="w-full h-1.5 rounded-full bg-surface-container-highest overflow-hidden"><div class="bg-tertiary h-full w-[78%]"></div></div><div class="flex justify-between font-label-sm text-label-sm"><span class="text-tertiary">78% Ingress</span><span class="text-on-surface-variant">Sector 04 Hot</span></div></div><nav class="flex flex-col gap-space-xs" data-active-classes="bg-primary-container text-on-primary-container font-semibold rounded"><a class="flex items-center gap-space-sm px-space-sm py-2 rounded font-label-md text-label-md text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all" data-path="system-telemetry-settings" href="#"><span class="material-symbols-outlined text-[20px]">tune</span>Node Ops Config</a></nav></div></aside><div class="pl-64"><main class="relative pt-20 w-full min-h-screen bg-surface"><div class="flex flex-col w-full">
+<!-- Subtle decorative ambient backlight glow -->
+<div class="absolute top-12 left-1/4 w-[480px] h-[480px] bg-primary-container/10 rounded-full blur-[140px] pointer-events-none -z-10"></div>
+<div class="absolute top-96 right-10 w-[360px] h-[360px] bg-tertiary-container/10 rounded-full blur-[120px] pointer-events-none -z-10"></div>
+<!-- Command Strip / Metadata Banner -->
+<div class="w-full px-gutter-desktop py-space-md flex flex-wrap items-center justify-between gap-space-md border-b border-surface-container-high/60 bg-surface-container-lowest/80 backdrop-blur-md">
+<div class="flex items-center gap-space-md">
+<div class="flex items-center gap-space-xs bg-surface-container px-space-sm py-1 rounded">
+<span class="w-2.5 h-2.5 rounded-full bg-primary animate-pulse"></span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface">EMULATOR v4.28 // CITIZEN INTERFACE</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant hidden md:inline">LOC: SECTOR 4 / PRAYAGRAJ SANSTHAN</span>
+<span class="font-label-sm text-label-sm text-tertiary hidden lg:inline">SYNC FREQ: 868MHz LoRa ISM + 5G-NR HYBRID</span>
+</div>
+<div class="flex items-center gap-space-sm">
+<div class="flex items-center bg-surface-container-high rounded p-1">
+<button class="persona-btn active px-space-sm py-1 rounded font-label-md text-label-md bg-primary text-on-primary transition-all" id="persona-pilgrim" onclick="setPersona('pilgrim')">Devotee</button>
+<button class="persona-btn px-space-sm py-1 rounded font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-all" id="persona-elderly" onclick="setPersona('elderly')">Assisted Mobility</button>
+<button class="persona-btn px-space-sm py-1 rounded font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-all" id="persona-lost" onclick="setPersona('lost')">Lost Alert</button>
+<button class="persona-btn px-space-sm py-1 rounded font-label-md text-label-md text-on-surface-variant hover:text-on-surface transition-all" id="persona-volunteer" onclick="setPersona('volunteer')">Sevadar/Volunteer</button>
+</div>
+<div class="hidden sm:flex items-center gap-space-xs text-on-surface-variant text-label-sm font-label-sm bg-surface-container-low px-space-sm py-1.5 rounded">
+<span class="material-symbols-outlined text-[16px] text-primary">battery_charging_90</span>
+<span>DEVICE: 94%</span>
+</div>
+</div>
+</div>
+<!-- Primary Dynamic Workspace: Phone Simulator (Left) + Architecture Deep Dive (Right) -->
+<div class="w-full px-gutter-desktop py-space-lg grid grid-cols-1 xl:grid-cols-12 gap-space-xl items-start">
+<!-- LEFT / CENTER: Mobile Smartphone Viewport Simulator (5 Cols on XL) -->
+<div class="xl:col-span-6 flex flex-col items-center justify-center">
+<!-- Live Mobile Shell Wrapper -->
+<div class="relative w-full max-w-[420px] bg-surface-container-lowest rounded-[42px] shadow-2xl p-3 border-4 border-surface-container-highest">
+<!-- Screen Bezel Hardware Mockup Details -->
+<div class="absolute top-5 left-1/2 -translate-x-1/2 w-32 h-4.5 bg-surface-container-highest rounded-full z-30 flex items-center justify-center">
+<div class="w-3 h-3 rounded-full bg-surface-container-lowest mr-3"></div>
+<div class="w-2.5 h-2.5 rounded-full bg-surface-container-lowest"></div>
+</div>
+<!-- Phone Screen Surface Canvas (Scrollable) -->
+<div class="relative w-full h-[810px] bg-surface-container-low rounded-[32px] overflow-y-auto overflow-x-hidden flex flex-col text-on-surface select-none pb-24">
+<!-- App Top Header (Integrated Offline LoRa status + SOS) -->
+<div class="sticky top-0 z-20 bg-surface-container-low/95 backdrop-blur-md px-space-md pt-7 pb-space-sm flex flex-col gap-space-xs shadow-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<div class="w-7 h-7 rounded bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container text-[18px]">handshake</span>
+</div>
+<div>
+<div class="flex items-center gap-1">
+<span class="font-headline-sm text-headline-sm text-on-surface tracking-tight font-bold">राहत सेतु</span>
+<span class="font-label-sm text-label-sm text-primary uppercase font-bold">RAHAT</span>
+</div>
+</div>
+</div>
+<!-- Language & SOS Action -->
+<div class="flex items-center gap-space-xs">
+<select class="bg-surface-container font-label-md text-label-md text-on-surface py-1 px-1.5 rounded cursor-pointer outline-none focus:ring-1 focus:ring-primary">
+<option selected="" value="hi">हिन्दी</option>
+<option value="en">ENG</option>
+<option value="bn">বাংলা</option>
+<option value="mr">मराठी</option>
+<option value="ta">தமிழ்</option>
+</select>
+<button class="bg-secondary-container hover:bg-on-secondary-fixed-variant text-on-secondary-container px-space-sm py-1 rounded flex items-center gap-0.5 shadow-lg active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[16px] animate-pulse">crisis_alert</span>
+<span class="font-headline-sm text-label-md font-bold tracking-wider">SOS</span>
+</button>
+</div>
+</div>
+<!-- Connectivity Beacon Strip -->
+<div class="flex items-center justify-between bg-surface-container-highest/70 px-space-xs py-1 rounded text-on-surface-variant font-label-sm text-label-sm">
+<div class="flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-primary animate-ping"></span>
+<span class="text-on-surface font-medium">LoRa Mesh Node #84</span>
+<span class="text-primary font-bold">(Mesh Peer Link)</span>
+</div>
+<span class="text-tertiary">Zero-Data Ready</span>
+</div>
+</div>
+<!-- Dynamic Persona Alert Banner (Controlled via selector) -->
+<div class="mx-space-md mt-space-sm p-space-sm rounded bg-surface-container flex items-start gap-space-xs" id="persona-dynamic-banner">
+<span class="material-symbols-outlined text-tertiary text-[20px] shrink-0 mt-0.5">verified_user</span>
+<div class="flex flex-col">
+<span class="font-headline-sm text-label-lg text-tertiary font-bold" id="persona-title">Devotee Mode Active</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant" id="persona-desc">Prioritizing Shanti Corridors, Ghat water stages, and low-stampede rush routes.</span>
+</div>
+</div>
+<!-- Hero Intent Section: 1-Tap Quick Action Grid -->
+<div class="px-space-md pt-space-sm flex flex-col gap-space-xs">
+<span class="font-headline-md text-headline-sm text-on-surface font-bold tracking-tight">आप अभी कहाँ जाना चाहते हैं?</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Where are you heading right now?</span>
+<!-- 1-Tap Action Pills -->
+<div class="grid grid-cols-2 gap-space-xs pt-space-xs">
+<button class="bg-surface-container hover:bg-surface-container-high text-left p-space-sm rounded flex flex-col gap-1 transition-all group">
+<div class="flex items-center justify-between text-primary">
+<span class="material-symbols-outlined text-[20px]">kayaking</span>
+<span class="font-label-sm text-label-sm bg-primary/20 text-primary px-1 rounded">14 min</span>
+</div>
+<span class="font-headline-sm text-label-md text-on-surface group-hover:text-primary font-semibold">Safe Route to Sangam</span>
+<span class="font-body-sm text-label-sm text-on-surface-variant">Bypasses red choke points</span>
+</button>
+<button class="bg-surface-container hover:bg-surface-container-high text-left p-space-sm rounded flex flex-col gap-1 transition-all group">
+<div class="flex items-center justify-between text-tertiary">
+<span class="material-symbols-outlined text-[20px]">door_open</span>
+<span class="font-label-sm text-label-sm bg-tertiary/20 text-tertiary px-1 rounded">6 min wait</span>
+</div>
+<span class="font-headline-sm text-label-md text-on-surface group-hover:text-tertiary font-semibold">Fastest Entry Gate</span>
+<span class="font-body-sm text-label-sm text-on-surface-variant">Gate 7 recommended now</span>
+</button>
+<button class="bg-surface-container hover:bg-surface-container-high text-left p-space-sm rounded flex flex-col gap-1 transition-all group">
+<div class="flex items-center justify-between text-primary">
+<span class="material-symbols-outlined text-[20px]">water_bottle</span>
+<span class="font-label-sm text-label-sm bg-primary/20 text-primary px-1 rounded">60m</span>
+</div>
+<span class="font-headline-sm text-label-md text-on-surface group-hover:text-primary font-semibold">Free Water &amp; Washroom</span>
+<span class="font-body-sm text-label-sm text-on-surface-variant">Tanker 12 + Block D</span>
+</button>
+<button class="bg-surface-container hover:bg-surface-container-high text-left p-space-sm rounded flex flex-col gap-1 transition-all group">
+<div class="flex items-center justify-between text-secondary">
+<span class="material-symbols-outlined text-[20px]">medical_services</span>
+<span class="font-label-sm text-label-sm bg-secondary/20 text-secondary px-1 rounded">180m</span>
+</div>
+<span class="font-headline-sm text-label-md text-on-surface group-hover:text-secondary font-semibold">Nearest Medical Camp</span>
+<span class="font-body-sm text-label-sm text-on-surface-variant">Camp 3: 4 Doctors on duty</span>
+</button>
+</div>
+</div>
+<!-- SMART RECOMMENDATION HERO CARD -->
+<div class="px-space-md pt-space-md">
+<div class="bg-surface-container p-space-md rounded shadow-lg flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[20px]">auto_awesome</span>
+<span class="font-headline-sm text-label-md uppercase font-bold text-primary tracking-wide">EventFlow Live Triage</span>
+</div>
+<span class="font-label-sm text-label-sm bg-surface-container-high text-on-surface-variant px-1.5 py-0.5 rounded">UPDATED 10s AGO</span>
+</div>
+<div class="bg-surface-container-lowest p-space-sm rounded flex flex-col gap-space-xs">
+<div class="flex items-center gap-1.5 text-secondary font-headline-sm text-label-md font-bold">
+<span class="material-symbols-outlined text-[18px]">warning</span>
+<span>SURGE SURCHARGE: AVOID MAIN SANGAM PATH</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+                  Bridge 2 bottleneck detected. Over <strong class="text-on-surface font-semibold">6.2 persons/m²</strong> with 45-min freeze.
+                </p>
+</div>
+<!-- Suggested Alternative -->
+<div class="bg-surface-container-high p-space-sm rounded flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<span class="font-headline-sm text-label-md text-on-surface font-bold">Take: Shanti Corridor (via Sector 5)</span>
+<span class="font-label-sm text-label-sm text-primary font-bold">14 MIN WALK</span>
+</div>
+<div class="flex items-center gap-space-sm font-label-sm text-label-sm text-on-surface-variant">
+<span class="flex items-center gap-1 text-primary"><span class="material-symbols-outlined text-[14px]">wb_twilight</span> Shaded Awning</span>
+<span class="flex items-center gap-1 text-tertiary"><span class="material-symbols-outlined text-[14px]">local_drink</span> 3 Water Hubs</span>
+<span class="flex items-center gap-1 text-on-surface"><span class="material-symbols-outlined text-[14px]">accessible</span> Flat Grade</span>
+</div>
+<button class="mt-1 w-full bg-primary-container text-on-primary-container py-2 rounded font-headline-sm text-label-md font-bold hover:bg-primary transition-all flex items-center justify-center gap-1">
+<span>Start Walking Guidance (Offline Audio)</span>
+<span class="material-symbols-outlined text-[16px]">navigation</span>
+</button>
+</div>
+</div>
+</div>
+<!-- LIVE GATE WAIT TIMES & QUEUE RADAR -->
+<div class="px-space-md pt-space-md flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<span class="font-headline-sm text-headline-sm text-on-surface font-bold">Gate Wait Times</span>
+<span class="font-label-sm text-label-sm text-primary flex items-center gap-0.5">
+<span class="material-symbols-outlined text-[14px]">radar</span> 12 Entry Radars
+              </span>
+</div>
+<!-- Queue Radar Strip -->
+<div class="grid grid-cols-3 gap-space-xs">
+<!-- Gate 3 (Heavy Crowd) -->
+<div class="bg-surface-container p-space-sm rounded flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-headline-sm text-label-lg font-bold text-on-surface">Gate 03</span>
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+</div>
+<div class="mt-space-xs">
+<div class="font-headline-sm text-headline-sm text-secondary font-bold">45m</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant block uppercase">Heavy Surge</span>
+</div>
+</div>
+<!-- Gate 7 (Recommended Entry) -->
+<div class="bg-surface-container-high p-space-sm rounded flex flex-col justify-between relative shadow-md">
+<span class="absolute -top-2 right-2 bg-primary text-on-primary font-label-sm text-label-sm px-1.5 py-0.2 rounded font-bold">FASTEST</span>
+<div class="flex items-center justify-between">
+<span class="font-headline-sm text-label-lg font-bold text-on-surface">Gate 07</span>
+<span class="w-2 h-2 rounded-full bg-primary animate-ping"></span>
+</div>
+<div class="mt-space-xs">
+<div class="font-headline-sm text-headline-sm text-primary font-bold">06m</div>
+<span class="font-label-sm text-label-sm text-primary block uppercase">Flowing Smooth</span>
+</div>
+</div>
+<!-- Gate 11 (Moderate) -->
+<div class="bg-surface-container p-space-sm rounded flex flex-col justify-between">
+<div class="flex items-center justify-between">
+<span class="font-headline-sm text-label-lg font-bold text-on-surface">Gate 11</span>
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+</div>
+<div class="mt-space-xs">
+<div class="font-headline-sm text-headline-sm text-tertiary font-bold">12m</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant block uppercase">Moderate Inflow</span>
+</div>
+</div>
+</div>
+</div>
+<!-- LIVE AMENITIES PULSE -->
+<div class="px-space-md pt-space-md flex flex-col gap-space-xs">
+<span class="font-headline-sm text-headline-sm text-on-surface font-bold">Essential Amenities (Zero-Search)</span>
+<div class="flex flex-col gap-1.5">
+<!-- Item 1: Medical -->
+<div class="bg-surface-container p-space-sm rounded flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<div class="w-8 h-8 rounded bg-surface-container-high flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[20px]">local_hospital</span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-label-md text-on-surface font-bold">First-Aid Camp 3</span>
+<span class="font-body-sm text-label-sm text-on-surface-variant">4 Triage Doctors • Oxygen Cylinders</span>
+</div>
+</div>
+<div class="text-right">
+<span class="font-headline-sm text-label-lg text-primary font-bold">180m</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant block">East Sector</span>
+</div>
+</div>
+<!-- Item 2: Drinking Water -->
+<div class="bg-surface-container p-space-sm rounded flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<div class="w-8 h-8 rounded bg-surface-container-high flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]">water_drop</span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-label-md text-on-surface font-bold">RO Filtered Tanker 12</span>
+<span class="font-body-sm text-label-sm text-on-surface-variant">Free chilled potable supply • 0 queue</span>
+</div>
+</div>
+<div class="text-right">
+<span class="font-headline-sm text-label-lg text-primary font-bold">60m</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant block">South Walkway</span>
+</div>
+</div>
+<!-- Item 3: Sanitation -->
+<div class="bg-surface-container p-space-sm rounded flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<div class="w-8 h-8 rounded bg-surface-container-high flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined text-[20px]">wc</span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-label-md text-on-surface font-bold">Smart Sanitation Block D</span>
+<span class="font-body-sm text-label-sm text-on-surface-variant">Cleaned 8m ago • Female/Male/Accessible</span>
+</div>
+</div>
+<div class="text-right">
+<span class="font-headline-sm text-label-lg text-tertiary font-bold">120m</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant block">~2 min wait</span>
+</div>
+</div>
+</div>
+</div>
+<!-- "MILAP" GROUP & FAMILY LOCATOR CARD -->
+<div class="px-space-md pt-space-md pb-space-lg flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-[20px]">family_restroom</span>
+<span class="font-headline-sm text-headline-sm text-on-surface font-bold">मिलाप (Milap Family Finder)</span>
+</div>
+<span class="font-label-sm text-label-sm bg-surface-container-high px-1.5 py-0.5 rounded text-primary">4 PAIRED</span>
+</div>
+<div class="bg-surface-container p-space-md rounded flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="w-2.5 h-2.5 rounded-full bg-primary animate-pulse"></span>
+<span class="font-label-md text-label-md text-on-surface font-medium">Family Mesh Active (Offline P2P)</span>
+</div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Max Drift: 340m</span>
+</div>
+<!-- Members roster -->
+<div class="flex flex-col gap-2">
+<div class="flex items-center justify-between bg-surface-container-high p-space-xs rounded">
+<div class="flex items-center gap-space-xs">
+<div class="w-6 h-6 rounded-full bg-surface-container-highest text-primary flex items-center justify-center font-bold text-label-sm">M</div>
+<span class="font-body-sm text-body-sm font-semibold text-on-surface">Mataji (Mother)</span>
+</div>
+<span class="font-label-sm text-label-sm text-primary">Sector 2 Camp (340m Safe)</span>
+</div>
+<div class="flex items-center justify-between bg-surface-container-high p-space-xs rounded">
+<div class="flex items-center gap-space-xs">
+<div class="w-6 h-6 rounded-full bg-surface-container-highest text-tertiary flex items-center justify-center font-bold text-label-sm">R</div>
+<span class="font-body-sm text-body-sm font-semibold text-on-surface">Rohit (Brother)</span>
+</div>
+<span class="font-label-sm text-label-sm text-tertiary">Near Gate 4 (Moving In)</span>
+</div>
+</div>
+<!-- Action buttons -->
+<div class="grid grid-cols-2 gap-space-xs mt-1">
+<button class="bg-surface-container-highest hover:bg-surface-bright text-on-surface py-1.5 rounded font-label-md text-label-md font-medium flex items-center justify-center gap-1 transition-colors">
+<span class="material-symbols-outlined text-[16px] text-tertiary">place</span>
+<span>Set Safe Meet Spot</span>
+</button>
+<button class="bg-secondary-container hover:bg-on-secondary-fixed-variant text-on-error py-1.5 rounded font-label-md text-label-md font-bold flex items-center justify-center gap-1 shadow transition-colors">
+<span class="material-symbols-outlined text-[16px]">sensors</span>
+<span>Beacon Lost Alert</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Bottom Sticky Nav for Mobile Prototype -->
+<div class="absolute bottom-0 left-0 right-0 h-16 bg-surface-container-lowest/95 backdrop-blur-xl border-t border-surface-container-high/80 px-space-sm flex items-center justify-around z-30">
+<button class="flex flex-col items-center gap-0.5 text-primary">
+<span class="material-symbols-outlined text-[20px]">explore</span>
+<span class="font-label-sm text-label-sm font-bold">Explore</span>
+</button>
+<button class="flex flex-col items-center gap-0.5 text-on-surface-variant hover:text-on-surface">
+<span class="material-symbols-outlined text-[20px]">route</span>
+<span class="font-label-sm text-label-sm">Corridors</span>
+</button>
+<button class="flex flex-col items-center gap-0.5 text-on-surface-variant hover:text-on-surface">
+<span class="material-symbols-outlined text-[20px]">water</span>
+<span class="font-label-sm text-label-sm">Amenities</span>
+</button>
+<button class="flex flex-col items-center gap-0.5 text-on-surface-variant hover:text-on-surface">
+<span class="material-symbols-outlined text-[20px]">group</span>
+<span class="font-label-sm text-label-sm">Milap</span>
+</button>
+<button class="flex flex-col items-center gap-0.5 text-secondary">
+<span class="material-symbols-outlined text-[20px]">emergency</span>
+<span class="font-label-sm text-label-sm font-bold">Help</span>
+</button>
+</div>
+</div>
+</div>
+<div class="mt-space-sm font-label-sm text-label-sm text-on-surface-variant text-center">
+        Interactive Touch Emulation • Switch personas above to preview adaptive rendering
+      </div>
+</div>
+<!-- RIGHT: Dynamic Architecture & Crowd Psychology Engine (6 Cols on XL) -->
+<div class="xl:col-span-6 flex flex-col gap-space-lg">
+<!-- Section Header with Visual Badge -->
+<div class="flex flex-col gap-space-xs">
+<div class="flex items-center gap-space-xs">
+<span class="font-label-sm text-label-sm bg-primary/20 text-primary px-2 py-0.5 rounded font-bold uppercase tracking-wider">CIVIL SAFETY INTELLIGENCE</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">CORE REASONING ENGINE</span>
+</div>
+<h2 class="font-headline-xl text-headline-xl text-on-surface font-bold tracking-tight">
+          How EventFlow Solves the 8 Critical Attendee Anxieties
+        </h2>
+<p class="font-body-md text-body-md text-on-surface-variant">
+          During mega-events exceeding 40 million pilgrims, panic originates when individuals cannot answer simple questions under mobile connectivity blackouts. Rahat Setu’s architecture pre-computes micro-answers on the edge.
+        </p>
+</div>
+<!-- Comparative Breakdown Grid (4 Core Attendee Questions Answered) -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
+<!-- Feature 1: Queue Prediction -->
+<div class="bg-surface-container p-space-md rounded flex flex-col gap-space-xs hover:bg-surface-container-high transition-colors">
+<div class="flex items-center justify-between text-tertiary">
+<span class="material-symbols-outlined text-[24px]">timelapse</span>
+<span class="font-label-sm text-label-sm bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded font-bold">QUESTION #1</span>
+</div>
+<span class="font-headline-sm text-headline-sm text-on-surface font-bold">"Which entrance has the shortest queue?"</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+            AI integrates overhead computer vision and gate turnstile turnarounds every 15 seconds to steer pilgrims away from clogged sectors before crowds compound.
+          </p>
+<div class="pt-space-xs flex items-center gap-1 font-label-sm text-label-sm text-primary">
+<span class="material-symbols-outlined text-[14px]">trending_down</span>
+<span>Reduces peak choke waits by 64%</span>
+</div>
+</div>
+<!-- Feature 2: Crowd-Aware Navigation -->
+<div class="bg-surface-container p-space-md rounded flex flex-col gap-space-xs hover:bg-surface-container-high transition-colors">
+<div class="flex items-center justify-between text-primary">
+<span class="material-symbols-outlined text-[24px]">alt_route</span>
+<span class="font-label-sm text-label-sm bg-primary/20 text-primary px-1.5 py-0.5 rounded font-bold">QUESTION #2</span>
+</div>
+<span class="font-headline-sm text-headline-sm text-on-surface font-bold">"Which route is safe &amp; less crowded?"</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+            Standard maps only measure vehicle speed. EventFlow calculates physical human density per m², shadow coverage, and grade elevation to route families smoothly.
+          </p>
+<div class="pt-space-xs flex items-center gap-1 font-label-sm text-label-sm text-primary">
+<span class="material-symbols-outlined text-[14px]">verified</span>
+<span>Prevents unidirectional stampede nodes</span>
+</div>
+</div>
+<!-- Feature 3: Life-Support Amenities -->
+<div class="bg-surface-container p-space-md rounded flex flex-col gap-space-xs hover:bg-surface-container-high transition-colors">
+<div class="flex items-center justify-between text-secondary">
+<span class="material-symbols-outlined text-[24px]">medical_services</span>
+<span class="font-label-sm text-label-sm bg-secondary/20 text-secondary px-1.5 py-0.5 rounded font-bold">QUESTION #3</span>
+</div>
+<span class="font-headline-sm text-headline-sm text-on-surface font-bold">"Where is the nearest medical post?"</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+            Real-time doctor readiness, oxygen capacity, and stretcher access lanes are dynamically broadcasted. No confusing menus: 1 tap directs first responders to you.
+          </p>
+<div class="pt-space-xs flex items-center gap-1 font-label-sm text-label-sm text-secondary">
+<span class="material-symbols-outlined text-[14px]">alarm</span>
+<span>Under 3-minute emergency arrival SLA</span>
+</div>
+</div>
+<!-- Feature 4: Separation Anxiety ("Milap") -->
+<div class="bg-surface-container p-space-md rounded flex flex-col gap-space-xs hover:bg-surface-container-high transition-colors">
+<div class="flex items-center justify-between text-tertiary">
+<span class="material-symbols-outlined text-[24px]">person_pin_circle</span>
+<span class="font-label-sm text-label-sm bg-tertiary/20 text-tertiary px-1.5 py-0.5 rounded font-bold">QUESTION #4</span>
+</div>
+<span class="font-headline-sm text-headline-sm text-on-surface font-bold">"Where is my family if separated?"</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+            Peer-to-peer Bluetooth low-energy and LoRa chirp tokens allow loved ones to find each other even when cell towers are jammed with millions of concurrent calls.
+          </p>
+<div class="pt-space-xs flex items-center gap-1 font-label-sm text-label-sm text-tertiary">
+<span class="material-symbols-outlined text-[14px]">offline_bolt</span>
+<span>100% Zero-cellular mesh dependent</span>
+</div>
+</div>
+</div>
+<!-- OFFLINE RESILIENCE ARCHITECTURE DEEP DIVE -->
+<div class="bg-surface-container-high p-space-lg rounded flex flex-col gap-space-md shadow-xl">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-space-xs">
+<span class="material-symbols-outlined text-primary text-[24px]">sensors</span>
+<span class="font-headline-md text-headline-md text-on-surface font-bold">Offline Mesh Architecture Specs</span>
+</div>
+<span class="font-label-sm text-label-sm bg-primary text-on-primary font-bold px-2 py-0.5 rounded">DEFENSE GRADE</span>
+</div>
+<!-- Diagram Representation in SVG (Keep minimal & high fidelity) -->
+<div class="w-full bg-surface-container-lowest p-space-md rounded flex flex-col gap-space-sm">
+<div class="flex items-center justify-between text-label-sm font-label-sm text-on-surface-variant border-b border-surface-container-highest pb-space-xs">
+<span>PACKET PROPAGATION TOPOLOGY</span>
+<span class="text-primary">868 MHz ISM INDUSTRIAL BAND</span>
+</div>
+<!-- Inline Technical SVG Scheme -->
+<div class="w-full h-32 flex items-center justify-center">
+<svg class="w-full h-full max-w-md text-on-surface-variant" fill="none" viewbox="0 0 400 120">
+<!-- Grid background lines -->
+<line stroke="currentColor" stroke-dasharray="2 4" stroke-opacity="0.1" x1="10" x2="390" y1="20" y2="20"></line>
+<line stroke="currentColor" stroke-dasharray="2 4" stroke-opacity="0.1" x1="10" x2="390" y1="60" y2="60"></line>
+<line stroke="currentColor" stroke-dasharray="2 4" stroke-opacity="0.1" x1="10" x2="390" y1="100" y2="100"></line>
+<!-- Connection Links -->
+<path d="M50 60 L140 30 L260 90 L350 45" stroke="#0d99ff" stroke-dasharray="4 2" stroke-width="2"></path>
+<path d="M140 30 L260 30 L350 45" stroke="#ffba38" stroke-opacity="0.7" stroke-width="1.5"></path>
+<!-- Node 1: Citizen Handset -->
+<circle cx="50" cy="60" fill="#171c24" r="14" stroke="#0d99ff" stroke-width="2"></circle>
+<text fill="#9fcaff" font-family="monospace" font-size="10" font-weight="bold" text-anchor="middle" x="50" y="64">PHONE</text>
+<!-- Node 2: LoRa Pillar Node -->
+<circle cx="140" cy="30" fill="#171c24" r="16" stroke="#ffba38" stroke-width="2"></circle>
+<text fill="#ffba38" font-family="monospace" font-size="9" font-weight="bold" text-anchor="middle" x="140" y="34">TOWER-4</text>
+<!-- Node 3: Drone Relay -->
+<circle cx="260" cy="90" fill="#171c24" r="16" stroke="#9fcaff" stroke-width="2"></circle>
+<text fill="#9fcaff" font-family="monospace" font-size="9" font-weight="bold" text-anchor="middle" x="260" y="94">DRONE-07</text>
+<!-- Node 4: Tactical Command Hub -->
+<circle cx="350" cy="45" fill="#0d99ff" r="18" stroke="#dee2ee" stroke-width="2"></circle>
+<text fill="#002f55" font-family="monospace" font-size="10" font-weight="bold" text-anchor="middle" x="350" y="49">HQ HUB</text>
+</svg>
+</div>
+<div class="grid grid-cols-3 gap-space-sm pt-space-xs text-center">
+<div class="bg-surface-container p-space-xs rounded">
+<span class="font-headline-sm text-label-lg font-bold text-primary block">100%</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Zero-Tower Survival</span>
+</div>
+<div class="bg-surface-container p-space-xs rounded">
+<span class="font-headline-sm text-label-lg font-bold text-tertiary block">14.2 km</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Hop-to-Hop Range</span>
+</div>
+<div class="bg-surface-container p-space-xs rounded">
+<span class="font-headline-sm text-label-lg font-bold text-on-surface block">64-Byte</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Encrypted Micro-SOS</span>
+</div>
+</div>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+          When mobile telecommunication base stations fail due to high subscriber congestion (IMS traffic collapses), Rahat Setu triggers its <strong>Offline Resilience Protocol</strong>. The app transmits 64-byte compressed chirps via nearby battery-backed LoRa beacons mounted across lighting poles and tethered aerostat drones.
+        </p>
+</div>
+<!-- Real Field Volunteer / Dispatch Sync Widget -->
+<div class="bg-surface-container p-space-md rounded flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<div class="w-10 h-10 rounded bg-primary-container text-on-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-[24px]">support_agent</span>
+</div>
+<div class="flex flex-col">
+<span class="font-headline-sm text-label-lg text-on-surface font-bold">12,400+ Trained Sevadars Active</span>
+<span class="font-body-sm text-label-sm text-on-surface-variant">Field volunteers receiving automated dispatch directly from citizen SOS taps.</span>
+</div>
+</div>
+<button class="px-space-md py-2 rounded bg-surface-container-high hover:bg-surface-bright text-primary font-headline-sm text-label-md font-semibold transition-colors">
+          View Volunteer Map
+        </button>
+</div>
+</div>
+</div>
+<!-- Client-side Interactive Persona Script -->
+<script>
+    function setPersona(mode) {
+      // Toggle button highlights
+      document.querySelectorAll('.persona-btn').forEach(btn => {
+        btn.classList.remove('bg-primary', 'text-on-primary');
+        btn.classList.add('text-on-surface-variant');
+      });
+
+      const activeBtn = document.getElementById('persona-' + mode);
+      if (activeBtn) {
+        activeBtn.classList.add('bg-primary', 'text-on-primary');
+        activeBtn.classList.remove('text-on-surface-variant');
+      }
+
+      const title = document.getElementById('persona-title');
+      const desc = document.getElementById('persona-desc');
+
+      if (mode === 'pilgrim') {
+        title.innerText = 'Devotee Mode Active';
+        desc.innerText = 'Prioritizing Shanti Corridors, Ghat water stages, and low-stampede rush routes.';
+      } else if (mode === 'elderly') {
+        title.innerText = 'Assisted Mobility Mode Active';
+        desc.innerText = 'Exclusively flat ramps selected. Zero stairwells. Highlighting 6 battery rickshaw depots.';
+      } else if (mode === 'lost') {
+        title.innerText = 'Missing Child / Lost Member Priority';
+        desc.innerText = 'Broadcasting LoRa identification token to 32 Lost-and-Found Booths across Sector 1-14.';
+      } else if (mode === 'volunteer') {
+        title.innerText = 'Field Volunteer (Sevadar) Relay';
+        desc.innerText = 'Displaying high-strain attendee assistance requests and stretcher lane clear orders.';
+      }
+    }
+  </script>
+</div></main></div></body></html>

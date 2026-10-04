@@ -6,13 +6,64 @@ dist/
 build/
 .vite/
 coverage/
+.turbo/
+.npm/
 
-# Environment Variables
+# ==========================================
+# Environment Variables & Secrets (CRITICAL)
+# ==========================================
 .env
 .env.*
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
 !.env.example
+!.env.template
 
+# MCP & Agent API Keys / Configs with Secrets
+mcp_config.json
+**/mcp_config.json
+.agents/**/mcp_config.json
+
+# API Keys, Credentials & Cloud Service Accounts
+*credentials*.json
+*secret*.json
+service-account*.json
+serviceAccountKey*.json
+client_secret*.json
+
+# Mobile & Firebase App Configs (Contains project API keys)
+google-services.json
+**/google-services.json
+GoogleService-Info.plist
+**/GoogleService-Info.plist
+
+# Signing Keys, Keystores & Certificates
+*.keystore
+*.jks
+*.p12
+*.pfx
+*.pem
+*.key
+*.crt
+*.cer
+key.properties
+**/key.properties
+**/android/key.properties
+
+# ==========================================
+# Databases & Local Storage
+# ==========================================
+*.sqlite
+*.sqlite3
+*.db
+*.db-journal
+*.rdb
+
+# ==========================================
 # Logs
+# ==========================================
 *.log
 npm-debug.log*
 yarn-debug.log*
@@ -91,3 +142,6 @@ model-training/models/*
 Thumbs.db
 *.tmp
 *.temp
+*Design_Guidelines.md
+*Design-principles.md
+.gemini/
