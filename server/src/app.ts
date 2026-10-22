@@ -8,6 +8,7 @@ import venueRoutes from "./modules/venue/venue.routes.js";
 import zoneRoutes from "./modules/zone/zone.routes.js";
 import locationRoutes from "./modules/location/location.routes.js";
 import facilityRoutes from "./modules/facility/facility.routes.js";
+import preferencesRoutes from "./modules/preferences/preferences.routes.js";
 
 dotenv.config();
 
@@ -29,4 +30,5 @@ app.use("/api/v1", venueRoutes);
 app.use("/api/v1", zoneRoutes);
 app.use("/api/v1", locationRoutes);
 app.use("/api/v1", facilityRoutes);
+app.use("/api/v1/preferences", preferencesRoutes);
 export default app;
