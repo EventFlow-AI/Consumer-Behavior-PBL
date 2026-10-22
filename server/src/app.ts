@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import authRoutes from "./modules/auth/auth.routes.js";
+import crowdRoutes from "./modules/crowd/crowd.routes.js";
 
 dotenv.config();
 
@@ -17,4 +18,5 @@ app.get("/api/v1/health", (_req, res) => {
   });
 });
 app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/crowd", crowdRoutes);
 export default app;
