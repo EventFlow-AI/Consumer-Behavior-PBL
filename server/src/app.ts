@@ -3,6 +3,11 @@ import cors from "cors";
 import dotenv from "dotenv";
 import authRoutes from "./modules/auth/auth.routes.js";
 import crowdRoutes from "./modules/crowd/crowd.routes.js";
+import eventRoutes from "./modules/event/event.routes.js";
+import venueRoutes from "./modules/venue/venue.routes.js";
+import zoneRoutes from "./modules/zone/zone.routes.js";
+import locationRoutes from "./modules/location/location.routes.js";
+import facilityRoutes from "./modules/facility/facility.routes.js";
 
 dotenv.config();
 
@@ -19,4 +24,9 @@ app.get("/api/v1/health", (_req, res) => {
 });
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/crowd", crowdRoutes);
+app.use("/api/v1/events", eventRoutes);
+app.use("/api/v1", venueRoutes);
+app.use("/api/v1", zoneRoutes);
+app.use("/api/v1", locationRoutes);
+app.use("/api/v1", facilityRoutes);
 export default app;
