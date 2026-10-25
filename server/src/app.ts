@@ -11,6 +11,7 @@ import facilityRoutes from "./modules/facility/facility.routes.js";
 import preferencesRoutes from "./modules/preferences/preferences.routes.js";
 import incidentRoutes from "./modules/incident/incident.routes.js";
 import announcementRoutes from "./modules/announcement/announcement.routes.js";
+import dashboardRoutes from "./modules/dashboard/dashboard.routes.js";
 
 dotenv.config();
 
@@ -35,4 +36,5 @@ app.use("/api/v1", facilityRoutes);
 app.use("/api/v1/preferences", preferencesRoutes);
 app.use("/api/v1", incidentRoutes);
 app.use("/api/v1", announcementRoutes);
+app.use("/api/v1", dashboardRoutes);
 export default app;
