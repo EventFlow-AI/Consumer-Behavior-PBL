@@ -57,6 +57,31 @@ enum FacilityStatus {
   MAINTENANCE
 }
 
+enum IncidentType {
+  MEDICAL
+  SECURITY
+  FIRE
+  CROWD
+  LOST_PERSON
+  INFRASTRUCTURE
+  OTHER
+}
+
+enum IncidentSeverity {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum IncidentStatus {
+  OPEN
+  ACKNOWLEDGED
+  IN_PROGRESS
+  RESOLVED
+  CLOSED
+}
+
 model User {
   id           String   @id @default(uuid())
   name         String
@@ -68,6 +93,7 @@ model User {
   updatedAt    DateTime @updatedAt
 
   preferences UserPreference?
+  incidents   Incident[]
 }
 
 model UserPreference {
@@ -97,6 +123,7 @@ model Event {
   updatedAt   DateTime    @updatedAt
 
   venues Venue[]
+  incidents Incident[]
 }
 
 model Venue {
@@ -138,6 +165,7 @@ model Location {
 
   zone       Zone       @relation(fields: [zoneId], references: [id], onDelete: Cascade)
   facilities Facility[]
+  incidents  Incident[]
 }
 
 model Facility {
@@ -150,4 +178,30 @@ model Facility {
   description String?
 
   location Location @relation(fields: [locationId], references: [id], onDelete: Cascade)
+}
+
+model Incident {
+  id          String           @id @default(uuid())
+  eventId     String
+  locationId  String?
+  reportedById String
+  type        IncidentType
+  severity    IncidentSeverity @default(MEDIUM)
+  status      IncidentStatus   @default(OPEN)
+  title       String
+  description String
+  latitude    Float?
+  longitude   Float?
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  resolvedAt  DateTime?
+
+  event      Event     @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  location   Location? @relation(fields: [locationId], references: [id], onDelete: SetNull)
+  reportedBy User      @relation(fields: [reportedById], references: [id], onDelete: Cascade)
+
+  @@index([eventId])
+  @@index([locationId])
+  @@index([status])
+  @@index([severity])
 }

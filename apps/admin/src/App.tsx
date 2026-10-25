@@ -12,6 +12,7 @@ import LocationsPage from "./pages/LocationsPage";
 import FacilitiesPage from "./pages/FacilitiesPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminLayout from "./layouts/AdminLayout";
+import IncidentsPage from "./pages/IncidentsPage";
 import "./App.css";
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
         <Route path="/zones" element={<ZonesPage />} />
         <Route path="/locations" element={<LocationsPage />} />
         <Route path="/facilities" element={<FacilitiesPage />} />
+        <Route path="incidents" element={<IncidentsPage />} />
       </Route>
 
       <Route
