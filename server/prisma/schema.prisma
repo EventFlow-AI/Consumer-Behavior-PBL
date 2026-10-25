@@ -87,6 +87,26 @@ enum AnnouncementPriority {
   IMPORTANT
   URGENT
 }
+
+enum InteractionType {
+  VIEW
+  CLICK
+  SELECT
+  SAVE
+  REDEEM
+}
+
+enum ChoiceFactor {
+  PRICE
+  DISCOUNT
+  DISTANCE
+  CROWD
+  QUEUE
+  BRAND_FAMILIARITY
+  CONVENIENCE
+  OTHER
+}
+
 model User {
   id           String   @id @default(uuid())
   name         String
@@ -99,6 +119,7 @@ model User {
 
   preferences UserPreference?
   incidents   Incident[]
+  interactions ConsumerInteraction[]
 }
 
 model UserPreference {
@@ -130,6 +151,8 @@ model Event {
   venues Venue[]
   incidents Incident[]
   announcements Announcement[]
+  offers       Offer[]
+  interactions ConsumerInteraction[]
 }
 
 model Venue {
@@ -228,4 +251,68 @@ model Announcement {
   @@index([eventId])
   @@index([priority])
   @@index([isActive])
+}
+
+model Brand {
+  id          String   @id @default(uuid())
+  name        String
+  category    String
+  description String?
+  logoUrl     String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  offers       Offer[]
+  interactions ConsumerInteraction[]
+
+  @@index([category])
+  @@index([isActive])
+}
+model Offer {
+  id          String   @id @default(uuid())
+  brandId     String
+  eventId     String
+  title       String
+  description String?
+  discountText String?
+  price       Float?
+  isActive    Boolean  @default(true)
+  startsAt    DateTime?
+  endsAt      DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  brand Brand @relation(fields: [brandId], references: [id], onDelete: Cascade)
+  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  interactions ConsumerInteraction[]
+
+  @@index([brandId])
+  @@index([eventId])
+  @@index([isActive])
+}
+model ConsumerInteraction {
+  id        String          @id @default(uuid())
+  userId    String
+  eventId   String
+  brandId   String?
+  offerId   String?
+  action    InteractionType
+  factor    ChoiceFactor?
+  rating    Int?
+  metadata  Json?
+  createdAt DateTime        @default(now())
+
+  user  User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  event Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  brand Brand? @relation(fields: [brandId], references: [id], onDelete: SetNull)
+  offer Offer? @relation(fields: [offerId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([eventId])
+  @@index([brandId])
+  @@index([offerId])
+  @@index([action])
+  @@index([factor])
 }

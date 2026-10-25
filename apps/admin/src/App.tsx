@@ -14,6 +14,9 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import AdminLayout from "./layouts/AdminLayout";
 import IncidentsPage from "./pages/IncidentsPage";
 import AnnouncementsPage from "./pages/AnnouncementsPage";
+import BrandsPage from "./pages/BrandsPage";
+import OffersPage from "./pages/OffersPage";
+import ConsumerInsightsPage from "./pages/ConsumerInsightsPage";
 import "./App.css";
 
 function App() {
@@ -41,6 +44,12 @@ function App() {
         <Route path="/facilities" element={<FacilitiesPage />} />
         <Route path="incidents" element={<IncidentsPage />} />
         <Route path="announcements" element={<AnnouncementsPage />} />
+        <Route path="brands" element={<BrandsPage />} />
+        <Route path="offers" element={<OffersPage />} />
+        <Route
+  path="consumer-insights"
+  element={<ConsumerInsightsPage />}
+/>
       </Route>
 
       <Route

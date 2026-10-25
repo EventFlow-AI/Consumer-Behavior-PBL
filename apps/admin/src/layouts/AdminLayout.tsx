@@ -29,6 +29,16 @@ export default function AdminLayout() {
           <NavLink to="/facilities">Facilities</NavLink>
           <NavLink to="/incidents">Incidents</NavLink>
           <NavLink to="/announcements">Announcements</NavLink>
+          <NavLink to="/brands">
+  Brands
+</NavLink>
+
+<NavLink to="/offers">
+  Offers
+</NavLink>
+<NavLink to="/consumer-insights">
+  Consumer Insights
+</NavLink>
         </nav>
 
         <button
