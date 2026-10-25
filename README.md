@@ -1,29 +1,28 @@
-# EventFlow AI
-hiuhiihinn
-HI... MI NAME IS HELLO!
-just testing 
+# Rahat Setu (EventFlow AI)
+
 > **Real-Time Intelligence Platform for Large-Scale Events**
 
-EventFlow AI is a real-time event intelligence and navigation platform designed for large-scale gatherings such as **Kumbh Mela, IPL matches, concerts, religious gatherings, college fests, exhibitions, conferences, and public festivals**.
+Rahat Setu is the current implementation of the EventFlow AI vision: a large-scale event intelligence and decision-support platform designed for gatherings such as **Kumbh Mela, IPL matches, concerts, religious gatherings, college fests, exhibitions, conferences, and public festivals**.
 
-Unlike conventional map applications that primarily answer **"Where is this place?"**, EventFlow AI aims to answer:
+Unlike conventional map applications that primarily answer **"Where is this place?"**, Rahat Setu aims to answer:
 
-* **Where should I go right now?**
-* **Which entrance has the shortest queue?**
-* **Which route is less crowded?**
-* **Where is the nearest available medical facility?**
-* **Where can I find my family/friends if we get separated?**
-* **Which washroom or food stall is currently less crowded?**
-* **What should I visit next?**
-* **How do I get help quickly?**
-* **What is happening around me right now?**
+- **Where should I go right now?**
+- **Which entrance or area is less crowded?**
+- **Which route or facility is more convenient?**
+- **Where is the nearest available medical or help facility?**
+- **What important announcement should I know about?**
+- **Which offer or brand should I choose?**
+- **What factors are influencing my decision?**
+- **What should I visit next?**
+- **How do I get help quickly?**
+- **What is happening around me right now?**
 
-The platform consists of two major interfaces:
+The platform currently consists of two major interfaces:
 
-1. **User/Consumer App & Website**
-2. **Organizer/Admin Portal**
+1. **User / Consumer Website**
+2. **Organizer / Admin Portal**
 
-The system combines real-time event data, location intelligence, AI-powered recommendations, crowd information, event information, and emergency coordination into a single platform.
+The system combines event information, venue structure, crowd forecasting, facilities, incidents, announcements, consumer preferences, brand offers, and behavioral analytics into a single platform.
 
 ---
 
@@ -35,50 +34,54 @@ Mega events bring together thousands, hundreds of thousands, or even millions of
 
 Examples include:
 
-* Kumbh Mela
-* IPL and cricket matches
-* Large concerts
-* Religious gatherings
-* College festivals
-* Government/public events
-* Trade exhibitions
-* Conferences
-* Theme parks
-* Cultural festivals
+- Kumbh Mela
+- IPL and cricket matches
+- Large concerts
+- Religious gatherings
+- College festivals
+- Government/public events
+- Trade exhibitions
+- Conferences
+- Theme parks
+- Cultural festivals
 
 At this scale, a conventional static map is insufficient.
 
-A visitor may know where a particular gate, stage, washroom, food stall, parking area, or medical center is located, but that information does not tell them the **current condition** of that location.
+A visitor may know where a particular gate, stage, washroom, food stall, parking area, or medical center is located, but that information does not tell them the **current or expected condition** of that location.
 
 For example:
 
-> Gate A may be 200 metres away, but Gate B may have a 5-minute queue while Gate A has a 30-minute queue.
+> Gate A may be 200 metres away, but another gate may be less crowded and faster to use.
 
 Similarly:
 
-> A washroom may be geographically closer but currently overcrowded, while another washroom 150 metres farther away may have almost no queue.
+> A facility may be geographically closer but less convenient because of crowd, queue, accessibility, or operational status.
 
 The physical environment of a mega event is dynamic.
 
-Crowd density, queues, road closures, transportation availability, emergencies, weather, event schedules, and facility availability can change continuously.
+Crowd density, queues, road closures, transportation availability, emergencies, weather, event schedules, facility availability, promotions, and consumer preferences can all affect visitor decisions.
 
 Therefore, visitors need more than navigation.
 
-They need **real-time situational intelligence**.
+They need **situational intelligence and decision support**.
 
 ---
 
 # 2. Core Problem
 
-The central problem EventFlow AI aims to solve is:
+The central problem Rahat Setu aims to solve is:
 
-> **How can visitors safely and efficiently navigate massive, dynamic events when crowd conditions, queues, facilities, transportation, emergencies, and event information continuously change?**
+> **How can visitors safely and efficiently navigate massive, dynamic events when crowd conditions, facilities, announcements, emergencies, offers, and event information continuously change?**
 
 At the same time, event organizers face a second problem:
 
-> **How can organizers obtain a real-time operational view of the event and use it to manage crowds, incidents, facilities, transportation, and visitor experience?**
+> **How can organizers obtain an operational view of the event and use it to manage facilities, incidents, announcements, brands, offers, and visitor experience?**
 
-EventFlow AI addresses both sides through a connected visitor platform and organizer control system.
+The Consumer Behavior layer introduces a third question:
+
+> **How do consumers make choices inside events, and which strategies attract customers most effectively?**
+
+Rahat Setu addresses all three through a connected visitor platform, organizer control system, and consumer-behavior analytics layer.
 
 ---
 
@@ -88,33 +91,50 @@ EventFlow AI addresses both sides through a connected visitor platform and organ
 
 Large events frequently develop bottlenecks around:
 
-* Entrances
-* Exits
-* Security checkpoints
-* Food courts
-* Washrooms
-* Popular attractions
-* Stages
-* Religious sites
-* Parking areas
-* Transportation pickup points
-
-Visitors generally do not know where congestion is developing until they physically reach it.
+- Entrances
+- Exits
+- Security checkpoints
+- Food courts
+- Washrooms
+- Popular attractions
+- Stages
+- Religious sites
+- Parking areas
+- Transportation pickup points
 
 ### Problem
 
-A visitor may choose the shortest geographical route without knowing that the route currently contains a large crowd.
+A visitor may choose the shortest geographical route without knowing that the route or destination is expected to become crowded.
 
-### EventFlow AI
+### Rahat Setu
 
-The system should use available real-time data to:
+The platform currently includes a **prototype one-hour crowd forecast** for event locations.
 
-* Estimate crowd density
-* Identify congested areas
-* Estimate queue lengths
-* Identify bottlenecks
-* Recommend alternative routes
-* Provide estimated travel and waiting time
+The long-term system is intended to use available event data to:
+
+- Estimate crowd density
+- Identify congested areas
+- Identify bottlenecks
+- Recommend alternative areas/routes
+- Provide crowd-aware decision support
+
+### Current implementation status
+
+The crowd pipeline is integrated end-to-end:
+
+```text
+Attendee Website
+      ↓
+Express Backend
+      ↓
+Crowd Adapter / Service
+      ↓
+External ML API
+      ↓
+Normalized Forecast
+```
+
+The current model is a **Würzburg pedestrian-flow prototype** and is explicitly presented as a prototype rather than production-ready live Rahat Setu intelligence.
 
 ---
 
@@ -124,62 +144,92 @@ Queues are one of the biggest sources of wasted time at mega events.
 
 Queues may occur at:
 
-* Entry gates
-* Security checks
-* Food stalls
-* Washrooms
-* Rides
-* Attractions
-* Registration desks
-* Merchandise stores
-* Parking exits
-* Shuttle services
+- Entry gates
+- Security checks
+- Food stalls
+- Washrooms
+- Rides
+- Attractions
+- Registration desks
+- Merchandise stores
+- Parking exits
+- Shuttle services
 
 ### Problem
 
 Visitors generally have no reliable way of knowing which queue is currently shortest.
 
-### EventFlow AI
+### Rahat Setu Vision
 
-Users should be able to see:
+Users should eventually be able to see:
 
-* Current/estimated queue length
-* Estimated waiting time
-* Queue status
-* Alternative nearby options
-* Historical/short-term queue trends where available
+- Current/estimated queue length
+- Estimated waiting time
+- Queue status
+- Alternative nearby options
+- Historical/short-term queue trends
+
+### Current implementation status
+
+Queue ML integration is **planned / pending** and is not yet presented as implemented.
 
 ---
 
-# 3.3 Medical Emergencies
+# 3.3 Medical Emergencies and Incidents
 
 A visitor may:
 
-* Faint
-* Become dehydrated
-* Get injured
-* Experience a medical emergency
-* Require first aid
-* Need urgent assistance
+- Faint
+- Become dehydrated
+- Get injured
+- Experience a medical emergency
+- Require first aid
+- Need urgent assistance
 
 ### Problem
 
-In a dense crowd, locating the nearest medical facility and reaching it quickly can be difficult.
+In a dense crowd, reporting and coordinating incidents can be difficult.
 
-Emergency responders may also have difficulty identifying the exact location of a visitor.
+### Current implementation
 
-### EventFlow AI
+Rahat Setu now includes an end-to-end **Incident Management** module.
 
-The system should support:
+Incidents support:
 
-* Emergency reporting
-* User location sharing
-* Nearest medical facility discovery
-* Emergency access-route identification
-* Incident status tracking
-* Communication between authorized responders and the incident reporter
+- Event association
+- Optional event location
+- Reporting user
+- Incident type
+- Severity
+- Status
+- Title
+- Description
+- Optional coordinates
+- Resolution tracking
 
-Emergency functionality should prioritize reliability and should not replace official emergency services.
+Supported incident types currently include:
+
+```text
+MEDICAL
+SECURITY
+FIRE
+CROWD
+LOST_PERSON
+INFRASTRUCTURE
+OTHER
+```
+
+Supported lifecycle states include:
+
+```text
+OPEN
+ACKNOWLEDGED
+IN_PROGRESS
+RESOLVED
+CLOSED
+```
+
+The admin portal allows authorized users to inspect and update incident status and severity.
 
 ---
 
@@ -189,62 +239,45 @@ People frequently become separated in large crowds.
 
 This is particularly problematic for:
 
-* Families
-* Children
-* Elderly visitors
-* Groups of friends
+- Families
+- Children
+- Elderly visitors
+- Groups of friends
 
-### Problem
+### Future direction
 
-Finding a separated person in a massive venue can be extremely difficult.
+The platform may later support:
 
-### EventFlow AI
+- Private groups
+- Temporary location sharing
+- Meeting points
+- Group navigation
+- Lost-person reporting
+- Reunion/help centers
 
-Users should be able to:
-
-* Create private groups
-* Share temporary location with group members
-* See group members on the event map
-* Set designated meeting points
-* Receive directions to meeting points
-* Report a missing group member
-* Access designated help/reunion centers
-
-Location sharing should be explicitly opt-in and privacy-conscious.
+Location sharing must remain explicitly opt-in and privacy-conscious.
 
 ---
 
 # 3.5 Language Barriers
 
-Large events often attract people from different:
+Large events often attract people from different states, countries, and linguistic backgrounds.
 
-* States
-* Countries
-* Linguistic backgrounds
+Visitors may struggle to understand:
 
-A visitor may struggle to understand:
+- Event announcements
+- Directions
+- Safety instructions
+- Menus
+- Signboards
+- Emergency information
+- Local terminology
 
-* Event announcements
-* Directions
-* Safety instructions
-* Menus
-* Signboards
-* Emergency information
-* Local terminology
+### Future direction
 
-### EventFlow AI
+The platform architecture is intended to support multilingual assistance.
 
-The platform should provide multilingual assistance including:
-
-* Interface translation
-* Text translation
-* AI-assisted translation
-* Important event announcements
-* Directions
-* Facility information
-* Emergency instructions
-
-Critical safety instructions should be based on verified organizer information rather than unrestricted AI-generated content.
+Critical safety instructions should always be based on verified organizer information rather than unrestricted AI-generated content.
 
 ---
 
@@ -252,166 +285,129 @@ Critical safety instructions should be based on verified organizer information r
 
 Visitors may not know:
 
-* What to see
-* What to do next
-* Which attractions are nearby
-* How much time an activity requires
-* What is currently available
+- What to see
+- What to do next
+- Which attractions are nearby
+- How much time an activity requires
+- What is currently available
 
-### EventFlow AI
+### Future direction
 
-An AI tour guide should understand:
+An AI tour guide could eventually consider:
 
-* Event schedule
-* Venue layout
-* User location
-* Available time
-* Crowd conditions
-* User interests
+- Event schedule
+- Venue layout
+- User location
+- Available time
+- Crowd conditions
+- User interests
+- Accessibility needs
 
 Example:
 
 > "I have two hours and I'm with my parents. What should we visit?"
 
-The system could generate an itinerary that considers walking distance, accessibility, crowd conditions, and event timings.
+This is part of the planned recommendation / assistant layer and is not yet treated as a completed MVP feature.
 
 ---
 
-# 3.7 Washroom Availability
+# 3.7 Facility Discovery
 
-Visitors often cannot determine:
+Visitors often need to locate:
 
-* Whether a washroom is open
-* How crowded it is
-* Whether it is operational
-* Whether it is accessible
-* Whether it has specific facilities
+- Washrooms
+- Drinking water
+- Charging stations
+- ATMs
+- Seating areas
+- First-aid stations
+- Information desks
+- Baby-care facilities
+- Lost-and-found centers
+- Accessibility facilities
 
-### EventFlow AI
+### Current implementation
 
-Users should be able to:
+The current data model and admin portal support:
 
-* Find nearby washrooms
-* View estimated crowd/wait information
-* Filter accessible facilities
-* Find baby-changing facilities where available
-* Report maintenance issues
-* Report cleanliness problems
+```text
+Event
+  └── Venue
+       └── Zone
+            └── Location
+                 └── Facility
+```
 
----
-
-# 3.8 Essential Facilities
-
-Visitors may need to locate:
-
-* Drinking water
-* Charging stations
-* ATMs
-* Seating areas
-* Shaded areas
-* First-aid stations
-* Information desks
-* Baby-care facilities
-* Lost-and-found centers
-* Accessibility facilities
-
-### Problem
-
-Finding these facilities can become difficult in a huge venue.
-
-### EventFlow AI
-
-The platform should provide:
-
-* Search
-* Navigation
-* Availability information where supported
-* Accessibility filters
-* Recommendations based on current location
+The attendee website can display venue, zone, location, facility, and facility-status information for an event.
 
 ---
 
-# 3.9 Parking and Transportation
+# 3.8 Dynamic Announcements and Closures
 
-After reaching a large event, visitors may face difficulty with:
+Event conditions change during the day.
 
-* Finding parking
-* Remembering their parking location
-* Finding the correct exit
-* Locating shuttle services
-* Finding public transport
-* Finding authorized pickup areas
-* Getting home after the event
+Admins may need to communicate:
 
-### EventFlow AI
+- Gate closures
+- Route changes
+- Safety alerts
+- Schedule changes
+- Facility changes
+- Crowd warnings
+- General information
 
-Features should include:
+### Current implementation
 
-* Save parking location
-* Parking-zone navigation
-* Shuttle information
-* Pickup/drop-off locations
-* Transportation status
-* Estimated transportation queues
-* Post-event route recommendations
+Rahat Setu includes an Announcement module with:
 
----
+```text
+INFO
+IMPORTANT
+URGENT
+```
 
-# 3.10 Dynamic Road and Area Closures
+Announcements support:
 
-Event organizers may temporarily close:
+- Event association
+- Title
+- Message
+- Priority
+- Active/inactive state
+- Optional start/end time
 
-* Roads
-* Gates
-* Walkways
-* Stages
-* Sections
-* Parking zones
-
-### Problem
-
-Static maps can become outdated during an event.
-
-### EventFlow AI
-
-The organizer portal should allow authorized staff to update:
-
-* Closed areas
-* Restricted areas
-* Temporary routes
-* Open/closed gates
-* Emergency zones
-* Changed event locations
-
-Changes should propagate to the user application.
+The attendee website retrieves active announcements for the selected event.
 
 ---
 
-# 3.11 Information Overload
+# 3.9 Information Overload
 
 Mega events generate large amounts of information:
 
-* Schedules
-* Announcements
-* Maps
-* Venue rules
-* Transportation information
-* Safety instructions
-* Food options
-* Attractions
-* Performance schedules
+- Schedules
+- Announcements
+- Maps
+- Venue rules
+- Transportation information
+- Safety instructions
+- Food options
+- Attractions
+- Brand offers
+- Facility information
 
-Visitors may struggle to find the information relevant to them.
+Visitors may struggle to identify what is relevant to them.
 
-### EventFlow AI
+### Rahat Setu
 
-The platform should provide a contextual information layer where users receive information relevant to:
+The long-term product direction is a contextual information layer based on:
 
-* Their location
-* Their event
-* Their schedule
-* Their group
-* Their interests
+- Event
+- Location
+- Preferences
+- Crowd
+- Facilities
+- Offers
+- Time
+- Personal priorities
 
 ---
 
@@ -419,23 +415,21 @@ The platform should provide a contextual information layer where users receive i
 
 Visitors are only one side of the problem.
 
-Event organizers need operational visibility over the entire venue.
+Event organizers need operational visibility over the venue and a structured way to manage dynamic information.
 
 ---
 
-## 4.1 Lack of Real-Time Crowd Visibility
+# 4.1 Event & Venue Management
 
-Organizers may need to know:
+The admin portal currently supports CRUD management for:
 
-* Where crowds are forming
-* Which gates are overloaded
-* Which areas are empty
-* Where crowd movement is slowing
-* Where bottlenecks are developing
+- Events
+- Venues
+- Zones
+- Locations
+- Facilities
 
-### EventFlow AI
-
-The organizer dashboard should provide a live event map containing available crowd intelligence.
+This creates the operational hierarchy used throughout the platform.
 
 ---
 
@@ -443,910 +437,672 @@ The organizer dashboard should provide a live event map containing available cro
 
 During an incident, organizers need to know:
 
-* What happened
-* Where it happened
-* How serious it is
-* Which team is responsible
-* Whether someone has responded
-* Whether the incident has been resolved
+- What happened
+- Where it happened
+- How serious it is
+- Current status
+- Whether it has been resolved
 
-### EventFlow AI
+### Current implementation
 
-The admin system should provide:
+The incident module provides:
 
-* Incident creation
-* Incident location
-* Severity classification
-* Assignment
-* Status tracking
-* Responder coordination
-* Resolution tracking
+- Incident creation
+- Location association
+- Severity classification
+- Status tracking
+- Resolution tracking
 
 ---
 
-# 4.3 Resource Allocation
-
-Organizers have limited:
-
-* Security personnel
-* Medical teams
-* Volunteers
-* Cleaning staff
-* Transportation resources
-
-### Problem
-
-Resources may be concentrated in one area while another area experiences higher demand.
-
-### EventFlow AI
-
-The platform can provide data-driven recommendations for resource deployment.
-
----
-
-# 4.4 Facility Monitoring
+# 4.3 Facility Monitoring
 
 Organizers need visibility into:
 
-* Washrooms
-* Food zones
-* Water stations
-* Parking
-* Medical centers
-* Entrances
-* Exits
-* Transport points
+- Gates
+- Washrooms
+- Food zones
+- Water stations
+- Parking
+- Medical centers
+- Entrances
+- Exits
+- Help desks
+- Other facilities
 
-The admin portal should provide operational status and reports.
+### Current implementation
 
----
-
-# 4.5 Event Analytics
-
-After an event, organizers need to understand:
-
-* Visitor volumes
-* Peak periods
-* Queue performance
-* Crowd movement
-* Facility usage
-* Incident frequency
-* Transportation demand
-* Visitor feedback
-
-EventFlow AI should retain appropriate event analytics for post-event analysis.
+Facilities are modeled under event locations and can be created, updated, and inspected through the admin portal.
 
 ---
 
-# 5. Product Vision
+# 4.4 Announcements
 
-EventFlow AI aims to become a **real-time operating and navigation layer for mega events**.
+Admins can create and manage event announcements and make only active information visible to attendees.
+
+This allows organizers to quickly communicate event changes without hard-coding information into the attendee website.
+
+---
+
+# 4.5 Admin Dashboard
+
+The dashboard is backed by real PostgreSQL data.
+
+Current metrics include:
+
+- Total events
+- Live events
+- Upcoming events
+- Venues
+- Zones
+- Locations
+- Facilities
+- Active incidents
+- Critical incidents
+- Active announcements
+- Urgent announcements
+- Recent incidents
+
+The dashboard endpoint is protected by the ADMIN role.
+
+---
+
+# 5. Consumer Behavior Layer
+
+The academic objective of this project is not only event management.
+
+A core requirement is to study:
+
+> **Consumer decision-making and strategies to attract customers of leading brands.**
+
+Rahat Setu therefore includes a dedicated Consumer Behavior module.
+
+---
+
+# 5.1 User Preferences
+
+Current user-preference fields include:
+
+- Price sensitivity
+- Crowd preference
+- Walking preference
+- Accessibility requirements
+- Brand preference
+- Food preferences
+
+These preferences can eventually contribute to personalized recommendations.
+
+---
+
+# 5.2 Brand Management
+
+Admins can create and manage brands associated with the event ecosystem.
+
+Brand information includes:
+
+- Name
+- Category
+- Description
+- Logo
+- Active status
+
+---
+
+# 5.3 Promotional Offers
+
+Offers connect brands with particular events.
+
+Offer fields include:
+
+- Brand
+- Event
+- Title
+- Description
+- Discount text
+- Price
+- Active status
+- Optional start/end period
+
+The attendee website can retrieve active event offers.
+
+---
+
+# 5.4 Consumer Interaction Tracking
+
+Authenticated consumers can generate interaction records.
+
+Supported interaction types include:
+
+```text
+VIEW
+CLICK
+SELECT
+SAVE
+REDEEM
+```
+
+Supported choice factors include:
+
+```text
+PRICE
+DISCOUNT
+DISTANCE
+CROWD
+QUEUE
+BRAND_FAMILIARITY
+CONVENIENCE
+OTHER
+```
+
+Example:
+
+```text
+User: Attendee
+Event: Rahat Setu
+Brand: Nike
+Offer: 20% off event merchandise
+Action: SELECT
+Choice Factor: DISCOUNT
+Rating: 5
+```
+
+This connects the application directly to Consumer Behavior analysis.
+
+---
+
+# 5.5 Consumer Insights
+
+The admin portal includes a Consumer Insights view.
+
+Current analytics include:
+
+- Total interactions
+- Action breakdown
+- Decision-factor breakdown
+- Top choice factor
+- Top brands
+- Top offers
+- Event-wise filtering
+
+This allows the project to analyze which attraction strategies appear most influential.
+
+---
+
+# 6. Product Vision
+
+Rahat Setu aims to become a **real-time operating, intelligence, and decision-support layer for mega events**.
 
 The platform has two interconnected products:
 
 ### User Platform
 
-**Discover → Navigate → Experience → Stay Safe → Return**
+**Discover → Decide → Navigate → Experience → Stay Safe**
 
 ### Organizer Platform
 
-**Monitor → Predict → Coordinate → Respond → Analyze**
+**Manage → Monitor → Coordinate → Analyze**
 
 ---
 
-# 6. Product Structure
+# 7. Product Structure
 
 ```text
-                         EVENTFLOW AI
+                         RAHAT SETU
+                      (EVENTFLOW AI)
                               |
-              +---------------+---------------+
-              |                               |
-       USER PLATFORM                    ADMIN PLATFORM
-       App + Website                    Web Dashboard
-              |                               |
-      +-------+-------+               +-------+-------+
-      |       |       |               |       |       |
-    Map     AI      Safety          Crowd  Incident Resource
-            Guide                  Monitor Management Planning
-      |       |       |               |       |       |
-      +-------+-------+               +-------+-------+
-              |                               |
-              +---------------+---------------+
-                              |
+               +--------------+--------------+
+               |                             |
+        USER / CONSUMER                ADMIN / ORGANIZER
+            WEBSITE                       PORTAL
+               |                             |
+       +-------+-------+             +-------+-------+
+       |       |       |             |       |       |
+     Events  Crowd  Facilities    Events  Incidents Analytics
+       |       |       |             |       |       |
+       +-------+-------+             +-------+-------+
+               |                             |
+               +-------------+---------------+
+                             |
                      EVENT INTELLIGENCE
-                              |
-        +---------------------+----------------------+
-        |          |           |         |           |
-      Crowd      Queues     Facilities  Events    Incidents
-        |          |           |         |           |
-        +----------+-----------+---------+-----------+
-                              |
+                             |
+       +---------------------+----------------------+
+       |          |           |          |          |
+     Crowd    Facilities   Incidents   Offers   Preferences
+       |          |           |          |          |
+       +----------+-----------+----------+----------+
+                             |
                        DATA / AI LAYER
-```
-
-# 7. PRD — Product Requirements Document
-
-## 7.1 Product Name
-
-**EventFlow AI**
-
-Working tagline:
-
-> **Navigate the Event. Experience More. Stay Safer.**
-
-Alternative positioning:
-
-> **The Intelligence Layer for Mega Events**
-
----
-
-# 8. Product Goals
-
-## Primary Goals
-
-1. Improve visitor navigation.
-2. Reduce time spent in queues.
-3. Improve access to essential facilities.
-4. Improve emergency response coordination.
-5. Help groups stay connected.
-6. Provide multilingual assistance.
-7. Provide personalized event recommendations.
-8. Give organizers real-time operational visibility.
-9. Enable data-driven crowd and resource management.
-10. Generate post-event analytics.
-
----
-
-# 9. Target Users
-
-## User Portal
-
-### Persona 1 — Family Visitor
-
-Needs:
-
-* Safe routes
-* Less crowded areas
-* Medical facilities
-* Washrooms
-* Group tracking
-* Accessibility
-* Family-friendly recommendations
-
-### Persona 2 — Friend Group
-
-Needs:
-
-* Shared location
-* Group coordination
-* Meeting points
-* Event recommendations
-* Queue information
-
-### Persona 3 — Solo Visitor
-
-Needs:
-
-* Navigation
-* Safety information
-* AI guide
-* Event discovery
-* Transportation
-
-### Persona 4 — Elderly/Accessibility User
-
-Needs:
-
-* Accessible routes
-* Seating
-* Medical facilities
-* Washrooms
-* Low-crowd routes
-* Shorter walking distances
-
----
-
-# 10. Organizer Users
-
-### Super Admin
-
-Full system access.
-
-### Event Admin
-
-Manages one or more events.
-
-### Security Team
-
-Handles security incidents and crowd situations.
-
-### Medical Team
-
-Handles medical emergencies.
-
-### Facility Manager
-
-Manages:
-
-* Washrooms
-* Water
-* Food
-* Charging
-* Seating
-* Other facilities
-
-### Volunteer
-
-Receives assigned tasks and helps visitors.
-
----
-
-# 11. USER APP / WEBSITE
-
-## 11.1 Authentication
-
-Users can:
-
-* Register
-* Login
-* Continue with supported authentication providers
-* Create a temporary event profile
-
-Optional anonymous/guest access should be supported for basic event information where possible.
-
----
-
-# 11.2 Home Screen
-
-The home screen should display:
-
-* Current event
-* Current location
-* Event highlights
-* Important alerts
-* Recommended activities
-* Nearby facilities
-* Current crowd information
-* Upcoming events
-
-Example:
-
-```text
-Good Afternoon
-
-You are near Gate B
-
-Crowd: Moderate
-
-Upcoming:
-Rahul Sharma Live — 30 min
-
-Nearby:
-Food       120m
-Washroom   80m
-Medical    250m
-
-Recommended:
-Visit Stage 3 before 5:30 PM
+                             |
+                  PostgreSQL + ML Service
 ```
 
 ---
 
-# 11.3 Interactive Event Map
+# 8. Current Technology Stack
 
-Core functionality.
+## Frontend
 
-The map should display:
+### Attendee Web
 
-* Entrances
-* Exits
-* Roads
-* Walking routes
-* Stages
-* Attractions
-* Food stalls
-* Washrooms
-* Medical facilities
-* Parking
-* Transportation
-* Water
-* Charging
-* Seating
-* Help desks
-* Restricted areas
+- React
+- TypeScript
+- Vite
+- React Router
+- Fetch-based API client
+- Responsive custom CSS
 
-The map should support dynamic status.
+### Admin Portal
 
----
+- React
+- TypeScript
+- Vite
+- React Router
+- REST API integration
 
-# 11.4 Smart Navigation
+### Mobile
 
-Users should be able to enter:
-
-> "Take me to Stage 3."
-
-The system should consider:
-
-* Distance
-* Crowd density
-* Closed routes
-* Accessibility
-* Safety information
-* Estimated travel time
-
-Possible route types:
-
-* Fastest
-* Least crowded
-* Accessible
-* Facility-friendly
-* Group-friendly
+- Flutter workspace exists under `apps/mobile`
+- Mobile development is maintained separately
+- The currently integrated attendee MVP is the web application
 
 ---
 
-# 11.5 Queue Intelligence
+## Backend
 
-Display:
+- Node.js
+- Express
+- TypeScript
+- REST APIs
+- JWT
+- bcrypt
+- Zod validation
+
+---
+
+## Database
+
+- PostgreSQL 17
+- Prisma ORM
+- Docker / Docker Compose
+
+Local development database:
 
 ```text
-Gate A
-Estimated wait: 18 min
-Crowd: High
-
-Gate B
-Estimated wait: 6 min
-Crowd: Moderate
-
-Recommended alternative:
-Gate B
-```
-
-The exact methodology for queue estimation will depend on available data.
-
----
-
-# 11.6 Facility Discovery
-
-Users can search:
-
-```text
-Find:
-[ Washroom ]
-[ Food ]
-[ Water ]
-[ Medical ]
-[ Charging ]
-[ ATM ]
-[ Seating ]
-[ Help Desk ]
-```
-
-Filters may include:
-
-* Distance
-* Crowd level
-* Accessibility
-* Availability
-* Open/closed status
-
----
-
-# 11.7 AI Tour Guide
-
-Users can ask natural-language questions.
-
-Examples:
-
-> "What can I do here in the next two hours?"
-
-> "I'm with my parents. Plan a route for us."
-
-> "Where can I get food without waiting too long?"
-
-> "What is happening near me?"
-
-> "Translate this announcement into Hindi."
-
-The AI should use event-specific verified information as its primary knowledge source.
-
----
-
-# 11.8 Multilingual Assistant
-
-Supported languages should initially be configurable by event.
-
-Potential initial languages:
-
-* English
-* Hindi
-* Regional/local language
-
-Architecture should allow additional languages later.
-
----
-
-# 11.9 Group Mode
-
-Users can create a temporary group.
-
-Features:
-
-* Invite members
-* Share location
-* View members
-* Set meeting point
-* Navigate to member
-* Leave group
-
-Privacy controls:
-
-* Location sharing must be opt-in.
-* Users can stop sharing.
-* Location sharing should preferably expire after the event or selected duration.
-
----
-
-# 11.10 Emergency Assistance
-
-Emergency button:
-
-```text
-        EMERGENCY
-
-[ Medical Emergency ]
-
-[ Security ]
-
-[ Lost Person ]
-
-[ Other ]
-```
-
-When activated, the system can capture:
-
-* User identity where appropriate
-* Approximate/current location
-* Event ID
-* Incident category
-* Optional description
-
-The report is routed to authorized event personnel.
-
----
-
-# 11.11 Lost & Found
-
-Users can:
-
-* Report lost item
-* Report found item
-* Report missing group member
-* Find official lost-and-found center
-* Receive status updates
-
----
-
-# 11.12 Parking
-
-Users can:
-
-* Save parking location
-* Save parking zone
-* Save gate number
-* Navigate back to vehicle
-* Find transport options
-
----
-
-# 11.13 Notifications
-
-Notifications may include:
-
-* Event reminders
-* Schedule changes
-* Route closures
-* Crowd alerts
-* Safety announcements
-* Emergency notifications
-* Group notifications
-* Transportation updates
-
-Notifications should be configurable to prevent excessive alerts.
-
----
-
-# 12. ADMIN / ORGANIZER PORTAL
-
-## 12.1 Admin Dashboard
-
-Main dashboard:
-
-```text
-EVENTFLOW COMMAND CENTER
-
-Visitors: 124,820
-
-Current Crowd:
-████████░░ High
-
-Active Incidents: 7
-
-Medical: 2
-Security: 3
-Facility: 2
-
-Most Congested:
-Gate A
-Zone 4
-Food Court
-
-Available Medical Teams: 6
-Available Security Teams: 18
+localhost:5433
 ```
 
 ---
 
-# 12.2 Live Event Map
+## AI / ML
 
-The administrator should see:
+### Current
 
-* Visitor density
-* Crowd movement
-* Entrances
-* Exits
-* Facility status
-* Incidents
-* Security teams
-* Medical teams
-* Volunteers
-* Closed areas
+- External FastAPI crowd ML service
+- HistGradientBoostingRegressor prototype
+- One-hour pedestrian-flow forecast
+- Backend feature adapter
+- Model-version / model-scope reporting
+
+### Planned
+
+- Queue prediction
+- Personalized recommendations
+- Event-specific production crowd models
+- AI event assistant
+- Route recommendations
 
 ---
 
-# 12.3 Event Management
-
-Admins can create and configure events.
-
-Event fields:
+# 9. Current Monorepo Structure
 
 ```text
-Event Name
-Description
-Start Date
-End Date
+Consumer-Behavior-PBL/
+│
+├── apps/
+│   ├── web/                       # Attendee website
+│   ├── admin/                     # Admin portal
+│   └── mobile/                    # Flutter mobile workspace
+│
+├── server/
+│   ├── prisma/
+│   │   ├── migrations/
+│   │   └── schema.prisma
+│   │
+│   └── src/
+│       ├── config/
+│       ├── middleware/
+│       ├── generated/
+│       ├── modules/
+│       │   ├── auth/
+│       │   ├── event/
+│       │   ├── venue/
+│       │   ├── zone/
+│       │   ├── location/
+│       │   ├── facility/
+│       │   ├── preferences/
+│       │   ├── crowd/
+│       │   ├── incident/
+│       │   ├── announcement/
+│       │   ├── dashboard/
+│       │   ├── brand/
+│       │   ├── offer/
+│       │   ├── interaction/
+│       │   └── consumer-insights/
+│       │
+│       ├── app.ts
+│       └── server.ts
+│
+├── docker-compose.yml
+├── package.json
+├── package-lock.json
+├── README.md
+└── CONTRIBUTING.md
+```
+
+---
+
+# 10. Current Database — High-Level Entities
+
+```text
+User
+UserPreference
+
+Event
 Venue
-Event Type
-Expected Visitors
-Opening Hours
-Emergency Contacts
-Supported Languages
+Zone
+Location
+Facility
+
+Incident
+Announcement
+
+Brand
+Offer
+ConsumerInteraction
+```
+
+Important enums include:
+
+```text
+UserRole
+EventType
+EventStatus
+LocationType
+FacilityStatus
+
+IncidentType
+IncidentSeverity
+IncidentStatus
+
+AnnouncementPriority
+
+InteractionType
+ChoiceFactor
 ```
 
 ---
 
-# 12.4 Venue Management
+# 11. Authentication
 
-Admins can configure:
+Authentication is implemented across the platform.
 
-* Gates
-* Zones
-* Roads
-* Buildings
-* Stages
-* Facilities
-* Parking
-* Medical centers
-* Help desks
-* Restricted areas
+Users can:
 
----
+- Register
+- Login
+- Access protected routes
+- Retrieve their current user profile
+- Sign out from frontend clients
 
-# 12.5 Facility Management
-
-Admins can create and update facilities.
-
-Example:
+The backend currently supports:
 
 ```text
-Facility:
-Washroom #17
+USER
+ADMIN
+```
 
-Location:
-Zone B
+roles and role-based authorization.
 
-Status:
-OPEN
+Core endpoints:
 
-Estimated Crowd:
-LOW
-
-Accessibility:
-YES
+```text
+POST /api/v1/auth/register
+POST /api/v1/auth/login
+GET  /api/v1/auth/me
 ```
 
 ---
 
-# 12.6 Incident Management
+# 12. USER WEBSITE
 
-Incident lifecycle:
+## 12.1 Event Discovery
+
+The attendee website currently provides:
+
+- Live/upcoming event listing
+- Event search
+- Event status
+- Event type
+- Date and start time
+- Navigation to event detail
+
+---
+
+## 12.2 Event Details
+
+The event page currently includes:
+
+- Event information
+- Event status
+- Event date/time
+- Crowd section
+- Announcements
+- Venues
+- Zones
+- Locations
+- Facilities
+- Facility status
+- Offers
+
+The attendee UI is intentionally information-first and minimal.
+
+---
+
+## 12.3 Crowd Forecast
+
+The attendee page can request a one-hour forecast for an event location.
+
+The frontend sends event-state information to the backend rather than directly sending raw ML features.
+
+Current request context includes:
 
 ```text
-REPORTED
-    ↓
-ACKNOWLEDGED
-    ↓
-ASSIGNED
-    ↓
-RESPONDER EN ROUTE
-    ↓
-ON SITE
-    ↓
-RESOLVED
-```
-
-Incident categories:
-
-* Medical
-* Security
-* Lost person
-* Fire
-* Facility
-* Crowd
-* Transportation
-* Other
-
----
-
-# 12.7 Team Management
-
-Admins can manage:
-
-* Security
-* Medical staff
-* Volunteers
-* Cleaning teams
-* Transportation staff
-
-Each team can have:
-
-* Name
-* Role
-* Current status
-* Location where available
-* Assigned incidents
-* Availability
-
----
-
-# 12.8 Real-Time Alerts
-
-The system should detect or receive information about:
-
-* High crowd density
-* Queue growth
-* Route closure
-* Emergency
-* Facility overload
-* Weather-related disruption
-* Transportation congestion
-
-Admins can broadcast verified alerts to users.
-
----
-
-# 12.9 Content Management
-
-Admins can manage:
-
-* Announcements
-* Event schedules
-* FAQs
-* Safety information
-* Maps
-* Attractions
-* Food vendors
-* Facility information
-* Emergency information
-
----
-
-# 12.10 Analytics Dashboard
-
-Post-event analytics should include:
-
-### Visitors
-
-* Total visitors
-* Peak visitor periods
-* Entry/exit patterns
-
-### Crowd
-
-* Peak crowd zones
-* Bottlenecks
-* Average density
-* Movement patterns
-
-### Queues
-
-* Average waiting time
-* Maximum waiting time
-* Queue trends
-
-### Facilities
-
-* Most-used facilities
-* Facility complaints
-* Availability
-
-### Incidents
-
-* Number of incidents
-* Categories
-* Response times
-* Resolution times
-
-### Transportation
-
-* Parking utilization
-* Shuttle usage
-* Pickup congestion
-
----
-
-# 13. AI FEATURES
-
-AI should not be used simply as a chatbot.
-
-The AI layer should perform useful event intelligence tasks.
-
-## 13.1 AI Event Assistant
-
-Answers questions using:
-
-* Event data
-* Venue data
-* Current event status
-* User preferences
-* Available facilities
-
----
-
-## 13.2 Personalized Recommendations
-
-Potential inputs:
-
-```text
-User location
-Time available
-Age group
-Group type
-Interests
-Accessibility requirements
-Current crowd conditions
-Event schedule
-```
-
-Output:
-
-```text
-Recommended activity
-Recommended route
-Estimated duration
-Expected crowd
-Nearby facilities
-```
-
----
-
-# 13.3 Crowd Prediction
-
-Potential future functionality:
-
-```text
+Location
+Timestamp
+Temperature
+Weather condition
+Incident context
 Current crowd
-       +
-Event schedule
-       +
-Historical patterns
-       +
-Entry/exit data
-       ↓
-Crowd Forecast
+Movement ratio
+Historical lag values
 ```
 
-Example:
+The backend converts these into the model contract and calls the external ML service.
 
-> "Zone B is expected to become highly crowded within the next 20 minutes."
-
-Such predictions should be presented as estimates and validated against actual event data.
-
----
-
-# 13.4 Queue Prediction
-
-Potential inputs:
-
-* Current queue
-* Entry/exit rate
-* Historical queue patterns
-* Facility capacity
-* Event schedule
-
-Output:
-
-> Estimated wait: 12–18 minutes
-
----
-
-# 13.5 AI Route Recommendation
-
-Instead of simply finding the shortest route:
+The response includes:
 
 ```text
-Shortest Route
-       +
-Crowd
-       +
-Closures
-       +
-Accessibility
-       +
-User Preferences
-       ↓
-Personalized Route
+Predicted pedestrian count
+Unit
+Forecast horizon
+Model version
+Model scope
+```
+
+### Important
+
+The current crowd model is a **prototype** trained for a different pedestrian-flow setting.
+
+It demonstrates the system architecture and prediction pipeline.
+
+It is not claimed to be production-ready live crowd intelligence for Rahat Setu.
+
+---
+
+## 12.4 Announcements
+
+The attendee website displays active announcements including:
+
+- Priority
+- Title
+- Message
+
+---
+
+## 12.5 Facilities
+
+The attendee event page displays:
+
+- Venue
+- Zone
+- Location
+- Facility
+- Facility status
+
+---
+
+## 12.6 Offers
+
+Active event offers can be displayed to attendees.
+
+The website can show:
+
+- Brand
+- Offer title
+- Discount/promotion
+- Price
+
+---
+
+# 13. ADMIN / ORGANIZER PORTAL
+
+The admin portal currently includes:
+
+```text
+Dashboard
+Events
+Venues
+Zones
+Locations
+Facilities
+Incidents
+Announcements
+Brands
+Offers
+Consumer Insights
 ```
 
 ---
 
-# 14. DATA SOURCES
+# 13.1 Event Management
 
-EventFlow AI can eventually consume multiple data sources.
+Admins can create, inspect, update, and delete events.
 
-## Possible sources
+---
 
-### Organizer Data
+# 13.2 Venue Management
 
-* Event schedule
-* Gate status
-* Facility status
-* Incident reports
-* Staff reports
+Admins can configure event venues.
 
-### Sensors
+---
 
-* Occupancy sensors
-* Entry counters
-* IoT devices
+# 13.3 Zone Management
 
-### Computer Vision
+Venues can be divided into operational zones.
 
-Potentially derive:
+---
 
-* Crowd density
-* Movement direction
-* Queue estimation
+# 13.4 Location Management
 
-Any camera-based functionality should be designed with appropriate privacy, security, consent, retention, and legal requirements.
+Zones contain meaningful event locations such as:
 
-### User Reports
+- Gates
+- Stages
+- Help areas
+- Medical locations
+- Facility points
 
-Visitors can report:
+---
 
-* Crowding
-* Closed routes
-* Facility issues
-* Emergencies
-* Lost items
+# 13.5 Facility Management
 
-### External Data
+Facilities can be attached to event locations and assigned operational status.
 
-Potential integrations may include:
+---
 
-* Weather
-* Public transportation
-* Maps
-* Event ticketing systems
+# 13.6 Incident Management
+
+Admins can view event incidents and update status/severity.
+
+---
+
+# 13.7 Announcement Management
+
+Admins can:
+
+- Create announcements
+- Edit announcements
+- Toggle active state
+- Delete announcements
+- Set priority
+
+---
+
+# 13.8 Brand Management
+
+Admins can manage brands used in Consumer Behavior experiments and event promotions.
+
+---
+
+# 13.9 Offer Management
+
+Admins can associate promotional offers with events and brands.
+
+---
+
+# 13.10 Consumer Insights
+
+The Consumer Insights dashboard summarizes stored consumer-interaction data.
+
+---
+
+# 14. Crowd Prediction Architecture
+
+```text
+Current Event State
+       +
+Weather Context
+       +
+Incident Context
+       +
+Historical Crowd Lags
+       ↓
+Backend Adapter
+       ↓
+ML Feature Contract
+       ↓
+Crowd Prediction API
+       ↓
+1-Hour Forecast
+```
+
+This architecture deliberately separates:
+
+- frontend event concepts
+- backend integration logic
+- ML-specific feature representation
+
+That makes it easier to replace the prototype ML service later without rewriting the attendee frontend.
 
 ---
 
@@ -1354,263 +1110,133 @@ Potential integrations may include:
 
 Not every data source should be treated equally.
 
-EventFlow should maintain a confidence level for dynamic information.
+Rahat Setu should maintain a clear distinction between:
 
-Example:
+### Live Mode
+
+Actual organizer, sensor, external, or validated user data.
+
+### Simulated Mode
+
+Controlled data used for demonstrations and prototype testing.
+
+### Manual Mode
+
+Organizer-managed operational state.
+
+### Predicted Mode
+
+Model-generated estimates.
+
+For example:
 
 ```text
-Gate B
+Gate A
 
-Queue Estimate:
-8–12 minutes
+Predicted pedestrian flow:
+473 pedestrians/hour
 
-Confidence:
-HIGH
+Forecast horizon:
+1 hour
 
-Last Updated:
-45 seconds ago
+Source:
+ML prototype
+
+Model:
+würzburg-prototype-v1
 ```
 
-This prevents the platform from presenting estimated information as guaranteed fact.
+The platform should never present estimated information as guaranteed fact.
 
 ---
 
-# 16. Suggested System Architecture
+# 16. MVP
 
-```text
-                         CLIENTS
-              +-------------------------+
-              |                         |
-       User App/Web              Admin Portal
-              |                         |
-              +------------+------------+
-                           |
-                       API Gateway
-                           |
-        +------------------+------------------+
-        |                  |                  |
-   User Service       Event Service      Incident Service
-        |                  |                  |
-        +------------------+------------------+
-                           |
-                    Real-Time Layer
-                           |
-                    WebSocket / SSE
-                           |
-        +------------------+------------------+
-        |                  |                  |
-     Postgres          Cache            Event Data
-        |                  |                  |
-        +------------------+------------------+
-                           |
-                     AI / Intelligence
-                           |
-        +------------------+------------------+
-        |                  |                  |
-    AI Assistant     Recommendation      Prediction
-                         Engine             Engine
-```
+The MVP should not attempt to implement every long-term feature at once.
 
----
-
-# 17. Suggested Technology Stack
-
-## Frontend
+## Implemented Core
 
 ### User
 
-* Next.js / React
-* TypeScript
-* Tailwind CSS
-* Map integration
-* PWA support
+- Authentication
+- Event selection
+- Event search
+- Event details
+- Active announcements
+- Venue/facility discovery
+- Brand offers
+- Prototype crowd forecast
 
 ### Admin
 
-* Next.js / React
-* TypeScript
-* Tailwind CSS
-* Real-time dashboard
-* Map visualization
+- Admin authentication
+- Event management
+- Venue management
+- Zone management
+- Location management
+- Facility management
+- Incident management
+- Announcements
+- Real dashboard analytics
+- Brand management
+- Offer management
+- Consumer Insights
+
+### Consumer Behavior
+
+- User preferences
+- Brand data
+- Promotional offers
+- Consumer interaction tracking
+- Choice-factor tracking
+- Consumer analytics
 
 ---
 
-## Backend
+# 17. Next Development Phases
 
-Possible architecture:
+## Phase 2 — Event Intelligence
 
-* Node.js
-* NestJS
-* REST APIs
-* WebSockets
-* PostgreSQL
-* Redis
+Planned:
 
----
-
-## AI
-
-Potential components:
-
-* LLM
-* RAG
-* Vector database
-* Recommendation engine
-* Crowd prediction models
-* Queue prediction models
-
-AI architecture should be modular so that simple deterministic logic can be used where AI is unnecessary.
+- Queue ML integration
+- Live/simulated/manual state layer
+- More dynamic crowd state
+- Real-time notifications
+- Event map
+- Smarter facility recommendations
 
 ---
 
-## Infrastructure
+## Phase 3 — Recommendations & AI
 
-Potential stack:
+Planned:
 
-```text
-Frontend
-Next.js
-
-Backend
-NestJS
-
-Database
-PostgreSQL
-
-Cache
-Redis
-
-Realtime
-WebSockets
-
-AI
-LLM + RAG
-
-Maps
-Map provider
-
-Storage
-Object Storage
-
-Deployment
-Cloud infrastructure
-```
+- Personalized recommendations
+- AI event assistant
+- AI tour guide
+- Smart navigation
+- User-specific attraction strategies
+- More advanced consumer segmentation
 
 ---
 
-# 18. Database — High-Level Entities
-
-Potential entities:
-
-```text
-User
-Event
-Venue
-Zone
-Gate
-Facility
-FoodVendor
-Stage
-Attraction
-Route
-Incident
-Emergency
-Team
-Staff
-Volunteer
-Group
-GroupMember
-Notification
-Announcement
-Queue
-CrowdSnapshot
-ParkingZone
-TransportPoint
-LostFoundReport
-UserReport
-EventSchedule
-```
-
----
-
-# 19. MVP
-
-The first version should NOT attempt to implement every feature at once.
-
-## Phase 1 — Core Platform
-
-### User
-
-* Authentication
-* Event selection
-* Interactive map
-* Facility discovery
-* Event schedule
-* Basic navigation
-* AI event assistant
-* Multilingual information
-* Emergency reporting
-* Group creation
-* Parking location
-
-### Admin
-
-* Admin authentication
-* Event creation
-* Venue configuration
-* Map management
-* Facility management
-* Incident management
-* Announcements
-* Basic analytics
-
----
-
-# 20. Phase 2 — Real-Time Intelligence
-
-Add:
-
-* Real-time crowd information
-* Queue estimates
-* Dynamic route recommendations
-* Live facility status
-* Live incidents
-* Real-time notifications
-* Team tracking
-* Transportation information
-
----
-
-# 21. Phase 3 — AI & Prediction
-
-Add:
-
-* Crowd prediction
-* Queue prediction
-* Personalized itineraries
-* AI tour guide
-* Demand forecasting
-* Resource recommendations
-* Intelligent incident prioritization
-
----
-
-# 22. Phase 4 — Advanced Infrastructure
+## Phase 4 — Advanced Infrastructure
 
 Potential future features:
 
-* IoT integration
-* Occupancy sensors
-* Computer vision
-* Advanced crowd analytics
-* Digital twin of venue
-* Offline-first navigation
-* Edge processing
-* Advanced emergency coordination
+- IoT integration
+- Occupancy sensors
+- Computer vision
+- Advanced crowd analytics
+- Digital twin of venue
+- Offline-first navigation
+- Edge processing
+- Advanced emergency coordination
 
 ---
 
-# 23. Important MVP Principle
+# 18. Important MVP Principle
 
 The product should not claim to provide real-time information unless the underlying event has a reliable data source.
 
@@ -1620,40 +1246,38 @@ For example:
 
 requires an actual mechanism for measuring or estimating occupancy.
 
-Therefore, the MVP should support **multiple data modes**:
+Similarly:
 
-### Live Mode
+> "Live crowd: 12,000"
 
-Actual sensor/organizer/user data.
+must only be shown if supported by a real data source.
 
-### Simulated Mode
+Prototype predictions should be labeled as predictions.
 
-Used for demonstrations and hackathons.
-
-### Manual Mode
-
-Organizer manually updates facility/crowd status.
-
-This makes the architecture realistic while still allowing a strong prototype.
+This keeps the architecture realistic while still allowing a strong demonstrable prototype.
 
 ---
 
-# 24. Key Product Differentiator
+# 19. Key Product Differentiator
 
-EventFlow AI should not position itself as another map.
+Rahat Setu should not position itself as another map.
 
 The fundamental difference is:
 
 ```text
-Google Maps
+Traditional Map
 
 Where is the destination?
         ↓
-Route
+      Route
+```
 
-EventFlow AI
+versus:
 
-Where should I go?
+```text
+Rahat Setu
+
+What should I do or choose right now?
         ↓
 Considering:
 Crowd
@@ -1661,67 +1285,293 @@ Queue
 Safety
 Time
 Facilities
-Group
+Distance
+Offers
 Preferences
-Events
+Brand familiarity
+Convenience
         ↓
-Personalized decision
+Context-Aware Decision
 ```
 
-The product therefore acts as an **event intelligence layer**, rather than simply a digital map.
+The product therefore acts as an **event intelligence and consumer decision-support layer**, rather than simply a digital map.
 
 ---
 
-# 25. Success Metrics
+# 20. Success Metrics
 
 ## Visitor Metrics
 
-* Navigation success rate
-* Average time saved
-* Queue waiting-time reduction
-* Facility discovery rate
-* AI assistant usage
-* Group coordination usage
-* Emergency response time
-* User satisfaction
+Potential metrics include:
+
+- Navigation success rate
+- Time saved
+- Queue waiting-time reduction
+- Facility discovery rate
+- Crowd-forecast usage
+- Offer engagement
+- User satisfaction
 
 ## Organizer Metrics
 
-* Incident response time
-* Average queue duration
-* Crowd bottleneck duration
-* Facility downtime
-* Resource utilization
-* Alert acknowledgement time
-* Visitor complaints
-* Event operational efficiency
+Potential metrics include:
+
+- Incident response time
+- Facility downtime
+- Announcement engagement
+- Crowd bottleneck duration
+- Event operational efficiency
+
+## Consumer Behavior Metrics
+
+Current / planned analysis includes:
+
+- Total interactions
+- Views
+- Clicks
+- Selections
+- Saves
+- Redemptions
+- Top decision factors
+- Top brands
+- Top offers
+- Rating trends
 
 ---
 
-# 26. Privacy & Safety Requirements
+# 21. Privacy & Safety Requirements
 
-Because the platform may handle location and emergency information, privacy must be a core product requirement.
+Because the platform may handle location and emergency information, privacy must remain a core product requirement.
 
 The system should implement:
 
-* Explicit location permission
-* Opt-in group location sharing
-* Temporary location sharing
-* Data minimization
-* Role-based admin access
-* Encryption
-* Audit logs
-* Secure authentication
-* Appropriate data retention policies
-* Emergency access controls
+- Explicit location permission
+- Opt-in group location sharing
+- Temporary location sharing
+- Data minimization
+- Role-based admin access
+- Secure authentication
+- Appropriate data-retention policies
+- Emergency access controls
 
 The system should avoid exposing individual visitor locations publicly.
 
+Emergency functionality should supplement, not replace, official emergency services.
+
 ---
 
-# 27. Final Product Concept
+# 22. Development Setup
 
-EventFlow AI can ultimately become a platform with three layers:
+## Prerequisites
+
+Install:
+
+- Git
+- Node.js 24+
+- npm
+- Docker Desktop
+
+---
+
+## Clone
+
+```bash
+git clone https://github.com/EventFlow-AI/Consumer-Behavior-PBL.git
+cd Consumer-Behavior-PBL
+```
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+---
+
+## Environment
+
+Create:
+
+```text
+server/.env
+```
+
+from:
+
+```text
+server/.env.example
+```
+
+Windows PowerShell:
+
+```powershell
+Copy-Item server\.env.example server\.env
+```
+
+Core local values include:
+
+```env
+DATABASE_URL="postgresql://eventflow:eventflow_dev@localhost:5433/eventflow"
+JWT_SECRET="replace_with_a_long_random_secret"
+
+ML_API_BASE_URL="http://your-ml-service"
+ML_API_KEY="replace_with_your_local_api_key"
+ML_CROWD_ENDPOINT="/internal/v1/predictions/crowd/next-hour"
+```
+
+Never commit real secrets.
+
+---
+
+## Start PostgreSQL
+
+```bash
+docker compose up -d
+```
+
+The local database is exposed on:
+
+```text
+localhost:5433
+```
+
+---
+
+## Prisma
+
+```bash
+cd server
+npx prisma generate
+npx prisma migrate dev
+```
+
+Optional:
+
+```bash
+npx prisma studio
+```
+
+---
+
+## Run Backend
+
+```bash
+cd server
+npm run dev
+```
+
+Backend:
+
+```text
+http://localhost:5000
+```
+
+Health check:
+
+```text
+GET /api/v1/health
+```
+
+---
+
+## Run Attendee Web
+
+From project root:
+
+```bash
+npm run dev --workspace apps/web
+```
+
+---
+
+## Run Admin Portal
+
+From project root:
+
+```bash
+npm run dev --workspace apps/admin
+```
+
+---
+
+# 23. Build Commands
+
+Backend:
+
+```bash
+npm run build --workspace server
+```
+
+Attendee web:
+
+```bash
+npm run build --workspace apps/web
+```
+
+Admin:
+
+```bash
+npm run build --workspace apps/admin
+```
+
+---
+
+# 24. Current Development Status
+
+## Completed
+
+- Monorepo/workspace setup
+- PostgreSQL Docker setup
+- Prisma ORM and migrations
+- Authentication
+- Role-based authorization
+- User preferences
+- Event CRUD
+- Venue CRUD
+- Zone CRUD
+- Location CRUD
+- Facility CRUD
+- Incident management
+- Announcement management
+- Real admin dashboard
+- Brand management
+- Offer management
+- Consumer interaction tracking
+- Consumer Insights analytics
+- Attendee web authentication
+- Event discovery
+- Event search
+- Event detail experience
+- Facility information
+- Active announcements
+- Active offers
+- Crowd backend integration
+- One-hour prototype crowd forecast
+
+## Integrated Prototype
+
+- Würzburg-based crowd prediction model
+
+## Pending
+
+- Queue ML
+- Recommendation engine
+- Live/simulated event-state layer
+- Smart navigation
+- Interactive map
+- Real-time notifications
+- AI event assistant
+- Multilingual support
+- Group/family mode
+- Transportation intelligence
+- Production event-specific crowd model
+- Advanced post-event analytics
+
+---
+
+# 25. Final Product Concept
+
+Rahat Setu can ultimately be viewed as three layers:
 
 ### Layer 1 — EXPERIENCE
 
@@ -1729,8 +1579,8 @@ EventFlow AI can ultimately become a platform with three layers:
 Discover
 Navigate
 Explore
-Translate
-Plan
+Decide
+Stay Safe
 ```
 
 ### Layer 2 — INTELLIGENCE
@@ -1738,88 +1588,63 @@ Plan
 ```text
 Crowd Intelligence
 Queue Intelligence
+Consumer Insights
 Recommendations
 Predictions
-AI Assistant
+AI Assistance
 ```
 
 ### Layer 3 — OPERATIONS
 
 ```text
+Manage
 Monitor
 Respond
 Coordinate
-Manage
 Analyze
 ```
 
 Together:
 
 ```text
-                  EVENTFLOW AI
-                       |
-        +--------------+--------------+
-        |                             |
-   VISITOR APP                  ORGANIZER PORTAL
-        |                             |
-   Experience                    Operations
-        |                             |
-        +-------------+---------------+
-                      |
-              EVENT INTELLIGENCE
-                      |
-       +--------------+--------------+
-       |              |              |
-     PEOPLE          PLACE          TIME
-       |              |              |
-     Groups        Facilities     Schedule
-     Safety        Crowd          Events
-     Needs         Routes         Queues
-                      |
-                      ↓
-                 AI ENGINE
-                      |
-                      ↓
-             REAL-TIME DECISIONS
+                     RAHAT SETU
+                   (EVENTFLOW AI)
+                         |
+              +----------+----------+
+              |                     |
+        VISITOR WEBSITE       ORGANIZER PORTAL
+              |                     |
+          Experience             Operations
+              |                     |
+              +----------+----------+
+                         |
+                 EVENT INTELLIGENCE
+                         |
+           +-------------+-------------+
+           |             |             |
+         PEOPLE         PLACE          TIME
+           |             |             |
+      Preferences    Facilities      Schedule
+      Decisions      Crowd           Events
+      Offers         Incidents       Forecasts
+           |             |             |
+           +-------------+-------------+
+                         |
+                         ↓
+              DATA + AI + ANALYTICS
+                         |
+                         ↓
+              CONTEXT-AWARE DECISIONS
 ```
 
-## Core proposition
+---
 
-> **EventFlow AI transforms a static event map into a real-time intelligent layer that helps visitors make better decisions and gives organizers operational visibility over a complex physical event.**
+# 26. Core Proposition
+
+> **Rahat Setu transforms static event information into an intelligent decision-support layer that helps visitors make better choices and gives organizers operational and consumer-behavior visibility over complex physical events.**
 
 ---
 
-# 28. Initial Feature Prioritization
+# 27. One-Sentence Pitch
 
-| Feature                     | User | Admin | Priority |
-| --------------------------- | ---- | ----- | -------- |
-| Interactive Event Map       | ✓    | ✓     | P0       |
-| Facility Discovery          | ✓    | ✓     | P0       |
-| Event Schedule              | ✓    | ✓     | P0       |
-| Smart Navigation            | ✓    | ✓     | P0       |
-| Emergency Reporting         | ✓    | ✓     | P0       |
-| Incident Management         |      | ✓     | P0       |
-| AI Event Assistant          | ✓    |       | P0       |
-| Multilingual Support        | ✓    | ✓     | P1       |
-| Group/Family Mode           | ✓    |       | P1       |
-| Parking Assistance          | ✓    | ✓     | P1       |
-| Queue Intelligence          | ✓    | ✓     | P1       |
-| Crowd Monitoring            |      | ✓     | P1       |
-| Real-Time Notifications     | ✓    | ✓     | P1       |
-| AI Tour Guide               | ✓    |       | P1       |
-| Live Facility Status        | ✓    | ✓     | P1       |
-| Transportation Intelligence | ✓    | ✓     | P1       |
-| Crowd Prediction            | ✓    | ✓     | P2       |
-| Queue Prediction            | ✓    | ✓     | P2       |
-| Resource Optimization       |      | ✓     | P2       |
-| Computer Vision             |      | ✓     | P3       |
-| IoT Integration             |      | ✓     | P3       |
-| Digital Twin                | ✓    | ✓     | P3       |
-
----
-
-# 29. One-Sentence Pitch
-
-> **EventFlow AI is a real-time intelligence platform for mega events that helps visitors navigate crowds, queues, facilities, emergencies, transportation and activities while giving organizers a live operational view of the entire event.**
-
-test for push
+> **Rahat Setu is a large-scale event intelligence platform that helps visitors make better decisions about crowds, facilities, alerts, offers, and event experiences while giving organizers operational and consumer-behavior insights.**
