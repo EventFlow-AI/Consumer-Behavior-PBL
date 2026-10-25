@@ -816,3 +816,38 @@
   color: #6b7280;
   font-size: 13px;
 }
+/* Consumer Insights */
+
+.insights-breakdown-grid {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(150px, 1fr)
+  );
+  gap: 14px;
+}
+
+.insight-breakdown-card {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 18px;
+}
+
+.insight-breakdown-card span {
+  display: block;
+  margin-bottom: 8px;
+  color: #6b7280;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.insight-breakdown-card strong {
+  color: #111827;
+  font-size: 24px;
+}
+
+.insight-text-value {
+  font-size: 22px !important;
+  line-height: 1.2 !important;
+}
