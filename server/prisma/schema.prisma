@@ -82,6 +82,11 @@ enum IncidentStatus {
   CLOSED
 }
 
+enum AnnouncementPriority {
+  INFO
+  IMPORTANT
+  URGENT
+}
 model User {
   id           String   @id @default(uuid())
   name         String
@@ -124,6 +129,7 @@ model Event {
 
   venues Venue[]
   incidents Incident[]
+  announcements Announcement[]
 }
 
 model Venue {
@@ -204,4 +210,22 @@ model Incident {
   @@index([locationId])
   @@index([status])
   @@index([severity])
+}
+model Announcement {
+  id        String               @id @default(uuid())
+  eventId   String
+  title     String
+  message   String
+  priority  AnnouncementPriority @default(INFO)
+  isActive  Boolean              @default(true)
+  startsAt  DateTime?
+  endsAt    DateTime?
+  createdAt DateTime             @default(now())
+  updatedAt DateTime             @updatedAt
+
+  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@index([eventId])
+  @@index([priority])
+  @@index([isActive])
 }

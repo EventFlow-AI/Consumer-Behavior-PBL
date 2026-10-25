@@ -10,6 +10,7 @@ import locationRoutes from "./modules/location/location.routes.js";
 import facilityRoutes from "./modules/facility/facility.routes.js";
 import preferencesRoutes from "./modules/preferences/preferences.routes.js";
 import incidentRoutes from "./modules/incident/incident.routes.js";
+import announcementRoutes from "./modules/announcement/announcement.routes.js";
 
 dotenv.config();
 
@@ -33,4 +34,5 @@ app.use("/api/v1", locationRoutes);
 app.use("/api/v1", facilityRoutes);
 app.use("/api/v1/preferences", preferencesRoutes);
 app.use("/api/v1", incidentRoutes);
+app.use("/api/v1", announcementRoutes);
 export default app;
