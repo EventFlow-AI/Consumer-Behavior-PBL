@@ -1,21 +1,38 @@
-# Contributing to EventFlow AI
+# Contributing to Rahat Setu (EventFlow AI)
 
-Thank you for contributing to EventFlow AI.
+Thank you for contributing to Rahat Setu / EventFlow AI.
 
-This document explains how to set up the project locally, run the applications, work with the database, and contribute changes safely.
+This guide explains how to set up the repository locally, work with the database, run the attendee web app and admin portal, make schema changes safely, use Git correctly, and avoid interfering with other contributors' modules.
 
 ---
 
-## 1. Prerequisites
+## 1. Repository
 
-Before starting, make sure you have:
+Official repository:
+
+```text
+https://github.com/EventFlow-AI/Consumer-Behavior-PBL.git
+```
+
+Clone it:
+
+```bash
+git clone https://github.com/EventFlow-AI/Consumer-Behavior-PBL.git
+cd Consumer-Behavior-PBL
+```
+
+---
+
+## 2. Prerequisites
+
+Install:
 
 - Git
 - Node.js 24+
 - npm
 - Docker Desktop
 
-Check your versions:
+Check versions:
 
 ```bash
 node --version
@@ -25,132 +42,103 @@ docker --version
 docker compose version
 ```
 
-Make sure Docker Desktop is running before starting the database.
-
----
-
-## 2. Clone the Repository
-
-Clone the repository:
-
-```bash
-git clone https://github.com/khushimittal20/Consumer-Behavior-PBL.git
-```
-
-Move into the project:
-
-```bash
-cd Consumer-Behavior-PBL
-```
+Make sure Docker Desktop is running before starting PostgreSQL.
 
 ---
 
 ## 3. Install Dependencies
 
-This project uses npm workspaces.
+This repository uses npm workspaces.
 
-Install all dependencies from the **project root**:
+From the project root:
 
 ```bash
 npm install
 ```
 
-Do not run separate dependency installations inside `apps/web`, `apps/admin`, or `server` unless specifically required.
+Do not create separate lock files inside individual workspaces.
+
+The root `package-lock.json` should remain the shared lock file.
 
 ---
 
-## 4. Project Structure
+## 4. Current Project Structure
 
 ```text
 Consumer-Behavior-PBL/
 │
 ├── apps/
-│   ├── web/                         # User App / Website
-│   └── admin/                       # Admin Portal
+│   ├── web/                 # Attendee-facing React + TypeScript web app
+│   ├── admin/               # Organizer/admin React + TypeScript portal
+│   └── mobile/              # Flutter workspace
 │
 ├── server/
 │   ├── prisma/
-│   │   ├── migrations/              # Database migrations
-│   │   └── schema.prisma            # Prisma database schema
+│   │   ├── migrations/
+│   │   └── schema.prisma
 │   │
-│   ├── src/
-│   │   ├── config/
-│   │   │   └── prisma.ts
-│   │   │
-│   │   ├── middleware/
-│   │   │   ├── auth.middleware.ts
-│   │   │   └── role.middleware.ts
-│   │   │
-│   │   ├── modules/
-│   │   │   └── auth/
-│   │   │       ├── auth.controller.ts
-│   │   │       ├── auth.routes.ts
-│   │   │       ├── auth.service.ts
-│   │   │       └── auth.validation.ts
-│   │   │
-│   │   ├── app.ts
-│   │   └── server.ts
-│   │
-│   ├── .env.example
-│   ├── package.json
-│   ├── prisma7.config.ts
-│   └── tsconfig.json
+│   └── src/
+│       ├── config/
+│       ├── middleware/
+│       ├── generated/
+│       ├── modules/
+│       │   ├── auth/
+│       │   ├── event/
+│       │   ├── venue/
+│       │   ├── zone/
+│       │   ├── location/
+│       │   ├── facility/
+│       │   ├── preferences/
+│       │   ├── crowd/
+│       │   ├── incident/
+│       │   ├── announcement/
+│       │   ├── dashboard/
+│       │   ├── brand/
+│       │   ├── offer/
+│       │   ├── interaction/
+│       │   └── consumer-insights/
+│       │
+│       ├── app.ts
+│       └── server.ts
 │
-├── docker-compose.yml               # Local PostgreSQL database
-├── package.json                     # Root workspace configuration
+├── docker-compose.yml
+├── package.json
 ├── package-lock.json
 ├── README.md
 └── CONTRIBUTING.md
 ```
 
-The structure will grow as more EventFlow modules are implemented.
+Do not make structural changes to shared folders without coordinating with the team.
 
 ---
 
 ## 5. Environment Variables
 
-A template is provided at:
-
-```text
-server/.env.example
-```
-
-Move into the server directory:
-
-```bash
-cd server
-```
-
-Create your local `.env` file from the template.
-
-### macOS / Linux
-
-```bash
-cp .env.example .env
-```
+Create the backend environment file from the template.
 
 ### Windows PowerShell
 
 ```powershell
-Copy-Item .env.example .env
+Copy-Item server\.env.example server\.env
 ```
 
-The template contains:
+### macOS / Linux
+
+```bash
+cp server/.env.example server/.env
+```
+
+Core development variables include:
 
 ```env
 DATABASE_URL="postgresql://eventflow:eventflow_dev@localhost:5433/eventflow"
 JWT_SECRET="replace_with_a_long_random_secret"
+ML_API_BASE_URL="http://your-ml-service"
+ML_API_KEY="replace_with_your_local_api_key"
+ML_CROWD_ENDPOINT="/internal/v1/predictions/crowd/next-hour"
 ```
 
-Replace the `JWT_SECRET` value in your local `.env` with a long random development secret.
-
-Example:
-
-```env
-JWT_SECRET="replace_this_with_your_own_long_random_development_secret"
-```
-
-### Important
+### Never commit secrets
 
 Never commit:
 
@@ -159,144 +147,106 @@ Never commit:
 .env.*
 ```
 
-The only environment file that should be committed is:
+except the intentionally committed template:
 
 ```text
 .env.example
 ```
 
-Do not place real production secrets inside `.env.example`.
+Never put real API keys, passwords, access tokens, or production credentials in:
+
+- Git commits
+- Pull Request descriptions
+- Screenshots
+- README examples
+- Logs
+- Public issue comments
+
+If a secret is accidentally committed, rotate/revoke it immediately.
 
 ---
 
 ## 6. Start PostgreSQL
 
-The project uses PostgreSQL through Docker.
-
-From the **project root**, run:
+From the repository root:
 
 ```bash
 docker compose up -d
 ```
 
-Check that the database is running:
+Check:
 
 ```bash
 docker ps
 ```
 
-You should see:
+Expected database container:
 
 ```text
 eventflow-postgres
 ```
 
-The EventFlow PostgreSQL database is exposed locally on:
+The local EventFlow database is exposed on:
 
 ```text
 localhost:5433
 ```
 
-The PostgreSQL container internally uses port `5432`.
+Container-internal PostgreSQL port:
 
-### Stop the database
+```text
+5432
+```
+
+Stop containers without deleting the database volume:
 
 ```bash
 docker compose down
 ```
 
-Do not use:
+### Destructive command
+
+Do not run:
 
 ```bash
 docker compose down -v
 ```
 
-unless you intentionally want to delete the local database volume and all local database data.
+unless you intentionally want to delete the local database volume and all local EventFlow data.
 
 ---
 
 ## 7. Prisma Setup
 
-The backend uses Prisma ORM with PostgreSQL.
-
-Move into the server:
+Move into the backend:
 
 ```bash
 cd server
 ```
 
-Generate Prisma Client:
+Generate the Prisma client:
 
 ```bash
 npx prisma generate
 ```
 
-Apply existing database migrations:
+Apply existing migrations:
 
 ```bash
 npx prisma migrate dev
 ```
 
-Inspect the database using Prisma Studio:
+Inspect the database:
 
 ```bash
 npx prisma studio
 ```
 
-Prisma Studio opens a local browser interface where you can inspect database tables and records.
-
 ---
 
-## 8. Database Schema Changes
+## 8. Current Prisma Models
 
-Do not modify the database schema without discussing the change with the team first.
-
-The Prisma schema is located at:
-
-```text
-server/prisma/schema.prisma
-```
-
-If an approved schema change is required:
-
-1. Update `schema.prisma`.
-2. Format the schema.
-3. Validate the schema.
-4. Create a migration.
-5. Test the migration locally.
-6. Regenerate Prisma Client.
-7. Commit both the schema and migration.
-
-Commands:
-
-```bash
-npx prisma format
-npx prisma validate
-npx prisma migrate dev --name your_migration_name
-npx prisma generate
-```
-
-Example:
-
-```bash
-npx prisma migrate dev --name add_crowd_status
-```
-
-Migration files under:
-
-```text
-server/prisma/migrations/
-```
-
-must be committed to Git.
-
-Do not manually modify an existing migration after it has already been merged and used by other contributors unless the team explicitly agrees.
-
----
-
-## 9. Current Database Models
-
-The current database contains the initial core models:
+The current database includes:
 
 ```text
 User
@@ -306,118 +256,229 @@ Venue
 Zone
 Location
 Facility
+Incident
+Announcement
+Brand
+Offer
+ConsumerInteraction
 ```
 
-More models will be added as the project progresses, including:
+Do not assume roadmap models exist until they appear in `server/prisma/schema.prisma`.
+
+---
+
+## 9. Making Database Schema Changes
+
+The Prisma schema is located at:
 
 ```text
-CrowdStatus
-QueueStatus
-Incident
-Brand
-Campaign
-Offer
-Recommendation
-UserInteraction
-Feedback
-AnalyticsEvent
-Notification
+server/prisma/schema.prisma
 ```
+
+Before changing the schema:
+
+1. Check whether another contributor is modifying it.
+2. Discuss the change with the team.
+3. Pull the latest `main`.
+4. Make the smallest required schema change.
+5. Create a new migration.
+6. Regenerate Prisma Client.
+7. Build and test the backend.
+8. Commit both the schema and migration.
+
+Recommended commands:
+
+```bash
+cd server
+npx prisma format
+npx prisma validate
+npx prisma migrate dev --name your_migration_name
+npx prisma generate
+npm run build
+```
+
+Example:
+
+```bash
+npx prisma migrate dev --name add_event_feedback
+```
+
+Migration files under:
+
+```text
+server/prisma/migrations/
+```
+
+must be committed.
+
+Do not manually rewrite a migration that has already been merged and used by other contributors unless the team explicitly agrees.
 
 ---
 
 ## 10. Running the Backend
-
-Open a terminal:
 
 ```bash
 cd server
 npm run dev
 ```
 
-The backend runs on:
+Backend:
 
 ```text
 http://localhost:5000
 ```
 
-Health-check endpoint:
+Health endpoint:
 
 ```text
-GET http://localhost:5000/api/v1/health
+GET /api/v1/health
 ```
 
-Expected response:
+Build:
 
-```json
-{
-  "success": true,
-  "message": "EventFlow AI API is running"
-}
+```bash
+npm run build
 ```
 
 ---
 
-## 11. Current Authentication APIs
+## 11. Running the Attendee Web App
 
-Authentication is already implemented.
+From the repository root:
 
-### Register
+```bash
+npm run dev --workspace apps/web
+```
+
+or:
+
+```bash
+cd apps/web
+npm run dev
+```
+
+Build:
+
+```bash
+npm run build --workspace apps/web
+```
+
+The attendee web app currently includes:
+
+- Register
+- Login
+- Protected routes
+- Event discovery
+- Event search
+- Event details
+- Active announcements
+- Venue/facility information
+- Active promotional offers
+- Prototype one-hour crowd forecasting
+
+Use the URL printed by Vite.
+
+---
+
+## 12. Running the Admin Portal
+
+From the repository root:
+
+```bash
+npm run dev --workspace apps/admin
+```
+
+or:
+
+```bash
+cd apps/admin
+npm run dev
+```
+
+Build:
+
+```bash
+npm run build --workspace apps/admin
+```
+
+The admin portal currently includes:
+
+- Dashboard
+- Events
+- Venues
+- Zones
+- Locations
+- Facilities
+- Incidents
+- Announcements
+- Brands
+- Offers
+- Consumer Insights
+
+Use the URL printed by Vite.
+
+---
+
+## 13. Running the Full Local Stack
+
+You will normally need:
+
+### PostgreSQL
+
+```bash
+docker compose up -d
+```
+
+### Terminal 1 — Backend
+
+```bash
+cd server
+npm run dev
+```
+
+### Terminal 2 — Attendee Web
+
+```bash
+npm run dev --workspace apps/web
+```
+
+### Terminal 3 — Admin Portal
+
+```bash
+npm run dev --workspace apps/admin
+```
+
+Architecture:
+
+```text
+Attendee Web ─┐
+              │
+              ▼
+          Express API
+              │
+              ▼
+            Prisma
+              │
+              ▼
+          PostgreSQL
+              ▲
+              │
+Admin Portal ─┘
+```
+
+The crowd module additionally calls the configured external ML service.
+
+---
+
+## 14. Authentication
+
+Authentication endpoints:
 
 ```text
 POST /api/v1/auth/register
-```
-
-Example request body:
-
-```json
-{
-  "name": "Test User",
-  "email": "test@example.com",
-  "password": "Test1234"
-}
-```
-
-### Login
-
-```text
 POST /api/v1/auth/login
+GET  /api/v1/auth/me
 ```
-
-Example request body:
-
-```json
-{
-  "email": "test@example.com",
-  "password": "Test1234"
-}
-```
-
-Successful login returns a JWT token.
-
-### Current User
-
-```text
-GET /api/v1/auth/me
-```
-
-This endpoint requires:
-
-```text
-Authorization: Bearer <JWT_TOKEN>
-```
-
-Authentication currently includes:
-
-- User registration
-- Email uniqueness checking
-- Password hashing using bcrypt
-- Login
-- JWT generation
-- JWT verification
-- Protected routes
-- Current-user retrieval
-- Role-based authorization middleware
 
 Current roles:
 
@@ -426,120 +487,230 @@ USER
 ADMIN
 ```
 
-Do not expose JWT secrets or user passwords in commits, screenshots, logs, or documentation.
+The backend uses:
+
+- bcrypt password hashing
+- JWT authentication
+- authentication middleware
+- role-based authorization middleware
+
+Do not hard-code admin permissions into the frontend.
+
+Backend authorization remains the source of truth.
 
 ---
 
-## 12. Running the User App
+## 15. Existing Backend Modules
 
-Open another terminal from the project root:
-
-```bash
-cd apps/web
-npm run dev
-```
-
-Vite will print the local development URL.
-
-It will normally use:
+Current backend modules include:
 
 ```text
-http://localhost:5173
+auth
+event
+venue
+zone
+location
+facility
+preferences
+crowd
+incident
+announcement
+dashboard
+brand
+offer
+interaction
+consumer-insights
 ```
 
-if that port is available.
+Before creating a new module, check whether similar functionality already exists.
 
-The User App is the visitor-facing EventFlow AI interface.
+Avoid duplicate implementations.
 
 ---
 
-## 13. Running the Admin Portal
+## 16. Event Hierarchy
 
-Open another terminal:
-
-```bash
-cd apps/admin
-npm run dev
-```
-
-Vite will print the local development URL.
-
-If another Vite application is already using port `5173`, Vite may automatically use another available port such as:
+The event-management hierarchy is:
 
 ```text
-http://localhost:5174
+Event
+  └── Venue
+       └── Zone
+            └── Location
+                 └── Facility
 ```
 
-Always use the URL printed in your terminal.
+Be careful with deletes.
 
-The Admin Portal is the organizer/admin-facing interface.
+The Prisma schema contains cascading relations in the hierarchy, so deleting a parent record may delete child records.
+
+Do not use real/shared test data for destructive experiments unless you know the consequences.
 
 ---
 
-## 14. Running Everything
+## 17. Crowd ML Integration
 
-For full local development, you will normally have Docker and three development terminals running.
-
-### Database
-
-From the project root:
-
-```bash
-docker compose up -d
-```
-
-### Terminal 1 — User App
-
-```bash
-cd apps/web
-npm run dev
-```
-
-### Terminal 2 — Admin Portal
-
-```bash
-cd apps/admin
-npm run dev
-```
-
-### Terminal 3 — Backend
-
-```bash
-cd server
-npm run dev
-```
-
-Current architecture:
+The current crowd pipeline is:
 
 ```text
-User App
-    │
-    ▼
-Backend API
-    │
-    ▼
-Prisma
-    │
-    ▼
-PostgreSQL
-    ▲
-    │
-Admin Portal
+Attendee Web / API Client
+        ↓
+Express Crowd Route
+        ↓
+Crowd Controller
+        ↓
+Crowd Service
+        ↓
+Crowd Adapter
+        ↓
+External ML API
+        ↓
+Normalized Prediction Result
 ```
 
-Both frontends use the same backend.
+Frontend code must call the Express backend contract.
+
+Do **not** call the ML service directly from the attendee frontend.
+
+The backend receives event-style fields such as:
+
+```text
+locationId
+locationName
+timestamp
+temperature
+weatherCondition
+hasIncident
+currentCrowd
+towardsRatio
+lag1h
+lag2h
+lag3h
+lag24h
+lag168h
+```
+
+The backend adapter converts these into the ML model feature contract.
+
+### Prototype limitation
+
+The currently integrated crowd model is the Würzburg prototype.
+
+Do not describe it as:
+
+- live production crowd intelligence
+- trained specifically on Rahat Setu data
+- production-ready event forecasting
+
+Preferred wording:
+
+```text
+prototype one-hour crowd forecast
+```
 
 ---
 
-## 15. Git Workflow
+## 18. Consumer Behavior Module
 
-Do not directly develop on `main`.
+The Consumer Behavior portion of the project is a core academic requirement.
 
-Before starting new work:
+Current models:
+
+```text
+UserPreference
+Brand
+Offer
+ConsumerInteraction
+```
+
+Current interaction types:
+
+```text
+VIEW
+CLICK
+SELECT
+SAVE
+REDEEM
+```
+
+Current choice factors:
+
+```text
+PRICE
+DISCOUNT
+DISTANCE
+CROWD
+QUEUE
+BRAND_FAMILIARITY
+CONVENIENCE
+OTHER
+```
+
+When extending this module, preserve the project's ability to study:
+
+- consumer decision-making
+- customer-attraction strategies
+- brand engagement
+- offer engagement
+- influence of price/discount
+- influence of crowd/queue
+- influence of convenience and familiarity
+
+Do not turn the project into only an event-operations system.
+
+---
+
+## 19. Consumer Insights
+
+The admin Consumer Insights page currently displays:
+
+- Total interactions
+- Interaction-action breakdown
+- Decision-factor breakdown
+- Top choice factor
+- Top brands
+- Top offers
+- Event-wise filtering
+
+When adding analytics, derive them from real stored interaction data rather than hard-coded values.
+
+---
+
+## 20. Admin Dashboard
+
+The current dashboard uses real backend/database aggregation.
+
+Do not replace real counts with mock dashboard numbers.
+
+Current metrics include:
+
+```text
+Events
+Live events
+Upcoming events
+Venues
+Zones
+Locations
+Facilities
+Active incidents
+Critical incidents
+Active announcements
+Urgent announcements
+Recent incidents
+```
+
+---
+
+## 21. Git Workflow
+
+Do not develop directly on `main`.
+
+Before starting work:
 
 ```bash
 git checkout main
 git pull origin main
+git status
 ```
 
 Create a feature branch:
@@ -550,43 +721,19 @@ git checkout -b feature/your-feature-name
 
 Examples:
 
-```bash
-git checkout -b feature/event-core
-git checkout -b feature/event-map
-git checkout -b feature/admin-dashboard
-git checkout -b feature/crowd-system
-git checkout -b feature/recommendation-engine
-```
-
-Work only on your branch.
-
-After making changes:
-
-```bash
-git status
-git add .
-git commit -m "feat: add event map"
-```
-
-Push the branch:
-
-```bash
-git push -u origin feature/event-map
-```
-
-Then create a Pull Request:
-
 ```text
-your-feature-branch → main
+feature/event-core
+feature/incidents
+feature/announcements
+feature/admin-dashboard
+feature/consumer-behavior
+feature/web-app
+feature/queue-ml-integration
 ```
-
-The Pull Request should be reviewed before merging.
 
 ---
 
-## 16. Branch Naming
-
-Use descriptive branch names.
+## 22. Branch Naming
 
 ### Features
 
@@ -594,24 +741,10 @@ Use descriptive branch names.
 feature/<feature-name>
 ```
 
-Examples:
-
-```text
-feature/event-core
-feature/smart-navigation
-feature/admin-dashboard
-```
-
-### Bug Fixes
+### Fixes
 
 ```text
 fix/<bug-name>
-```
-
-Example:
-
-```text
-fix/map-loading
 ```
 
 ### Documentation
@@ -620,29 +753,17 @@ fix/map-loading
 docs/<change>
 ```
 
-Example:
-
-```text
-docs/update-setup-guide
-```
-
-### Refactoring
+### Refactors
 
 ```text
 refactor/<change>
 ```
 
-Example:
-
-```text
-refactor/api-structure
-```
+Use descriptive names.
 
 ---
 
-## 17. Commit Messages
-
-Use clear and descriptive commit messages.
+## 23. Commit Messages
 
 Recommended format:
 
@@ -653,282 +774,259 @@ type: short description
 Examples:
 
 ```text
-feat: add event listing API
-feat: add admin dashboard
-feat: add authentication
-fix: resolve map loading issue
-refactor: organize API routes
-docs: update contributor guide
-chore: update dependencies
+feat: add incident management system
+feat: add announcement management system
+feat: add real-time admin dashboard
+feat: add consumer behavior and insights module
+feat: build attendee web app
+fix: correct crowd prediction request contract
+docs: update project documentation
+refactor: simplify attendee event layout
 ```
 
 Keep commits focused on one logical change.
 
 ---
 
-## 18. Important Git Rules
+## 24. Safe Staging
 
-### Do not push directly to `main`
-
-All development should happen in a separate branch and be merged through a Pull Request.
-
-### Never commit `node_modules`
-
-The repository ignores:
-
-```text
-node_modules/
-```
-
-### Never commit environment secrets
-
-Do not commit:
-
-```text
-.env
-.env.*
-```
-
-Only `.env.example` should be committed.
-
-### Do not commit generated Prisma Client files
-
-Generated Prisma Client files are ignored and can be recreated using:
-
-```bash
-npx prisma generate
-```
-
-### Do not commit build output
-
-The following are ignored:
-
-```text
-dist/
-build/
-.vite/
-```
-
-### Do not make structural changes without discussion
-
-Discuss changes before modifying:
-
-- Project architecture
-- Folder structure
-- Database schema
-- API contracts
-- Authentication system
-- Technology stack
-- Shared types
-- Core dependencies
-
----
-
-## 19. Before Opening a Pull Request
-
-Check the current Git state:
+Before committing:
 
 ```bash
 git status
 ```
 
-Make sure no unintended files are present.
+Do not blindly stage generated or unrelated files.
 
-### Backend changes
+Prefer staging intended paths explicitly.
 
-Run:
+Example:
+
+```bash
+git add apps/web/src
+git add apps/web/package.json
+git add package-lock.json
+```
+
+Then verify again:
+
+```bash
+git status
+```
+
+Only commit after confirming the staged file list.
+
+---
+
+## 25. Do Not Commit Generated / Local Files
+
+Never commit:
+
+```text
+node_modules/
+dist/
+build/
+.vite/
+.env
+.env.*
+```
+
+Generated local tool/cache directories should also stay out of commits.
+
+In particular, do not intentionally stage local Flutter/Gradle cache files such as:
+
+```text
+.gradle/
+.dart_tool/
+```
+
+If generated cache files appear as modified, restore or ignore them instead of committing them with unrelated work.
+
+---
+
+## 26. Mobile App Caution
+
+The `apps/mobile` Flutter workspace is maintained separately.
+
+Do not modify mobile files as part of backend/admin/web work unless the task explicitly requires mobile changes.
+
+Before committing, check that no generated Flutter or Gradle files were accidentally included.
+
+---
+
+## 27. Pull Requests
+
+After committing:
+
+```bash
+git push -u origin feature/your-feature-name
+```
+
+Open a Pull Request:
+
+```text
+feature/your-feature-name → main
+```
+
+PRs should include:
+
+- Summary
+- Backend changes
+- Frontend changes
+- Database changes if applicable
+- API changes
+- Testing performed
+- Known limitations
+- Screenshots for meaningful UI changes when useful
+
+Do not claim functionality that is not implemented.
+
+---
+
+## 28. Before Opening a Pull Request
+
+### Backend
+
+```bash
+npm run build --workspace server
+```
+
+If the schema changed:
 
 ```bash
 cd server
-npm run build
-```
-
-The TypeScript build must pass.
-
-If the change affects the database:
-
-```bash
 npx prisma validate
+npx prisma generate
 ```
 
-If applicable, verify that migrations work correctly.
-
-### Frontend changes
-
-Run the relevant application:
+### Attendee Web
 
 ```bash
-npm run dev
+npm run build --workspace apps/web
 ```
 
-If applicable, also run:
+### Admin Portal
 
 ```bash
-npm run build
+npm run build --workspace apps/admin
 ```
 
-Verify the feature locally before creating the Pull Request.
+Also test the relevant feature manually.
 
 ---
 
-## 20. Current Development Status
+## 29. Current Implemented Features
 
-### Completed
+Current implemented/integrated work includes:
 
-The project currently contains:
-
-- React + TypeScript User App scaffold
-- React + TypeScript Admin Portal scaffold
-- Express + TypeScript backend
-- npm workspace / monorepo setup
-- Backend health-check API
-- PostgreSQL database through Docker
-- Prisma ORM
-- Initial database schema
-- Prisma migrations
-- Prisma Client integration
-- User registration
-- User login
-- bcrypt password hashing
-- JWT authentication
-- Protected `/auth/me` endpoint
-- Authentication middleware
-- Role-based authorization middleware
-- Git branch + Pull Request workflow
-- PRD and technical planning documentation
-
-### Next Development Phases
-
-The major upcoming modules are:
-
-1. Event management
-2. Venue management
-3. Zone management
-4. Location management
-5. Facility management
-6. Admin Portal core UI
-7. User App event experience
-8. Event map
-9. Crowd status system
-10. Queue system
-11. Real-time updates
-12. Smart navigation
-13. Consumer decision-support system
-14. User preference system
-15. Brand management
-16. Campaigns and offers
-17. Recommendation engine
-18. Consumer interaction tracking
-19. Feedback
-20. Consumer and operational analytics
-21. Event Assistant
-22. AI and prediction features
-
-Do not assume an upcoming feature is already implemented unless it exists in the current codebase.
+- Authentication
+- Role-based authorization
+- User preferences
+- Event CRUD
+- Venue CRUD
+- Zone CRUD
+- Location CRUD
+- Facility CRUD
+- Incident management
+- Announcement management
+- Real admin dashboard
+- Brand management
+- Event offers
+- Consumer interaction tracking
+- Consumer Insights
+- Attendee web authentication
+- Event discovery
+- Event details
+- Facility information
+- Active announcements
+- Active offers
+- Crowd ML backend integration
+- Prototype one-hour crowd forecast
 
 ---
 
-## 21. Development Architecture
+## 30. Current Pending Work
 
-EventFlow AI uses one backend shared by both frontends.
+Pending or planned areas include:
 
-```text
-                     ┌────────────────────┐
-                     │      User App      │
-                     │ React + TypeScript │
-                     └─────────┬──────────┘
-                               │
-                               ▼
-                     ┌────────────────────┐
-                     │    Express API     │
-                     │    TypeScript      │
-                     └─────────┬──────────┘
-                               │
-                               ▼
-                     ┌────────────────────┐
-                     │       Prisma       │
-                     └─────────┬──────────┘
-                               │
-                               ▼
-                     ┌────────────────────┐
-                     │     PostgreSQL     │
-                     │      Docker        │
-                     └────────────────────┘
-                               ▲
-                               │
-                     ┌─────────┴──────────┐
-                     │    Admin Portal    │
-                     │ React + TypeScript │
-                     └────────────────────┘
-```
+- Queue ML integration
+- Live/simulated/manual event-state layer
+- Recommendation engine
+- Personalized recommendations
+- Smart navigation
+- Interactive event map
+- Real-time notifications
+- AI event assistant
+- Multilingual assistance
+- Group/family mode
+- Transportation intelligence
+- Production event-specific crowd model
+- Additional mobile integration
+- Advanced analytics
 
-Do not create separate backends for the User App and Admin Portal.
+Do not assume these are implemented until the code exists on the current branch.
 
 ---
 
-## 22. Collaboration Guidelines
+## 31. Team Collaboration Rules
 
-Before starting a major feature:
+Before major changes:
 
-1. Check the README, PRD, technical plan, and existing code.
-2. Discuss the feature with the team.
-3. Decide module ownership.
-4. Pull the latest `main`.
-5. Create a separate feature branch.
-6. Keep the implementation focused.
-7. Test the feature locally.
+1. Pull the latest `main`.
+2. Check existing modules and docs.
+3. Confirm module ownership.
+4. Avoid overlapping changes where possible.
+5. Discuss schema/API contract changes.
+6. Use a feature branch.
+7. Build and test locally.
 8. Open a Pull Request.
 9. Get the change reviewed before merging.
 
-Avoid having multiple contributors modify the same core module simultaneously unless coordinated.
+Coordinate especially before modifying:
 
-For larger changes, update the relevant documentation as well.
-
----
-
-## 23. Suggested Module Ownership
-
-Contributors can work on different modules in parallel.
-
-```text
-Backend
-├── Events
-├── Venues
-├── Zones
-├── Locations
-├── Facilities
-├── Crowd
-├── Queues
-├── Brands
-├── Campaigns
-├── Recommendations
-└── Analytics
-
-Frontend
-├── User App
-│   ├── Event pages
-│   ├── Map
-│   ├── Navigation
-│   ├── Recommendations
-│   └── Offers
-│
-└── Admin Portal
-    ├── Dashboard
-    ├── Event management
-    ├── Venue management
-    ├── Crowd / queue monitoring
-    ├── Incident management
-    └── Analytics
-```
-
-Module ownership should be discussed with the team before development begins.
+- `server/prisma/schema.prisma`
+- authentication
+- shared route structure
+- core API contracts
+- workspace dependencies
+- Docker configuration
+- mobile app files
+- ML integration contracts
 
 ---
 
-## 24. Important Project Rule
+## 32. Important Project Principles
 
-Before making major changes to the repository, database, architecture, API design, or technology stack:
+### Use real data where available
 
-**Discuss it with the team first.**
+Do not replace real backend/database data with fake dashboard values.
 
-The goal is to keep all contributors working with the same architecture instead of creating separate or conflicting implementations.
+### Label prototype data honestly
+
+Prototype crowd predictions must be described as estimates.
+
+### Keep Consumer Behavior visible
+
+Brand attraction, offers, preferences, and decision factors are part of the core project objective.
+
+### Protect secrets
+
+Never commit credentials.
+
+### Keep one shared backend
+
+The attendee app and admin portal must continue to use the shared Express API.
+
+### Avoid destructive commands
+
+Do not destroy database volumes or delete parent data casually.
+
+---
+
+## 33. Final Rule
+
+Before changing the repository architecture, database schema, API contract, authentication system, ML integration contract, or technology stack:
+
+> **Discuss the change with the team first.**
+
+The goal is to keep all contributors working on one coherent Rahat Setu / EventFlow AI platform instead of creating conflicting implementations.
