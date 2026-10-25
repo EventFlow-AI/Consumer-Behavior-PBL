@@ -2,68 +2,576 @@
 
 > **Real-Time Intelligence Platform for Large-Scale Events**
 
-Rahat Setu, developed under the EventFlow AI project, is a large-scale event intelligence platform designed to help visitors make better decisions during dynamic events while giving organizers a unified operational view.
+Rahat Setu is the current implementation of the EventFlow AI vision: a large-scale event intelligence and decision-support platform designed for gatherings such as **Kumbh Mela, IPL matches, concerts, religious gatherings, college fests, exhibitions, conferences, and public festivals**.
 
-The project is being developed as part of a **Consumer Behavior PBL**, with two linked objectives:
+Unlike conventional map applications that primarily answer **"Where is this place?"**, Rahat Setu aims to answer:
 
-1. Support **consumer decision-making** during large events.
-2. Study and implement **strategies used to attract customers**, including brand offers, promotions, preferences, and consumer interaction analytics.
+- **Where should I go right now?**
+- **Which entrance or area is less crowded?**
+- **Which route or facility is more convenient?**
+- **Where is the nearest available medical or help facility?**
+- **What important announcement should I know about?**
+- **Which offer or brand should I choose?**
+- **What factors are influencing my decision?**
+- **What should I visit next?**
+- **How do I get help quickly?**
+- **What is happening around me right now?**
 
-The platform currently consists of:
+The platform currently consists of two major interfaces:
 
-- **Attendee Web App** — event discovery, event information, announcements, facilities, offers, and prototype crowd forecasting.
-- **Admin Portal** — operational event management, incidents, announcements, dashboard analytics, brand/offer management, and consumer insights.
-- **Backend API** — Express + TypeScript REST API shared by both frontends.
-- **PostgreSQL Database** — managed locally through Docker and Prisma ORM.
-- **Crowd ML Integration** — one-hour crowd forecasting through an external prototype ML service.
-- **Mobile App Workspace** — Flutter workspace maintained separately; the current attendee web experience is the primary integrated user-facing interface in this repository.
+1. **User / Consumer Website**
+2. **Organizer / Admin Portal**
 
----
-
-## 1. Problem Statement
-
-Mega events such as pilgrimages, sports matches, concerts, festivals, exhibitions, conferences, and college fests create rapidly changing conditions.
-
-Visitors may need to decide:
-
-- Which event or activity to attend.
-- Which gate or area to use.
-- Where facilities are located.
-- Whether an area is expected to become crowded.
-- Which announcements are currently important.
-- Which brand or promotional offer is most attractive.
-- How price, discounts, distance, crowd, queue, familiarity, and convenience influence their decisions.
-
-Organizers simultaneously need visibility into:
-
-- Events and venue structure.
-- Facilities and operational status.
-- Incidents and emergencies.
-- Announcements.
-- Event activity.
-- Customer-attraction strategies.
-- Consumer interaction patterns.
-
-Rahat Setu combines these concerns into a single event intelligence platform.
+The system combines event information, venue structure, crowd forecasting, facilities, incidents, announcements, consumer preferences, brand offers, and behavioral analytics into a single platform.
 
 ---
 
-## 2. Consumer Behavior Objective
+# 1. Problem Statement
 
-This project is not only an event-management system.
+## 1.1 Background
 
-The Consumer Behavior layer is designed to capture and analyze how attendees make decisions during events.
+Mega events bring together thousands, hundreds of thousands, or even millions of people into a relatively limited geographical area.
 
-The system currently supports:
+Examples include:
 
-- User preferences.
-- Brand management.
-- Event-specific promotional offers.
-- Consumer interaction tracking.
-- Choice-factor tracking.
-- Consumer insights and analytics.
+- Kumbh Mela
+- IPL and cricket matches
+- Large concerts
+- Religious gatherings
+- College festivals
+- Government/public events
+- Trade exhibitions
+- Conferences
+- Theme parks
+- Cultural festivals
 
-Tracked interaction types include:
+At this scale, a conventional static map is insufficient.
+
+A visitor may know where a particular gate, stage, washroom, food stall, parking area, or medical center is located, but that information does not tell them the **current or expected condition** of that location.
+
+For example:
+
+> Gate A may be 200 metres away, but another gate may be less crowded and faster to use.
+
+Similarly:
+
+> A facility may be geographically closer but less convenient because of crowd, queue, accessibility, or operational status.
+
+The physical environment of a mega event is dynamic.
+
+Crowd density, queues, road closures, transportation availability, emergencies, weather, event schedules, facility availability, promotions, and consumer preferences can all affect visitor decisions.
+
+Therefore, visitors need more than navigation.
+
+They need **situational intelligence and decision support**.
+
+---
+
+# 2. Core Problem
+
+The central problem Rahat Setu aims to solve is:
+
+> **How can visitors safely and efficiently navigate massive, dynamic events when crowd conditions, facilities, announcements, emergencies, offers, and event information continuously change?**
+
+At the same time, event organizers face a second problem:
+
+> **How can organizers obtain an operational view of the event and use it to manage facilities, incidents, announcements, brands, offers, and visitor experience?**
+
+The Consumer Behavior layer introduces a third question:
+
+> **How do consumers make choices inside events, and which strategies attract customers most effectively?**
+
+Rahat Setu addresses all three through a connected visitor platform, organizer control system, and consumer-behavior analytics layer.
+
+---
+
+# 3. Visitor-Side Problems
+
+## 3.1 Crowd Congestion
+
+Large events frequently develop bottlenecks around:
+
+- Entrances
+- Exits
+- Security checkpoints
+- Food courts
+- Washrooms
+- Popular attractions
+- Stages
+- Religious sites
+- Parking areas
+- Transportation pickup points
+
+### Problem
+
+A visitor may choose the shortest geographical route without knowing that the route or destination is expected to become crowded.
+
+### Rahat Setu
+
+The platform currently includes a **prototype one-hour crowd forecast** for event locations.
+
+The long-term system is intended to use available event data to:
+
+- Estimate crowd density
+- Identify congested areas
+- Identify bottlenecks
+- Recommend alternative areas/routes
+- Provide crowd-aware decision support
+
+### Current implementation status
+
+The crowd pipeline is integrated end-to-end:
+
+```text
+Attendee Website
+      ↓
+Express Backend
+      ↓
+Crowd Adapter / Service
+      ↓
+External ML API
+      ↓
+Normalized Forecast
+```
+
+The current model is a **Würzburg pedestrian-flow prototype** and is explicitly presented as a prototype rather than production-ready live Rahat Setu intelligence.
+
+---
+
+# 3.2 Queue Management
+
+Queues are one of the biggest sources of wasted time at mega events.
+
+Queues may occur at:
+
+- Entry gates
+- Security checks
+- Food stalls
+- Washrooms
+- Rides
+- Attractions
+- Registration desks
+- Merchandise stores
+- Parking exits
+- Shuttle services
+
+### Problem
+
+Visitors generally have no reliable way of knowing which queue is currently shortest.
+
+### Rahat Setu Vision
+
+Users should eventually be able to see:
+
+- Current/estimated queue length
+- Estimated waiting time
+- Queue status
+- Alternative nearby options
+- Historical/short-term queue trends
+
+### Current implementation status
+
+Queue ML integration is **planned / pending** and is not yet presented as implemented.
+
+---
+
+# 3.3 Medical Emergencies and Incidents
+
+A visitor may:
+
+- Faint
+- Become dehydrated
+- Get injured
+- Experience a medical emergency
+- Require first aid
+- Need urgent assistance
+
+### Problem
+
+In a dense crowd, reporting and coordinating incidents can be difficult.
+
+### Current implementation
+
+Rahat Setu now includes an end-to-end **Incident Management** module.
+
+Incidents support:
+
+- Event association
+- Optional event location
+- Reporting user
+- Incident type
+- Severity
+- Status
+- Title
+- Description
+- Optional coordinates
+- Resolution tracking
+
+Supported incident types currently include:
+
+```text
+MEDICAL
+SECURITY
+FIRE
+CROWD
+LOST_PERSON
+INFRASTRUCTURE
+OTHER
+```
+
+Supported lifecycle states include:
+
+```text
+OPEN
+ACKNOWLEDGED
+IN_PROGRESS
+RESOLVED
+CLOSED
+```
+
+The admin portal allows authorized users to inspect and update incident status and severity.
+
+---
+
+# 3.4 Lost Children, Family Members and Friends
+
+People frequently become separated in large crowds.
+
+This is particularly problematic for:
+
+- Families
+- Children
+- Elderly visitors
+- Groups of friends
+
+### Future direction
+
+The platform may later support:
+
+- Private groups
+- Temporary location sharing
+- Meeting points
+- Group navigation
+- Lost-person reporting
+- Reunion/help centers
+
+Location sharing must remain explicitly opt-in and privacy-conscious.
+
+---
+
+# 3.5 Language Barriers
+
+Large events often attract people from different states, countries, and linguistic backgrounds.
+
+Visitors may struggle to understand:
+
+- Event announcements
+- Directions
+- Safety instructions
+- Menus
+- Signboards
+- Emergency information
+- Local terminology
+
+### Future direction
+
+The platform architecture is intended to support multilingual assistance.
+
+Critical safety instructions should always be based on verified organizer information rather than unrestricted AI-generated content.
+
+---
+
+# 3.6 AI Tour Guide
+
+Visitors may not know:
+
+- What to see
+- What to do next
+- Which attractions are nearby
+- How much time an activity requires
+- What is currently available
+
+### Future direction
+
+An AI tour guide could eventually consider:
+
+- Event schedule
+- Venue layout
+- User location
+- Available time
+- Crowd conditions
+- User interests
+- Accessibility needs
+
+Example:
+
+> "I have two hours and I'm with my parents. What should we visit?"
+
+This is part of the planned recommendation / assistant layer and is not yet treated as a completed MVP feature.
+
+---
+
+# 3.7 Facility Discovery
+
+Visitors often need to locate:
+
+- Washrooms
+- Drinking water
+- Charging stations
+- ATMs
+- Seating areas
+- First-aid stations
+- Information desks
+- Baby-care facilities
+- Lost-and-found centers
+- Accessibility facilities
+
+### Current implementation
+
+The current data model and admin portal support:
+
+```text
+Event
+  └── Venue
+       └── Zone
+            └── Location
+                 └── Facility
+```
+
+The attendee website can display venue, zone, location, facility, and facility-status information for an event.
+
+---
+
+# 3.8 Dynamic Announcements and Closures
+
+Event conditions change during the day.
+
+Admins may need to communicate:
+
+- Gate closures
+- Route changes
+- Safety alerts
+- Schedule changes
+- Facility changes
+- Crowd warnings
+- General information
+
+### Current implementation
+
+Rahat Setu includes an Announcement module with:
+
+```text
+INFO
+IMPORTANT
+URGENT
+```
+
+Announcements support:
+
+- Event association
+- Title
+- Message
+- Priority
+- Active/inactive state
+- Optional start/end time
+
+The attendee website retrieves active announcements for the selected event.
+
+---
+
+# 3.9 Information Overload
+
+Mega events generate large amounts of information:
+
+- Schedules
+- Announcements
+- Maps
+- Venue rules
+- Transportation information
+- Safety instructions
+- Food options
+- Attractions
+- Brand offers
+- Facility information
+
+Visitors may struggle to identify what is relevant to them.
+
+### Rahat Setu
+
+The long-term product direction is a contextual information layer based on:
+
+- Event
+- Location
+- Preferences
+- Crowd
+- Facilities
+- Offers
+- Time
+- Personal priorities
+
+---
+
+# 4. Organizer-Side Problems
+
+Visitors are only one side of the problem.
+
+Event organizers need operational visibility over the venue and a structured way to manage dynamic information.
+
+---
+
+# 4.1 Event & Venue Management
+
+The admin portal currently supports CRUD management for:
+
+- Events
+- Venues
+- Zones
+- Locations
+- Facilities
+
+This creates the operational hierarchy used throughout the platform.
+
+---
+
+# 4.2 Emergency Response Coordination
+
+During an incident, organizers need to know:
+
+- What happened
+- Where it happened
+- How serious it is
+- Current status
+- Whether it has been resolved
+
+### Current implementation
+
+The incident module provides:
+
+- Incident creation
+- Location association
+- Severity classification
+- Status tracking
+- Resolution tracking
+
+---
+
+# 4.3 Facility Monitoring
+
+Organizers need visibility into:
+
+- Gates
+- Washrooms
+- Food zones
+- Water stations
+- Parking
+- Medical centers
+- Entrances
+- Exits
+- Help desks
+- Other facilities
+
+### Current implementation
+
+Facilities are modeled under event locations and can be created, updated, and inspected through the admin portal.
+
+---
+
+# 4.4 Announcements
+
+Admins can create and manage event announcements and make only active information visible to attendees.
+
+This allows organizers to quickly communicate event changes without hard-coding information into the attendee website.
+
+---
+
+# 4.5 Admin Dashboard
+
+The dashboard is backed by real PostgreSQL data.
+
+Current metrics include:
+
+- Total events
+- Live events
+- Upcoming events
+- Venues
+- Zones
+- Locations
+- Facilities
+- Active incidents
+- Critical incidents
+- Active announcements
+- Urgent announcements
+- Recent incidents
+
+The dashboard endpoint is protected by the ADMIN role.
+
+---
+
+# 5. Consumer Behavior Layer
+
+The academic objective of this project is not only event management.
+
+A core requirement is to study:
+
+> **Consumer decision-making and strategies to attract customers of leading brands.**
+
+Rahat Setu therefore includes a dedicated Consumer Behavior module.
+
+---
+
+# 5.1 User Preferences
+
+Current user-preference fields include:
+
+- Price sensitivity
+- Crowd preference
+- Walking preference
+- Accessibility requirements
+- Brand preference
+- Food preferences
+
+These preferences can eventually contribute to personalized recommendations.
+
+---
+
+# 5.2 Brand Management
+
+Admins can create and manage brands associated with the event ecosystem.
+
+Brand information includes:
+
+- Name
+- Category
+- Description
+- Logo
+- Active status
+
+---
+
+# 5.3 Promotional Offers
+
+Offers connect brands with particular events.
+
+Offer fields include:
+
+- Brand
+- Event
+- Title
+- Description
+- Discount text
+- Price
+- Active status
+- Optional start/end period
+
+The attendee website can retrieve active event offers.
+
+---
+
+# 5.4 Consumer Interaction Tracking
+
+Authenticated consumers can generate interaction records.
+
+Supported interaction types include:
 
 ```text
 VIEW
@@ -73,7 +581,7 @@ SAVE
 REDEEM
 ```
 
-Tracked decision factors include:
+Supported choice factors include:
 
 ```text
 PRICE
@@ -86,54 +594,174 @@ CONVENIENCE
 OTHER
 ```
 
-This allows the project to answer questions such as:
+Example:
 
-- Which strategies attract customers most effectively?
-- Which brands receive the most engagement?
-- Which offers generate the most interaction?
-- Is discount more influential than brand familiarity?
-- Do crowd and queue conditions affect consumer decisions?
+```text
+User: Attendee
+Event: Rahat Setu
+Brand: Nike
+Offer: 20% off event merchandise
+Action: SELECT
+Choice Factor: DISCOUNT
+Rating: 5
+```
+
+This connects the application directly to Consumer Behavior analysis.
 
 ---
 
-## 3. Current Product Structure
+# 5.5 Consumer Insights
+
+The admin portal includes a Consumer Insights view.
+
+Current analytics include:
+
+- Total interactions
+- Action breakdown
+- Decision-factor breakdown
+- Top choice factor
+- Top brands
+- Top offers
+- Event-wise filtering
+
+This allows the project to analyze which attraction strategies appear most influential.
+
+---
+
+# 6. Product Vision
+
+Rahat Setu aims to become a **real-time operating, intelligence, and decision-support layer for mega events**.
+
+The platform has two interconnected products:
+
+### User Platform
+
+**Discover → Decide → Navigate → Experience → Stay Safe**
+
+### Organizer Platform
+
+**Manage → Monitor → Coordinate → Analyze**
+
+---
+
+# 7. Product Structure
 
 ```text
                          RAHAT SETU
-                      (EventFlow AI)
+                      (EVENTFLOW AI)
                               |
-            +-----------------+-----------------+
-            |                                   |
-      ATTENDEE WEB                        ADMIN PORTAL
-      React + TS                           React + TS
-            |                                   |
-            +-----------------+-----------------+
-                              |
-                         Express API
-                         TypeScript
-                              |
-             +----------------+----------------+
-             |                                 |
-          Prisma                          Crowd ML API
-             |                           Prototype Model
-             |
-         PostgreSQL
-           Docker
+               +--------------+--------------+
+               |                             |
+        USER / CONSUMER                ADMIN / ORGANIZER
+            WEBSITE                       PORTAL
+               |                             |
+       +-------+-------+             +-------+-------+
+       |       |       |             |       |       |
+     Events  Crowd  Facilities    Events  Incidents Analytics
+       |       |       |             |       |       |
+       +-------+-------+             +-------+-------+
+               |                             |
+               +-------------+---------------+
+                             |
+                     EVENT INTELLIGENCE
+                             |
+       +---------------------+----------------------+
+       |          |           |          |          |
+     Crowd    Facilities   Incidents   Offers   Preferences
+       |          |           |          |          |
+       +----------+-----------+----------+----------+
+                             |
+                       DATA / AI LAYER
+                             |
+                  PostgreSQL + ML Service
 ```
-
-Both frontends use the same backend API and database.
 
 ---
 
-## 4. Monorepo Structure
+# 8. Current Technology Stack
+
+## Frontend
+
+### Attendee Web
+
+- React
+- TypeScript
+- Vite
+- React Router
+- Fetch-based API client
+- Responsive custom CSS
+
+### Admin Portal
+
+- React
+- TypeScript
+- Vite
+- React Router
+- REST API integration
+
+### Mobile
+
+- Flutter workspace exists under `apps/mobile`
+- Mobile development is maintained separately
+- The currently integrated attendee MVP is the web application
+
+---
+
+## Backend
+
+- Node.js
+- Express
+- TypeScript
+- REST APIs
+- JWT
+- bcrypt
+- Zod validation
+
+---
+
+## Database
+
+- PostgreSQL 17
+- Prisma ORM
+- Docker / Docker Compose
+
+Local development database:
+
+```text
+localhost:5433
+```
+
+---
+
+## AI / ML
+
+### Current
+
+- External FastAPI crowd ML service
+- HistGradientBoostingRegressor prototype
+- One-hour pedestrian-flow forecast
+- Backend feature adapter
+- Model-version / model-scope reporting
+
+### Planned
+
+- Queue prediction
+- Personalized recommendations
+- Event-specific production crowd models
+- AI event assistant
+- Route recommendations
+
+---
+
+# 9. Current Monorepo Structure
 
 ```text
 Consumer-Behavior-PBL/
 │
 ├── apps/
-│   ├── web/                 # Attendee-facing React + TypeScript web app
-│   ├── admin/               # Organizer/admin React + TypeScript portal
-│   └── mobile/              # Flutter mobile workspace
+│   ├── web/                       # Attendee website
+│   ├── admin/                     # Admin portal
+│   └── mobile/                    # Flutter mobile workspace
 │
 ├── server/
 │   ├── prisma/
@@ -173,60 +801,21 @@ Consumer-Behavior-PBL/
 
 ---
 
-## 5. Technology Stack
-
-### Attendee Web
-
-- React
-- TypeScript
-- Vite
-- React Router
-- Fetch-based API client
-
-### Admin Portal
-
-- React
-- TypeScript
-- Vite
-- React Router
-- Fetch-based API client
-
-### Backend
-
-- Node.js
-- Express
-- TypeScript
-- Zod
-- JWT authentication
-- bcrypt password hashing
-
-### Database
-
-- PostgreSQL 17
-- Docker / Docker Compose
-- Prisma ORM
-
-### Crowd Intelligence
-
-- External FastAPI ML service
-- HistGradientBoostingRegressor prototype
-- One-hour pedestrian-flow forecast
-- Würzburg pedestrian-flow prototype dataset/model scope
-
----
-
-## 6. Current Database Models
+# 10. Current Database — High-Level Entities
 
 ```text
 User
 UserPreference
+
 Event
 Venue
 Zone
 Location
 Facility
+
 Incident
 Announcement
+
 Brand
 Offer
 ConsumerInteraction
@@ -240,28 +829,39 @@ EventType
 EventStatus
 LocationType
 FacilityStatus
+
 IncidentType
 IncidentSeverity
 IncidentStatus
+
 AnnouncementPriority
+
 InteractionType
 ChoiceFactor
 ```
 
 ---
 
-## 7. Authentication
+# 11. Authentication
 
-Implemented functionality:
+Authentication is implemented across the platform.
 
-- User registration
-- User login
-- Password hashing with bcrypt
-- JWT generation and verification
-- Protected routes
-- Current-user endpoint
-- Role-based authorization
-- USER and ADMIN roles
+Users can:
+
+- Register
+- Login
+- Access protected routes
+- Retrieve their current user profile
+- Sign out from frontend clients
+
+The backend currently supports:
+
+```text
+USER
+ADMIN
+```
+
+roles and role-based authorization.
 
 Core endpoints:
 
@@ -273,323 +873,534 @@ GET  /api/v1/auth/me
 
 ---
 
-## 8. Core Event Management
+# 12. USER WEBSITE
 
-The admin portal supports CRUD management for:
+## 12.1 Event Discovery
 
-```text
-Event
-  └── Venue
-       └── Zone
-            └── Location
-                 └── Facility
-```
+The attendee website currently provides:
 
-Core route groups include:
-
-```text
-/api/v1/events
-/api/v1/venues
-/api/v1/zones
-/api/v1/locations
-/api/v1/facilities
-```
-
-Admin write operations are protected by role-based authorization.
+- Live/upcoming event listing
+- Event search
+- Event status
+- Event type
+- Date and start time
+- Navigation to event detail
 
 ---
 
-## 9. User Preferences
+## 12.2 Event Details
 
-Users can store decision-support preferences including:
+The event page currently includes:
 
-- Price sensitivity
-- Crowd preference
-- Walking preference
-- Accessibility requirement
-- Brand preference
-- Food preferences
-
-Endpoints:
-
-```text
-GET /api/v1/preferences/me
-PUT /api/v1/preferences/me
-```
-
----
-
-## 10. Incident Management
-
-Rahat Setu includes end-to-end incident reporting and management.
-
-Incident information includes:
-
-- Event
-- Optional event location
-- Reporting user
-- Type
-- Severity
-- Status
-- Title
-- Description
-- Optional coordinates
-- Resolution timestamp
-
-Supported types include:
-
-```text
-MEDICAL
-SECURITY
-FIRE
-CROWD
-LOST_PERSON
-INFRASTRUCTURE
-OTHER
-```
-
-Supported statuses include:
-
-```text
-OPEN
-ACKNOWLEDGED
-IN_PROGRESS
-RESOLVED
-CLOSED
-```
-
-The admin portal provides event-wise incident monitoring and severity/status updates.
-
----
-
-## 11. Announcements
-
-Admins can create and manage event announcements with:
-
-- Event association
-- Title
-- Message
-- Priority
-- Active/inactive status
-- Optional start/end time
-
-Priorities:
-
-```text
-INFO
-IMPORTANT
-URGENT
-```
-
-The attendee web app retrieves currently active announcements.
-
----
-
-## 12. Admin Dashboard
-
-The admin dashboard uses real PostgreSQL-backed data.
-
-Current metrics include:
-
-- Total events
-- Live events
-- Upcoming events
+- Event information
+- Event status
+- Event date/time
+- Crowd section
+- Announcements
 - Venues
 - Zones
 - Locations
 - Facilities
-- Active incidents
-- Critical incidents
-- Active announcements
-- Urgent announcements
-- Recent incidents
-
-Endpoint:
-
-```text
-GET /api/v1/admin/dashboard
-```
-
----
-
-## 13. Brand & Offer Management
-
-### Brands
-
-Admins can manage participating brands with fields such as name, category, description, logo URL, and active status.
-
-### Offers
-
-Offers connect a brand to a specific event and may include:
-
-- Title
-- Description
-- Discount/promotion text
-- Price
-- Active status
-- Optional start/end time
-
-The attendee web app retrieves active event offers.
-
----
-
-## 14. Consumer Interaction Tracking
-
-Authenticated users can record interactions with event brands and offers.
-
-Example:
-
-```text
-User: Test User
-Event: Rahat Setu
-Brand: Nike
-Offer: 20% off event merchandise
-Action: SELECT
-Factor: DISCOUNT
-Rating: 5
-```
-
-Endpoints:
-
-```text
-POST /api/v1/interactions
-GET  /api/v1/interactions/me
-```
-
-The backend validates that selected offers belong to the specified event and brand.
-
----
-
-## 15. Consumer Insights
-
-The admin portal includes Consumer Insights analytics for:
-
-- Total interactions
-- Interaction breakdown by action
-- Decision-factor breakdown
-- Top choice factor
-- Top brands
-- Top promotional offers
-- Optional event-wise filtering
-
-Endpoint:
-
-```text
-GET /api/v1/admin/consumer-insights
-```
-
-Optional filter:
-
-```text
-?eventId=<EVENT_ID>
-```
-
----
-
-## 16. Crowd Forecasting
-
-The current crowd feature integrates an external ML prototype through the backend.
-
-Endpoint:
-
-```text
-POST /api/v1/crowd/predict
-```
-
-The backend receives event-style crowd state, converts it into ML features, calls the external ML API, and normalizes the result for the frontend.
-
-Current output includes:
-
-- Predicted pedestrian count
-- Unit
-- Prediction horizon
-- Model version
-- Model scope
-
-The attendee website presents this as a **1-hour crowd forecast**.
-
-### Prototype Limitation
-
-The currently integrated model is a **Würzburg pedestrian-flow prototype**.
-
-It demonstrates the crowd-prediction pipeline and ML integration, but it must **not** be described as production-ready or as actual live Rahat Setu crowd intelligence.
-
----
-
-## 17. Attendee Web App
-
-The attendee-facing web app currently supports:
-
-- Register
-- Login
-- Protected routes
-- Sign out
-- Live/upcoming event discovery
-- Event search
-- Event status/type information
-- Event details
-- Active announcements
-- Venue/zone/location/facility information
 - Facility status
-- Active promotional offers
-- One-hour crowd forecast
+- Offers
 
-The current attendee UI follows a minimal, information-first event utility design.
+The attendee UI is intentionally information-first and minimal.
 
 ---
 
-## 18. Admin Portal
+## 12.3 Crowd Forecast
+
+The attendee page can request a one-hour forecast for an event location.
+
+The frontend sends event-state information to the backend rather than directly sending raw ML features.
+
+Current request context includes:
+
+```text
+Location
+Timestamp
+Temperature
+Weather condition
+Incident context
+Current crowd
+Movement ratio
+Historical lag values
+```
+
+The backend converts these into the model contract and calls the external ML service.
+
+The response includes:
+
+```text
+Predicted pedestrian count
+Unit
+Forecast horizon
+Model version
+Model scope
+```
+
+### Important
+
+The current crowd model is a **prototype** trained for a different pedestrian-flow setting.
+
+It demonstrates the system architecture and prediction pipeline.
+
+It is not claimed to be production-ready live crowd intelligence for Rahat Setu.
+
+---
+
+## 12.4 Announcements
+
+The attendee website displays active announcements including:
+
+- Priority
+- Title
+- Message
+
+---
+
+## 12.5 Facilities
+
+The attendee event page displays:
+
+- Venue
+- Zone
+- Location
+- Facility
+- Facility status
+
+---
+
+## 12.6 Offers
+
+Active event offers can be displayed to attendees.
+
+The website can show:
+
+- Brand
+- Offer title
+- Discount/promotion
+- Price
+
+---
+
+# 13. ADMIN / ORGANIZER PORTAL
 
 The admin portal currently includes:
 
-- Dashboard
-- Events
-- Venues
-- Zones
-- Locations
-- Facilities
-- Incidents
-- Announcements
-- Brands
-- Offers
-- Consumer Insights
+```text
+Dashboard
+Events
+Venues
+Zones
+Locations
+Facilities
+Incidents
+Announcements
+Brands
+Offers
+Consumer Insights
+```
 
 ---
 
-## 19. Local Development
+# 13.1 Event Management
 
-### Prerequisites
+Admins can create, inspect, update, and delete events.
+
+---
+
+# 13.2 Venue Management
+
+Admins can configure event venues.
+
+---
+
+# 13.3 Zone Management
+
+Venues can be divided into operational zones.
+
+---
+
+# 13.4 Location Management
+
+Zones contain meaningful event locations such as:
+
+- Gates
+- Stages
+- Help areas
+- Medical locations
+- Facility points
+
+---
+
+# 13.5 Facility Management
+
+Facilities can be attached to event locations and assigned operational status.
+
+---
+
+# 13.6 Incident Management
+
+Admins can view event incidents and update status/severity.
+
+---
+
+# 13.7 Announcement Management
+
+Admins can:
+
+- Create announcements
+- Edit announcements
+- Toggle active state
+- Delete announcements
+- Set priority
+
+---
+
+# 13.8 Brand Management
+
+Admins can manage brands used in Consumer Behavior experiments and event promotions.
+
+---
+
+# 13.9 Offer Management
+
+Admins can associate promotional offers with events and brands.
+
+---
+
+# 13.10 Consumer Insights
+
+The Consumer Insights dashboard summarizes stored consumer-interaction data.
+
+---
+
+# 14. Crowd Prediction Architecture
+
+```text
+Current Event State
+       +
+Weather Context
+       +
+Incident Context
+       +
+Historical Crowd Lags
+       ↓
+Backend Adapter
+       ↓
+ML Feature Contract
+       ↓
+Crowd Prediction API
+       ↓
+1-Hour Forecast
+```
+
+This architecture deliberately separates:
+
+- frontend event concepts
+- backend integration logic
+- ML-specific feature representation
+
+That makes it easier to replace the prototype ML service later without rewriting the attendee frontend.
+
+---
+
+# 15. Data Reliability Model
+
+Not every data source should be treated equally.
+
+Rahat Setu should maintain a clear distinction between:
+
+### Live Mode
+
+Actual organizer, sensor, external, or validated user data.
+
+### Simulated Mode
+
+Controlled data used for demonstrations and prototype testing.
+
+### Manual Mode
+
+Organizer-managed operational state.
+
+### Predicted Mode
+
+Model-generated estimates.
+
+For example:
+
+```text
+Gate A
+
+Predicted pedestrian flow:
+473 pedestrians/hour
+
+Forecast horizon:
+1 hour
+
+Source:
+ML prototype
+
+Model:
+würzburg-prototype-v1
+```
+
+The platform should never present estimated information as guaranteed fact.
+
+---
+
+# 16. MVP
+
+The MVP should not attempt to implement every long-term feature at once.
+
+## Implemented Core
+
+### User
+
+- Authentication
+- Event selection
+- Event search
+- Event details
+- Active announcements
+- Venue/facility discovery
+- Brand offers
+- Prototype crowd forecast
+
+### Admin
+
+- Admin authentication
+- Event management
+- Venue management
+- Zone management
+- Location management
+- Facility management
+- Incident management
+- Announcements
+- Real dashboard analytics
+- Brand management
+- Offer management
+- Consumer Insights
+
+### Consumer Behavior
+
+- User preferences
+- Brand data
+- Promotional offers
+- Consumer interaction tracking
+- Choice-factor tracking
+- Consumer analytics
+
+---
+
+# 17. Next Development Phases
+
+## Phase 2 — Event Intelligence
+
+Planned:
+
+- Queue ML integration
+- Live/simulated/manual state layer
+- More dynamic crowd state
+- Real-time notifications
+- Event map
+- Smarter facility recommendations
+
+---
+
+## Phase 3 — Recommendations & AI
+
+Planned:
+
+- Personalized recommendations
+- AI event assistant
+- AI tour guide
+- Smart navigation
+- User-specific attraction strategies
+- More advanced consumer segmentation
+
+---
+
+## Phase 4 — Advanced Infrastructure
+
+Potential future features:
+
+- IoT integration
+- Occupancy sensors
+- Computer vision
+- Advanced crowd analytics
+- Digital twin of venue
+- Offline-first navigation
+- Edge processing
+- Advanced emergency coordination
+
+---
+
+# 18. Important MVP Principle
+
+The product should not claim to provide real-time information unless the underlying event has a reliable data source.
+
+For example:
+
+> "Washroom occupancy: 32%"
+
+requires an actual mechanism for measuring or estimating occupancy.
+
+Similarly:
+
+> "Live crowd: 12,000"
+
+must only be shown if supported by a real data source.
+
+Prototype predictions should be labeled as predictions.
+
+This keeps the architecture realistic while still allowing a strong demonstrable prototype.
+
+---
+
+# 19. Key Product Differentiator
+
+Rahat Setu should not position itself as another map.
+
+The fundamental difference is:
+
+```text
+Traditional Map
+
+Where is the destination?
+        ↓
+      Route
+```
+
+versus:
+
+```text
+Rahat Setu
+
+What should I do or choose right now?
+        ↓
+Considering:
+Crowd
+Queue
+Safety
+Time
+Facilities
+Distance
+Offers
+Preferences
+Brand familiarity
+Convenience
+        ↓
+Context-Aware Decision
+```
+
+The product therefore acts as an **event intelligence and consumer decision-support layer**, rather than simply a digital map.
+
+---
+
+# 20. Success Metrics
+
+## Visitor Metrics
+
+Potential metrics include:
+
+- Navigation success rate
+- Time saved
+- Queue waiting-time reduction
+- Facility discovery rate
+- Crowd-forecast usage
+- Offer engagement
+- User satisfaction
+
+## Organizer Metrics
+
+Potential metrics include:
+
+- Incident response time
+- Facility downtime
+- Announcement engagement
+- Crowd bottleneck duration
+- Event operational efficiency
+
+## Consumer Behavior Metrics
+
+Current / planned analysis includes:
+
+- Total interactions
+- Views
+- Clicks
+- Selections
+- Saves
+- Redemptions
+- Top decision factors
+- Top brands
+- Top offers
+- Rating trends
+
+---
+
+# 21. Privacy & Safety Requirements
+
+Because the platform may handle location and emergency information, privacy must remain a core product requirement.
+
+The system should implement:
+
+- Explicit location permission
+- Opt-in group location sharing
+- Temporary location sharing
+- Data minimization
+- Role-based admin access
+- Secure authentication
+- Appropriate data-retention policies
+- Emergency access controls
+
+The system should avoid exposing individual visitor locations publicly.
+
+Emergency functionality should supplement, not replace, official emergency services.
+
+---
+
+# 22. Development Setup
+
+## Prerequisites
+
+Install:
 
 - Git
 - Node.js 24+
 - npm
 - Docker Desktop
 
-Check versions:
-
-```bash
-node --version
-npm --version
-git --version
-docker --version
-docker compose version
-```
-
 ---
 
-## 20. Clone & Install
+## Clone
 
 ```bash
 git clone https://github.com/EventFlow-AI/Consumer-Behavior-PBL.git
 cd Consumer-Behavior-PBL
+```
+
+Install dependencies:
+
+```bash
 npm install
 ```
 
 ---
 
-## 21. Environment Variables
+## Environment
 
-Create `server/.env` from `server/.env.example`.
+Create:
+
+```text
+server/.env
+```
+
+from:
+
+```text
+server/.env.example
+```
 
 Windows PowerShell:
 
@@ -597,11 +1408,12 @@ Windows PowerShell:
 Copy-Item server\.env.example server\.env
 ```
 
-Core development variables include:
+Core local values include:
 
 ```env
 DATABASE_URL="postgresql://eventflow:eventflow_dev@localhost:5433/eventflow"
 JWT_SECRET="replace_with_a_long_random_secret"
+
 ML_API_BASE_URL="http://your-ml-service"
 ML_API_KEY="replace_with_your_local_api_key"
 ML_CROWD_ENDPOINT="/internal/v1/predictions/crowd/next-hour"
@@ -611,29 +1423,21 @@ Never commit real secrets.
 
 ---
 
-## 22. Start PostgreSQL
+## Start PostgreSQL
 
 ```bash
 docker compose up -d
 ```
 
-Local EventFlow PostgreSQL:
+The local database is exposed on:
 
 ```text
 localhost:5433
 ```
 
-Do not use:
-
-```bash
-docker compose down -v
-```
-
-unless you intentionally want to delete the local database volume.
-
 ---
 
-## 23. Prisma Setup
+## Prisma
 
 ```bash
 cd server
@@ -649,7 +1453,7 @@ npx prisma studio
 
 ---
 
-## 24. Run the Backend
+## Run Backend
 
 ```bash
 cd server
@@ -670,55 +1474,55 @@ GET /api/v1/health
 
 ---
 
-## 25. Run the Attendee Web App
+## Run Attendee Web
+
+From project root:
 
 ```bash
 npm run dev --workspace apps/web
 ```
 
-or:
-
-```bash
-cd apps/web
-npm run dev
-```
-
 ---
 
-## 26. Run the Admin Portal
+## Run Admin Portal
+
+From project root:
 
 ```bash
 npm run dev --workspace apps/admin
 ```
 
-or:
-
-```bash
-cd apps/admin
-npm run dev
-```
-
 ---
 
-## 27. Build Commands
+# 23. Build Commands
+
+Backend:
 
 ```bash
 npm run build --workspace server
+```
+
+Attendee web:
+
+```bash
 npm run build --workspace apps/web
+```
+
+Admin:
+
+```bash
 npm run build --workspace apps/admin
 ```
 
-Run the relevant build before opening a Pull Request.
-
 ---
 
-## 28. Current Development Status
+# 24. Current Development Status
 
-### Implemented
+## Completed
 
 - Monorepo/workspace setup
 - PostgreSQL Docker setup
-- Prisma schema and migrations
+- Prisma ORM and migrations
 - Authentication
 - Role-based authorization
 - User preferences
@@ -736,108 +1540,111 @@ Run the relevant build before opening a Pull Request.
 - Consumer Insights analytics
 - Attendee web authentication
 - Event discovery
-- Event details
-- Facility discovery
+- Event search
+- Event detail experience
+- Facility information
 - Active announcements
 - Active offers
-- Crowd ML integration
+- Crowd backend integration
 - One-hour prototype crowd forecast
 
-### Integrated Prototype
+## Integrated Prototype
 
-- Crowd forecasting using the Würzburg prototype ML model
+- Würzburg-based crowd prediction model
 
-### Pending / Planned
+## Pending
 
-- Queue ML integration
-- Unified live/simulated event-state layer
+- Queue ML
 - Recommendation engine
-- Personalized recommendations
+- Live/simulated event-state layer
 - Smart navigation
-- Interactive event map
+- Interactive map
 - Real-time notifications
-- Group/family mode
-- Multilingual assistance
 - AI event assistant
+- Multilingual support
+- Group/family mode
 - Transportation intelligence
 - Production event-specific crowd model
-- Post-event advanced analytics
-- Deeper mobile integration
+- Advanced post-event analytics
 
 ---
 
-## 29. MVP Data Principle
+# 25. Final Product Concept
 
-Rahat Setu should never claim that information is live unless a reliable underlying data source exists.
+Rahat Setu can ultimately be viewed as three layers:
 
-The architecture should distinguish:
-
-### Live Mode
-
-Real organizer, sensor, external, or validated user data.
-
-### Simulated Mode
-
-Controlled data for demonstrations and prototype testing.
-
-### Manual Mode
-
-Organizer-managed operational state.
-
-Prototype ML predictions must be clearly identified as estimates.
-
----
-
-## 30. Privacy & Safety
-
-The product should follow:
-
-- Data minimization
-- Explicit location permission
-- Opt-in sharing
-- Secure authentication
-- Role-based administrative access
-- Appropriate retention policies
-- Protection of user location information
-- Verified organizer data for safety-critical information
-
-Emergency functionality must supplement, not replace, official emergency services.
-
----
-
-## 31. Key Product Differentiator
-
-Rahat Setu is not intended to be another static event map.
+### Layer 1 — EXPERIENCE
 
 ```text
-Traditional map
-
-Where is the destination?
-        ↓
-      Route
-
-
-Rahat Setu
-
-What should I do or choose right now?
-        ↓
-Considering:
-Crowd
-Queue
-Distance
-Safety
-Facilities
-Time
-Offers
-Preferences
-        ↓
-Context-aware decision
+Discover
+Navigate
+Explore
+Decide
+Stay Safe
 ```
 
-The project therefore acts as an **event intelligence and consumer decision-support layer**.
+### Layer 2 — INTELLIGENCE
+
+```text
+Crowd Intelligence
+Queue Intelligence
+Consumer Insights
+Recommendations
+Predictions
+AI Assistance
+```
+
+### Layer 3 — OPERATIONS
+
+```text
+Manage
+Monitor
+Respond
+Coordinate
+Analyze
+```
+
+Together:
+
+```text
+                     RAHAT SETU
+                   (EVENTFLOW AI)
+                         |
+              +----------+----------+
+              |                     |
+        VISITOR WEBSITE       ORGANIZER PORTAL
+              |                     |
+          Experience             Operations
+              |                     |
+              +----------+----------+
+                         |
+                 EVENT INTELLIGENCE
+                         |
+           +-------------+-------------+
+           |             |             |
+         PEOPLE         PLACE          TIME
+           |             |             |
+      Preferences    Facilities      Schedule
+      Decisions      Crowd           Events
+      Offers         Incidents       Forecasts
+           |             |             |
+           +-------------+-------------+
+                         |
+                         ↓
+              DATA + AI + ANALYTICS
+                         |
+                         ↓
+              CONTEXT-AWARE DECISIONS
+```
 
 ---
 
-## 32. One-Sentence Pitch
+# 26. Core Proposition
 
-> **Rahat Setu is an event intelligence platform that helps visitors make better decisions about crowds, facilities, alerts, offers, and event experiences while giving organizers operational and consumer-behavior insights.**
+> **Rahat Setu transforms static event information into an intelligent decision-support layer that helps visitors make better choices and gives organizers operational and consumer-behavior visibility over complex physical events.**
+
+---
+
+# 27. One-Sentence Pitch
+
+> **Rahat Setu is a large-scale event intelligence platform that helps visitors make better decisions about crowds, facilities, alerts, offers, and event experiences while giving organizers operational and consumer-behavior insights.**
