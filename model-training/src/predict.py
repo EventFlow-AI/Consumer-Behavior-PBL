@@ -23,8 +23,8 @@ import pandas as pd
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 MODELS_DIR = BASE_DIR / "models"
-MODEL_PATH = MODELS_DIR / "crowd_model_wuerzburg.joblib"
-METADATA_PATH = MODELS_DIR / "crowd_model_metadata.json"
+MODEL_PATH = MODELS_DIR / "crowd_model_wuerzburg_hgb_v1.joblib"
+METADATA_PATH = MODELS_DIR / "crowd_model_wuerzburg_hgb_v1_metadata.json"
 PROCESSED_TEST_PATH = BASE_DIR / "datasets" / "processed" / "test.csv"
 TARGET = "n_pedestrians_next_hour"
 CATEGORICAL_FEATURES = {
@@ -64,6 +64,10 @@ def _load_metadata() -> dict[str, Any]:
     except (OSError, json.JSONDecodeError) as exc:
         raise RuntimeError(f"Could not read model metadata: {exc}") from exc
 
+    # Keep the established validation contract while accepting the HGB
+    # metadata schema, which stores the ordered names under "features".
+    if "feature_list" not in metadata and "features" in metadata:
+        metadata["feature_list"] = metadata["features"]
     features = metadata.get("feature_list")
     if not isinstance(features, list) or not features or not all(
         isinstance(feature, str) for feature in features
@@ -81,25 +85,29 @@ def _load_metadata() -> dict[str, Any]:
 
 @lru_cache(maxsize=1)
 def load_model() -> Any:
-    """Load the fitted sklearn preprocessing-and-model pipeline."""
+    """Load the fitted preprocessing and HistGradientBoosting artifact."""
     _load_metadata()  # Fail early if the saved contract is missing or invalid.
     if not MODEL_PATH.is_file():
         raise FileNotFoundError(f"Trained model not found: {MODEL_PATH}")
     try:
-        pipeline = joblib.load(MODEL_PATH)
+        artifact = joblib.load(MODEL_PATH)
     except Exception as exc:
         raise RuntimeError(f"Could not load trained model: {exc}") from exc
 
-    if not callable(getattr(pipeline, "predict", None)):
+    if not isinstance(artifact, dict) or not all(
+        key in artifact for key in ("preprocessor", "model", "features", "target")
+    ):
+        raise RuntimeError(f"Saved model artifact has an invalid structure: {MODEL_PATH}")
+    if not callable(getattr(artifact["model"], "predict", None)):
         raise RuntimeError(f"Saved model has no predict method: {MODEL_PATH}")
 
-    fitted_features = getattr(pipeline, "feature_names_in_", None)
+    fitted_features = artifact["features"]
     expected_features = _load_metadata()["feature_list"]
-    if fitted_features is not None and list(fitted_features) != expected_features:
+    if list(fitted_features) != expected_features:
         raise RuntimeError(
-            "Saved model feature order does not match crowd_model_metadata.json"
+            "Saved model feature order does not match HGB model metadata"
         )
-    return pipeline
+    return artifact
 
 
 def _normalise_and_validate_input(
@@ -177,7 +185,9 @@ def predict_next_hour(input_features: Mapping[str, Any]) -> float:
     validated = _normalise_and_validate_input(input_features)
     feature_order = _load_metadata()["feature_list"]
     model_input = pd.DataFrame([validated], columns=feature_order)
-    prediction = load_model().predict(model_input)
+    artifact = load_model()
+    transformed_input = artifact["preprocessor"].transform(model_input)
+    prediction = artifact["model"].predict(transformed_input)
     predicted_count = float(prediction[0])
     if not math.isfinite(predicted_count):
         raise RuntimeError("The trained model returned a non-finite prediction")

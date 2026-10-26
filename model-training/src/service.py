@@ -30,7 +30,7 @@ from .queue_predict import load_queue_model, predict_queue_wait
 
 logger = logging.getLogger("eventflow.ml_service")
 BASE_DIR = Path(__file__).resolve().parent.parent
-METADATA_PATH = BASE_DIR / "models" / "crowd_model_metadata.json"
+METADATA_PATH = BASE_DIR / "models" / "crowd_model_wuerzburg_hgb_v1_metadata.json"
 MODEL_VERSION = "wuerzburg-prototype-v1"
 MODEL_SCOPE_FALLBACK = "Würzburg pedestrian-flow prototype"
 QUEUE_MODEL_VERSION = "queue-wait-hgb-v1"
@@ -182,7 +182,8 @@ def _load_model_metadata() -> dict[str, object]:
         metadata = json.load(metadata_file)
     if not isinstance(metadata, dict):
         raise ValueError("Model metadata must contain a JSON object")
-    if not isinstance(metadata.get("feature_list"), list):
+    metadata["feature_list"] = metadata.get("feature_list", metadata.get("features"))
+    if not isinstance(metadata["feature_list"], list):
         raise ValueError("Model metadata does not contain a valid feature_list")
     scope = metadata.get("model_scope")
     if not isinstance(scope, str) or not scope.strip():
@@ -287,7 +288,10 @@ async def predict_crowd_next_hour(
     response_model=QueuePredictionResponse,
     dependencies=[Depends(require_ml_api_key)],
 )
-async def predict_queue_next_hour(payload: QueuePredictionRequest, request: Request) -> QueuePredictionResponse:
+async def predict_queue_next_hour(
+    payload: QueuePredictionRequest,
+    request: Request,
+) -> QueuePredictionResponse:
     """Predict checkpoint waiting time for the next hour."""
     if not request.app.state.queue_model_loaded:
         raise HTTPException(status_code=503, detail="Queue waiting-time model is not ready")
