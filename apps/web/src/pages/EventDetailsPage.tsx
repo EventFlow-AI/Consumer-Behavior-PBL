@@ -4,6 +4,14 @@ import {
   useParams,
 } from "react-router-dom";
 
+import {
+  recordInteraction,
+  type ChoiceFactor,
+} from "../api/interactions";
+import {
+  recommendOffers,
+  type OfferRecommendation,
+} from "../utils/recommendOffers";
 import type { EventRecord } from "../api/events";
 
 import {
@@ -56,6 +64,44 @@ const lagFields: Array<{
   { key: "lag168h", label: "1 week ago" },
 ];
 
+const choiceFactors: Array<{
+  value: ChoiceFactor;
+  label: string;
+}> = [
+  {
+    value: "PRICE",
+    label: "Better price",
+  },
+  {
+    value: "DISCOUNT",
+    label: "Attractive discount",
+  },
+  {
+    value: "BRAND_FAMILIARITY",
+    label: "I know / trust the brand",
+  },
+  {
+    value: "CONVENIENCE",
+    label: "More convenient",
+  },
+  {
+    value: "DISTANCE",
+    label: "Closer to me",
+  },
+  {
+    value: "CROWD",
+    label: "Less crowded",
+  },
+  {
+    value: "QUEUE",
+    label: "Shorter queue",
+  },
+  {
+    value: "OTHER",
+    label: "Other reason",
+  },
+];
+
 export default function EventDetailsPage() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -87,6 +133,21 @@ export default function EventDetailsPage() {
   const [error, setError] =
     useState("");
 
+  const [selectedOfferId, setSelectedOfferId] =
+    useState<string | null>(null);
+
+  const [interactionMessage, setInteractionMessage] =
+    useState("");
+
+  const [interactionLoading, setInteractionLoading] =
+    useState<string | null>(null);
+
+  const [pendingOffer, setPendingOffer] =
+    useState<ActiveOffer | null>(null);
+
+  const [selectedFactor, setSelectedFactor] =
+    useState<ChoiceFactor | "">("");
+
   const [crowdInputs, setCrowdInputs] =
     useState({
       locationId: "",
@@ -104,6 +165,19 @@ export default function EventDetailsPage() {
       lag168h: 500,
     });
 
+
+    const [
+  recommendationPriority,
+  setRecommendationPriority,
+] = useState<ChoiceFactor>("DISCOUNT");
+
+const [
+  recommendation,
+  setRecommendation,
+] =
+  useState<OfferRecommendation | null>(
+    null,
+  );
   useEffect(() => {
     if (!id) return;
 
@@ -203,6 +277,47 @@ export default function EventDetailsPage() {
     loadEventDetails();
   }, [id]);
 
+  useEffect(() => {
+    if (!id || offers.length === 0) {
+      return;
+    }
+
+    async function recordOfferViews() {
+      for (const offer of offers) {
+        const key =
+          `offer-viewed:${id}:${offer.id}`;
+
+        if (sessionStorage.getItem(key)) {
+          continue;
+        }
+
+        try {
+          await recordInteraction({
+            eventId: id!,
+            brandId: offer.brand.id,
+            offerId: offer.id,
+            action: "VIEW",
+            metadata: {
+              source: "event-details",
+            },
+          });
+
+          sessionStorage.setItem(
+            key,
+            "true",
+          );
+        } catch (error) {
+          console.error(
+            `Failed to record view for ${offer.title}:`,
+            error,
+          );
+        }
+      }
+    }
+
+    recordOfferViews();
+  }, [id, offers]);
+
   const availableLocations =
     useMemo(
       () =>
@@ -246,7 +361,8 @@ export default function EventDetailsPage() {
 
       const result = await predictCrowd({
         ...crowdInputs,
-        timestamp: new Date().toISOString(),
+        timestamp:
+          new Date().toISOString(),
       });
 
       setCrowdPrediction(result);
@@ -261,6 +377,124 @@ export default function EventDetailsPage() {
     }
   }
 
+  async function handleOfferInteraction(
+    offer: ActiveOffer,
+    action: "CLICK" | "SAVE",
+  ) {
+    if (!id) return;
+
+    try {
+      setInteractionLoading(
+        `${offer.id}-${action}`,
+      );
+
+      setInteractionMessage("");
+
+      await recordInteraction({
+        eventId: id,
+        brandId: offer.brand.id,
+        offerId: offer.id,
+        action,
+        metadata: {
+          source: "attendee-web",
+          offerTitle: offer.title,
+          brandName: offer.brand.name,
+        },
+      });
+
+      if (action === "SAVE") {
+        setInteractionMessage(
+          `${offer.title} saved.`,
+        );
+      }
+    } catch (error) {
+      console.error(
+        "Failed to record interaction:",
+        error,
+      );
+
+      setInteractionMessage(
+        "Unable to record this action right now.",
+      );
+    } finally {
+      setInteractionLoading(null);
+    }
+  }
+
+  function openChoiceReason(
+    offer: ActiveOffer,
+  ) {
+    setPendingOffer(offer);
+    setSelectedFactor("");
+    setInteractionMessage("");
+  }
+
+  async function confirmOfferSelection() {
+    if (
+      !pendingOffer ||
+      !selectedFactor ||
+      !id
+    ) {
+      return;
+    }
+
+    try {
+      setInteractionLoading(
+        `${pendingOffer.id}-SELECT`,
+      );
+
+      setInteractionMessage("");
+
+      await recordInteraction({
+        eventId: id,
+        brandId: pendingOffer.brand.id,
+        offerId: pendingOffer.id,
+        action: "SELECT",
+        factor: selectedFactor,
+        metadata: {
+          source: "attendee-web",
+          offerTitle:
+            pendingOffer.title,
+          brandName:
+            pendingOffer.brand.name,
+        },
+      });
+
+      setSelectedOfferId(
+        pendingOffer.id,
+      );
+
+      setInteractionMessage(
+        `${pendingOffer.brand.name} offer selected.`,
+      );
+
+      setPendingOffer(null);
+      setSelectedFactor("");
+    } catch (error) {
+      console.error(
+        "Failed to record selection:",
+        error,
+      );
+
+      setInteractionMessage(
+        "Unable to record your selection.",
+      );
+    } finally {
+      setInteractionLoading(null);
+    }
+  }
+
+
+  function generateRecommendation() {
+      const ranked = recommendOffers(
+        offers,
+        recommendationPriority,
+      );
+
+      setRecommendation(
+        ranked[0] ?? null,
+      );
+    }
   if (loading) {
     return (
       <main className="page">
@@ -337,6 +571,7 @@ export default function EventDetailsPage() {
           <div className="event-summary">
             <div>
               <span>Date</span>
+
               <strong>
                 {new Date(
                   event.startTime,
@@ -353,6 +588,7 @@ export default function EventDetailsPage() {
 
             <div>
               <span>Time</span>
+
               <strong>
                 {new Date(
                   event.startTime,
@@ -363,7 +599,9 @@ export default function EventDetailsPage() {
                     minute: "2-digit",
                   },
                 )}
+
                 {" – "}
+
                 {new Date(
                   event.endTime,
                 ).toLocaleTimeString(
@@ -379,12 +617,21 @@ export default function EventDetailsPage() {
         </section>
 
         <nav className="section-nav">
-          <a href="#crowd">Crowd</a>
-          <a href="#updates">Updates</a>
+          <a href="#crowd">
+            Crowd
+          </a>
+
+          <a href="#updates">
+            Updates
+          </a>
+
           <a href="#facilities">
             Facilities
           </a>
-          <a href="#offers">Offers</a>
+
+          <a href="#offers">
+            Offers
+          </a>
         </nav>
 
         <section
@@ -396,7 +643,10 @@ export default function EventDetailsPage() {
               <span className="kicker">
                 CROWD
               </span>
-              <h2>1-hour forecast</h2>
+
+              <h2>
+                1-hour forecast
+              </h2>
             </div>
 
             <span className="prototype-chip">
@@ -489,13 +739,16 @@ export default function EventDetailsPage() {
             </div>
 
             <div className="crowd-side">
-              <h3>About this estimate</h3>
+              <h3>
+                About this estimate
+              </h3>
 
               <p>
-                This is a one-hour prototype
-                forecast using the currently
-                integrated pedestrian-flow
-                model. It is not a live sensor
+                This is a one-hour
+                prototype forecast using
+                the currently integrated
+                pedestrian-flow model.
+                It is not a live sensor
                 reading.
               </p>
 
@@ -503,6 +756,7 @@ export default function EventDetailsPage() {
                 <dl className="forecast-meta">
                   <div>
                     <dt>Model</dt>
+
                     <dd>
                       {
                         crowdPrediction.modelVersion
@@ -512,6 +766,7 @@ export default function EventDetailsPage() {
 
                   <div>
                     <dt>Scope</dt>
+
                     <dd>
                       {
                         crowdPrediction.modelScope
@@ -529,6 +784,7 @@ export default function EventDetailsPage() {
                 <div className="input-grid">
                   <label>
                     Temperature
+
                     <input
                       type="number"
                       value={
@@ -548,6 +804,7 @@ export default function EventDetailsPage() {
 
                   <label>
                     Weather
+
                     <input
                       value={
                         crowdInputs.weatherCondition
@@ -564,6 +821,7 @@ export default function EventDetailsPage() {
 
                   <label>
                     Current pedestrians
+
                     <input
                       type="number"
                       value={
@@ -583,6 +841,7 @@ export default function EventDetailsPage() {
 
                   <label>
                     Towards ratio
+
                     <input
                       type="number"
                       min="0"
@@ -617,6 +876,7 @@ export default function EventDetailsPage() {
                         })
                       }
                     />
+
                     Incident context
                   </label>
 
@@ -624,6 +884,7 @@ export default function EventDetailsPage() {
                     ({ key, label }) => (
                       <label key={key}>
                         {label}
+
                         <input
                           type="number"
                           value={
@@ -657,7 +918,10 @@ export default function EventDetailsPage() {
               <span className="kicker">
                 UPDATES
               </span>
-              <h2>Announcements</h2>
+
+              <h2>
+                Announcements
+              </h2>
             </div>
           </div>
 
@@ -670,9 +934,7 @@ export default function EventDetailsPage() {
               {announcements.map(
                 (announcement) => (
                   <article
-                    key={
-                      announcement.id
-                    }
+                    key={announcement.id}
                     className="update-row"
                   >
                     <span
@@ -689,6 +951,7 @@ export default function EventDetailsPage() {
                           announcement.title
                         }
                       </h3>
+
                       <p>
                         {
                           announcement.message
@@ -711,6 +974,7 @@ export default function EventDetailsPage() {
               <span className="kicker">
                 VENUE
               </span>
+
               <h2>
                 Facilities & locations
               </h2>
@@ -843,6 +1107,150 @@ export default function EventDetailsPage() {
           )}
         </section>
 
+        <section className="content-section">
+  <div className="content-heading">
+    <div>
+      <span className="kicker">
+        PERSONALIZED
+      </span>
+
+      <h2>
+        Recommended for you
+      </h2>
+    </div>
+  </div>
+
+  <p className="section-intro">
+    Tell us what matters most right
+    now. Rahat Setu will rank the
+    available event offers accordingly.
+  </p>
+
+  <div className="recommendation-controls">
+    <select
+      value={
+        recommendationPriority
+      }
+      onChange={(event) => {
+        setRecommendationPriority(
+          event.target
+            .value as ChoiceFactor,
+        );
+
+        setRecommendation(null);
+      }}
+    >
+      <option value="DISCOUNT">
+        Best discount
+      </option>
+
+      <option value="PRICE">
+        Lowest price
+      </option>
+
+      <option value="BRAND_FAMILIARITY">
+        Brand familiarity
+      </option>
+
+      <option value="CONVENIENCE">
+        Convenience
+      </option>
+
+      <option value="CROWD">
+        Lower crowd
+      </option>
+
+      <option value="QUEUE">
+        Shorter queue
+      </option>
+
+      <option value="DISTANCE">
+        Closer option
+      </option>
+    </select>
+
+    <button
+      type="button"
+      className="primary-button"
+      onClick={
+        generateRecommendation
+      }
+    >
+      Recommend
+    </button>
+  </div>
+
+  {recommendation && (
+    <div className="recommendation-card">
+      <span className="kicker">
+        TOP MATCH
+      </span>
+
+      <h3>
+        {
+          recommendation.offer
+            .brand.name
+        }
+      </h3>
+
+      <strong>
+        {
+          recommendation.offer
+            .title
+        }
+      </strong>
+
+      {recommendation.offer
+        .discountText && (
+        <div className="recommendation-offer">
+          {
+            recommendation.offer
+              .discountText
+          }
+        </div>
+      )}
+
+      {recommendation.offer
+        .price != null && (
+        <p>
+          ₹
+          {
+            recommendation.offer
+              .price
+          }
+        </p>
+      )}
+
+      <div className="recommendation-reasons">
+        <span>
+          Why this was recommended
+        </span>
+
+        <ul>
+          {recommendation.reasons.map(
+            (reason) => (
+              <li key={reason}>
+                {reason}
+              </li>
+            ),
+          )}
+        </ul>
+      </div>
+
+      <button
+        type="button"
+        className="offer-select-button"
+        onClick={() =>
+          openChoiceReason(
+            recommendation.offer,
+          )
+        }
+      >
+        Choose this offer
+      </button>
+    </div>
+  )}
+</section>
         <section
           className="content-section"
           id="offers"
@@ -852,9 +1260,24 @@ export default function EventDetailsPage() {
               <span className="kicker">
                 OFFERS
               </span>
-              <h2>For attendees</h2>
+
+              <h2>
+                For attendees
+              </h2>
             </div>
           </div>
+
+          <p className="section-intro">
+            Explore event offers and
+            choose what matters most to
+            you.
+          </p>
+
+          {interactionMessage && (
+            <div className="interaction-message">
+              {interactionMessage}
+            </div>
+          )}
 
           {offers.length === 0 ? (
             <p className="section-empty">
@@ -862,45 +1285,183 @@ export default function EventDetailsPage() {
             </p>
           ) : (
             <div className="offer-list">
-              {offers.map((offer) => (
-                <article
-                  className="offer-row"
-                  key={offer.id}
-                >
-                  <div>
-                    <span className="offer-brand-label">
-                      {
-                        offer.brand.name
-                      }
-                    </span>
+              {offers.map((offer) => {
+                const selected =
+                  selectedOfferId ===
+                  offer.id;
 
-                    <h3>
-                      {offer.title}
-                    </h3>
-
-                    {offer.description && (
-                      <p>
+                return (
+                  <article
+                    className={`offer-row ${
+                      selected
+                        ? "offer-row-selected"
+                        : ""
+                    }`}
+                    key={offer.id}
+                    onClick={() =>
+                      handleOfferInteraction(
+                        offer,
+                        "CLICK",
+                      )
+                    }
+                  >
+                    <div>
+                      <span className="offer-brand-label">
                         {
-                          offer.description
+                          offer.brand.name
                         }
-                      </p>
-                    )}
-                  </div>
-
-                  <div className="offer-value">
-                    <strong>
-                      {offer.discountText ||
-                        "Special offer"}
-                    </strong>
-
-                    {offer.price != null && (
-                      <span>
-                        ₹{offer.price}
                       </span>
-                    )}
-                  </div>
-                </article>
-              ))}
+
+                      <h3>
+                        {offer.title}
+                      </h3>
+
+                      {offer.description && (
+                        <p>
+                          {
+                            offer.description
+                          }
+                        </p>
+                      )}
+
+                      <div className="offer-actions">
+                        <button
+                          type="button"
+                          className="offer-select-button"
+                          onClick={(
+                            event,
+                          ) => {
+                            event.stopPropagation();
+
+                            openChoiceReason(
+                              offer,
+                            );
+                          }}
+                        >
+                          {selected
+                            ? "Selected"
+                            : "Choose offer"}
+                        </button>
+
+                        <button
+                          type="button"
+                          className="offer-save-button"
+                          disabled={
+                            interactionLoading ===
+                            `${offer.id}-SAVE`
+                          }
+                          onClick={(
+                            event,
+                          ) => {
+                            event.stopPropagation();
+
+                            handleOfferInteraction(
+                              offer,
+                              "SAVE",
+                            );
+                          }}
+                        >
+                          {interactionLoading ===
+                          `${offer.id}-SAVE`
+                            ? "Saving..."
+                            : "Save"}
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="offer-value">
+                      <strong>
+                        {offer.discountText ||
+                          "Event offer"}
+                      </strong>
+
+                      {offer.price != null && (
+                        <span>
+                          ₹{offer.price}
+                        </span>
+                      )}
+                    </div>
+                  </article>
+                );
+              })}
+            </div>
+          )}
+
+          {pendingOffer && (
+            <div className="choice-reason-box">
+              <div className="choice-reason-heading">
+                <div>
+                  <span className="kicker">
+                    YOUR DECISION
+                  </span>
+
+                  <h3>
+                    Why did you choose
+                    this offer?
+                  </h3>
+
+                  <p>
+                    {
+                      pendingOffer.brand
+                        .name
+                    }{" "}
+                    · {pendingOffer.title}
+                  </p>
+                </div>
+
+                <button
+                  type="button"
+                  className="quiet-button"
+                  onClick={() => {
+                    setPendingOffer(null);
+                    setSelectedFactor("");
+                  }}
+                >
+                  Cancel
+                </button>
+              </div>
+
+              <div className="choice-factor-grid">
+                {choiceFactors.map(
+                  (factor) => (
+                    <button
+                      type="button"
+                      key={factor.value}
+                      className={`choice-factor-button ${
+                        selectedFactor ===
+                        factor.value
+                          ? "choice-factor-selected"
+                          : ""
+                      }`}
+                      onClick={() =>
+                        setSelectedFactor(
+                          factor.value,
+                        )
+                      }
+                    >
+                      {factor.label}
+                    </button>
+                  ),
+                )}
+              </div>
+
+              <button
+                type="button"
+                className="primary-button"
+                disabled={
+                  !selectedFactor ||
+                  interactionLoading ===
+                    `${pendingOffer.id}-SELECT`
+                }
+                onClick={
+                  confirmOfferSelection
+                }
+              >
+                {interactionLoading ===
+                `${pendingOffer.id}-SELECT`
+                  ? "Saving decision..."
+                  : "Confirm choice"}
+              </button>
             </div>
           )}
         </section>
