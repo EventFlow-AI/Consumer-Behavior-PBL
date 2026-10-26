@@ -25,6 +25,7 @@ from fastapi import Depends, FastAPI, Header, HTTPException, Request
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 from .predict import load_model, predict_next_hour
+from .queue_predict import load_queue_model, predict_queue_wait
 
 
 logger = logging.getLogger("eventflow.ml_service")
@@ -32,6 +33,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 METADATA_PATH = BASE_DIR / "models" / "crowd_model_metadata.json"
 MODEL_VERSION = "wuerzburg-prototype-v1"
 MODEL_SCOPE_FALLBACK = "Würzburg pedestrian-flow prototype"
+QUEUE_MODEL_VERSION = "queue-wait-hgb-v1"
+QUEUE_MODEL_SCOPE = (
+    "US airport checkpoint waiting-time prototype; not trained on Rahat Setu event data"
+)
 
 
 class CrowdModelFeatures(BaseModel):
@@ -72,6 +77,54 @@ class CrowdPredictionRequest(BaseModel):
         return value
 
 
+class QueueModelFeatures(BaseModel):
+    """The exact 23-feature contract expected by the saved queue model."""
+
+    model_config = ConfigDict(
+        extra="forbid",
+        str_strip_whitespace=True,
+        allow_inf_nan=False,
+    )
+
+    airport: str = Field(min_length=1)
+    terminal: str = Field(min_length=1)
+    queue_type: str = Field(min_length=1)
+    day_of_week: int = Field(strict=True, ge=0, le=6)
+    hour_of_day: int = Field(strict=True, ge=0, le=23)
+    avg_wait: float = Field(ge=0)
+    p50_wait: float = Field(ge=0)
+    p75_wait: float = Field(ge=0)
+    p95_wait: float = Field(ge=0)
+    max_wait: float = Field(ge=0)
+    n_samples: int = Field(strict=True, ge=1)
+    avg_wait_lag_1h: float | None = Field(default=None, ge=0)
+    avg_wait_lag_2h: float | None = Field(default=None, ge=0)
+    avg_wait_lag_3h: float | None = Field(default=None, ge=0)
+    avg_wait_lag_24h: float | None = Field(default=None, ge=0)
+    avg_wait_lag_168h: float | None = Field(default=None, ge=0)
+    avg_wait_mean_last3h: float | None = Field(default=None, ge=0)
+    avg_wait_change_1h: float | None = None
+    avg_wait_change_3h: float | None = None
+    target_hour_sin: float = Field(ge=-1, le=1)
+    target_hour_cos: float = Field(ge=-1, le=1)
+    target_day_sin: float = Field(ge=-1, le=1)
+    target_day_cos: float = Field(ge=-1, le=1)
+
+
+class QueuePredictionRequest(BaseModel):
+    model_config = ConfigDict(extra="forbid")
+
+    model_version: str = QUEUE_MODEL_VERSION
+    features: QueueModelFeatures
+
+    @field_validator("model_version")
+    @classmethod
+    def validate_model_version(cls, value: str) -> str:
+        if value != QUEUE_MODEL_VERSION:
+            raise ValueError(f"Only model_version '{QUEUE_MODEL_VERSION}' is available")
+        return value
+
+
 def require_ml_api_key(
     authorization: str | None = Header(default=None, alias="Authorization"),
 ) -> None:
@@ -105,11 +158,20 @@ class CrowdPredictionResponse(BaseModel):
     model_scope: str
 
 
+class QueuePredictionResponse(BaseModel):
+    predicted_wait_minutes: float
+    unit: Literal["minutes"] = "minutes"
+    horizon_hours: Literal[1] = 1
+    model_version: str
+    model_scope: Literal["US airport checkpoint waiting-time prototype; not trained on Rahat Setu event data"] = QUEUE_MODEL_SCOPE
+
+
 class HealthResponse(BaseModel):
     status: Literal["ready", "not_ready"]
     model_loaded: bool
     model_version: str
     model_scope: str
+    queue_model_loaded: bool = False
     detail: str | None = None
 
 
@@ -135,6 +197,8 @@ async def lifespan(application: FastAPI):
     application.state.model_loaded = False
     application.state.model_scope = MODEL_SCOPE_FALLBACK
     application.state.load_error = None
+    application.state.queue_model = None
+    application.state.queue_model_loaded = False
 
     try:
         metadata = _load_model_metadata()
@@ -147,10 +211,19 @@ async def lifespan(application: FastAPI):
         application.state.load_error = str(exc)
         logger.exception("Würzburg prototype model failed to load")
 
+    try:
+        application.state.queue_model = load_queue_model()
+        application.state.queue_model_loaded = True
+        logger.info("Loaded queue model %s", QUEUE_MODEL_VERSION)
+    except Exception:
+        logger.exception("Queue waiting-time model failed to load")
+
     yield
 
     application.state.model = None
     application.state.model_loaded = False
+    application.state.queue_model = None
+    application.state.queue_model_loaded = False
 
 
 app = FastAPI(
@@ -173,6 +246,7 @@ async def health(request: Request) -> HealthResponse:
         model_loaded=loaded,
         model_version=MODEL_VERSION,
         model_scope=request.app.state.model_scope,
+        queue_model_loaded=request.app.state.queue_model_loaded,
         detail=None if loaded else request.app.state.load_error,
     )
 
@@ -205,4 +279,31 @@ async def predict_crowd_next_hour(
         predicted_pedestrian_count=count,
         model_version=MODEL_VERSION,
         model_scope=request.app.state.model_scope,
+    )
+
+
+@app.post(
+    "/internal/v1/predictions/queue/next-hour",
+    response_model=QueuePredictionResponse,
+    dependencies=[Depends(require_ml_api_key)],
+)
+async def predict_queue_next_hour(payload: QueuePredictionRequest, request: Request) -> QueuePredictionResponse:
+    """Predict checkpoint waiting time for the next hour."""
+    if not request.app.state.queue_model_loaded:
+        raise HTTPException(status_code=503, detail="Queue waiting-time model is not ready")
+
+    try:
+        prediction = predict_queue_wait(payload.features.model_dump())
+    except (ValueError, TypeError) as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+    except Exception as exc:
+        logger.exception("Queue inference failed")
+        raise HTTPException(status_code=500, detail="Queue inference failed") from exc
+
+    return QueuePredictionResponse(
+        predicted_wait_minutes=prediction["predicted_wait_minutes"],
+        unit=prediction["unit"],
+        horizon_hours=prediction["horizon_hours"],
+        model_version=prediction["model_version"],
+        model_scope=prediction["model_scope"],
     )
