@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../theme/app_theme.dart';
+import 'queue_radar_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   final String? phoneNumber;
@@ -558,8 +559,11 @@ class _HomeScreenState extends State<HomeScreen> {
           title: 'Shortest Queue',
           subtitle: 'Gate 4-B Express Entry',
           onTap: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Navigating to Gate 4-B (Express Entry)')),
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => const QueueRadarScreen(),
+              ),
             );
           },
         ),
@@ -1383,6 +1387,14 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+  
+  void _showQuietSpotReservationDialog(BuildContext context) {
+    showDialog<void>(
+      context: context,
+      builder: (_) => _QuietSpotReservationDialog(parentContext: context),
+    );
+  }
+
 
   Widget _buildAartiSurgeCard() {
     return Container(
@@ -1503,7 +1515,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 style: GoogleFonts.inter(fontSize: 11, color: AppTheme.onSurfaceVariant),
               ),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () => _showQuietSpotReservationDialog(context),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppTheme.surfaceContainerHigh,
                   foregroundColor: AppTheme.onSurface,
@@ -1571,6 +1583,117 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
+    );
+  }
+}
+
+
+class _QuietSpotReservationDialog extends StatefulWidget {
+  final BuildContext parentContext;
+
+  const _QuietSpotReservationDialog({required this.parentContext});
+
+  @override
+  State<_QuietSpotReservationDialog> createState() => _QuietSpotReservationDialogState();
+}
+
+class _QuietSpotReservationDialogState extends State<_QuietSpotReservationDialog> {
+  late final TextEditingController _nameController;
+  int _selectedPeople = 1;
+
+  @override
+  void initState() {
+    super.initState();
+    _nameController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    super.dispose();
+  }
+
+  void _onConfirm() {
+    final name = _nameController.text.trim();
+
+    if (name.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please enter your name.'),
+        ),
+      );
+      return;
+    }
+
+    FocusScope.of(context).unfocus();
+    Navigator.of(context).pop();
+
+    ScaffoldMessenger.of(widget.parentContext).showSnackBar(
+      SnackBar(
+        content: Text(
+          'Reservation request recorded locally for '
+          '$name ($_selectedPeople people).',
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Reserve a Quiet Spot'),
+      content: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text('Maha Ganga Aarti'),
+            const SizedBox(height: 4),
+            const Text('Dashashwamedh Sector Amphitheatre'),
+            const SizedBox(height: 16),
+            TextField(
+              controller: _nameController,
+              decoration: const InputDecoration(
+                labelText: 'Your name',
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 16),
+            const Text('Number of people'),
+            Row(
+              children: [
+                IconButton(
+                  onPressed: _selectedPeople > 1
+                      ? () => setState(
+                            () => _selectedPeople--,
+                          )
+                      : null,
+                  icon: const Icon(Icons.remove_circle_outline),
+                ),
+                Text('$_selectedPeople'),
+                IconButton(
+                  onPressed: _selectedPeople < 6
+                      ? () => setState(
+                            () => _selectedPeople++,
+                          )
+                      : null,
+                  icon: const Icon(Icons.add_circle_outline),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(),
+          child: const Text('Cancel'),
+        ),
+        ElevatedButton(
+          onPressed: _onConfirm,
+          child: const Text('Confirm'),
+        ),
+      ],
     );
   }
 }
