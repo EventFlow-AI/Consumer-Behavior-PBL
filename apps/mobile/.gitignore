@@ -46,11 +46,3 @@ app.*.map.json
 
 # Widget Preview related
 .widget_preview/
-
-# Generated plugin registrants & ephemeral files
-**/GeneratedPluginRegistrant.*
-**/generated_plugin_registrant.*
-**/generated_plugins.cmake
-**/ephemeral/
-**/local.properties
-.gradle/
