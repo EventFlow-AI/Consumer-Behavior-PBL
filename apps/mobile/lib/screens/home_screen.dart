@@ -4,6 +4,7 @@ import '../theme/app_theme.dart';
 import 'queue_radar_screen.dart';
 import 'water_wc_screen.dart';
 import 'medical_sos_screen.dart';
+import 'family_radar_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   final String? phoneNumber;
@@ -585,8 +586,11 @@ class _HomeScreenState extends State<HomeScreen> {
           title: 'Find My Family',
           subtitle: '3 linked • 45m away',
           onTap: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Opening Kin Locator Radar')),
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => const FamilyRadarScreen(),
+              ),
             );
           },
         ),

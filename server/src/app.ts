@@ -16,6 +16,7 @@ import brandRoutes from "./modules/brand/brand.routes.js";
 import offerRoutes from "./modules/offer/offer.routes.js";
 import interactionRoutes from "./modules/interaction/interaction.routes.js";
 import consumerInsightsRoutes from "./modules/consumer-insights/consumer-insights.routes.js";
+import familyRoutes from "./modules/family/family.routes.js";
 
 dotenv.config();
 
@@ -45,4 +46,5 @@ app.use("/api/v1", brandRoutes);
 app.use("/api/v1", offerRoutes);
 app.use("/api/v1", interactionRoutes);
 app.use("/api/v1", consumerInsightsRoutes);
+app.use("/api/v1/family", familyRoutes);
 export default app;
