@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../theme/app_theme.dart';
 import 'queue_radar_screen.dart';
+import 'water_wc_screen.dart';
+import 'medical_sos_screen.dart';
+import 'family_radar_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   final String? phoneNumber;
@@ -583,8 +586,11 @@ class _HomeScreenState extends State<HomeScreen> {
           title: 'Find My Family',
           subtitle: '3 linked • 45m away',
           onTap: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Opening Kin Locator Radar')),
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => const FamilyRadarScreen(),
+              ),
             );
           },
         ),
@@ -596,18 +602,21 @@ class _HomeScreenState extends State<HomeScreen> {
           title: 'Water & WC',
           subtitle: 'Clean Point C-8',
           onTap: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Routing to Water ATM Point C-8')),
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => const WaterWcScreen(),
+              ),
             );
           },
         ),
         // Action 4: Medical / SOS (High-priority red card)
         GestureDetector(
           onTap: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Emergency Beacon Triggered! Paramedics Notified.'),
-                backgroundColor: AppTheme.error,
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => const MedicalSosScreen(),
               ),
             );
           },
@@ -831,11 +840,49 @@ class _HomeScreenState extends State<HomeScreen> {
           const SizedBox(height: 8),
           Row(
             children: [
-              _buildAmenityCard(icon: Icons.wc, label: 'Toilets', status: '4 Free', note: 'Pillar C-8', statusColor: AppTheme.secondary),
+              _buildAmenityCard(
+                icon: Icons.wc,
+                label: 'Toilets',
+                status: '4 Free',
+                note: 'Pillar C-8',
+                statusColor: AppTheme.secondary,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const WaterWcScreen(
+                        initialCategory: WaterWcCategory.restrooms,
+                      ),
+                    ),
+                  );
+                },
+              ),
               const SizedBox(width: 8),
-              _buildAmenityCard(icon: Icons.local_drink, label: 'Water ATM', status: '100% On', note: '40m South', statusColor: AppTheme.primary),
+              _buildAmenityCard(
+                icon: Icons.local_drink,
+                label: 'Water ATM',
+                status: '100% On',
+                note: '40m South',
+                statusColor: AppTheme.primary,
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const WaterWcScreen(
+                        initialCategory: WaterWcCategory.waterAtm,
+                      ),
+                    ),
+                  );
+                },
+              ),
               const SizedBox(width: 8),
-              _buildAmenityCard(icon: Icons.person_search, label: 'Lost/Found', status: 'Camp 9', note: '250m West', statusColor: AppTheme.primary),
+              _buildAmenityCard(
+                icon: Icons.person_search,
+                label: 'Lost/Found',
+                status: 'Camp 9',
+                note: '250m West',
+                statusColor: AppTheme.primary,
+              ),
             ],
           ),
         ],
@@ -849,55 +896,63 @@ class _HomeScreenState extends State<HomeScreen> {
     required String status,
     required String note,
     required Color statusColor,
+    VoidCallback? onTap,
   }) {
     return Expanded(
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-        decoration: BoxDecoration(
-          color: AppTheme.surfaceContainerLowest,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
           borderRadius: BorderRadius.circular(10),
-          boxShadow: const [
-            BoxShadow(
-              color: Color(0x04000000),
-              blurRadius: 4,
-              offset: Offset(0, 1),
+          onTap: onTap,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+            decoration: BoxDecoration(
+              color: AppTheme.surfaceContainerLowest,
+              borderRadius: BorderRadius.circular(10),
+              boxShadow: const [
+                BoxShadow(
+                  color: Color(0x04000000),
+                  blurRadius: 4,
+                  offset: Offset(0, 1),
+                ),
+              ],
             ),
-          ],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Icon(icon, size: 12, color: AppTheme.onSurfaceVariant),
-                const SizedBox(width: 3),
+                Row(
+                  children: [
+                    Icon(icon, size: 12, color: AppTheme.onSurfaceVariant),
+                    const SizedBox(width: 3),
+                    Text(
+                      label,
+                      style: GoogleFonts.inter(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w600,
+                        color: AppTheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 2),
                 Text(
-                  label,
+                  status,
                   style: GoogleFonts.inter(
-                    fontSize: 10,
-                    fontWeight: FontWeight.w600,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w800,
+                    color: statusColor,
+                  ),
+                ),
+                Text(
+                  note,
+                  style: GoogleFonts.inter(
+                    fontSize: 9.5,
                     color: AppTheme.onSurfaceVariant,
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 2),
-            Text(
-              status,
-              style: GoogleFonts.inter(
-                fontSize: 13,
-                fontWeight: FontWeight.w800,
-                color: statusColor,
-              ),
-            ),
-            Text(
-              note,
-              style: GoogleFonts.inter(
-                fontSize: 9.5,
-                color: AppTheme.onSurfaceVariant,
-              ),
-            ),
-          ],
+          ),
         ),
       ),
     );
@@ -1551,6 +1606,15 @@ class _HomeScreenState extends State<HomeScreen> {
       child: BottomNavigationBar(
         currentIndex: _currentNavIndex,
         onTap: (index) {
+          if (index == 3) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => const MedicalSosScreen(),
+              ),
+            );
+            return;
+          }
           setState(() {
             _currentNavIndex = index;
           });
