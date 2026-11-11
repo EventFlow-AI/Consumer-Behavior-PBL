@@ -1,11 +1,15 @@
 import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import {
-  getEvents,
-  type EventRecord,
-} from "../api/events";
+import { getEvents, type EventRecord } from "../api/events";
 import { logout } from "../api/auth";
+
+function formatType(value: string) {
+  return value
+    .replaceAll("_", " ")
+    .toLowerCase()
+    .replace(/\b\w/g, (letter) => letter.toUpperCase());
+}
 
 export default function HomePage() {
   const navigate = useNavigate();
@@ -46,34 +50,18 @@ export default function HomePage() {
 
   const filteredEvents = useMemo(() => {
     const query = search.trim().toLowerCase();
+    if (!query) return events;
 
-    if (!query) {
-      return events;
-    }
-
-    return events.filter((event) => {
-      return [
-        event.name,
-        event.description ?? "",
-        event.eventType,
-      ].some((value) =>
-        value.toLowerCase().includes(query),
-      );
-    });
+    return events.filter((event) =>
+      [event.name, event.description ?? "", event.eventType].some(
+        (value) => value.toLowerCase().includes(query),
+      ),
+    );
   }, [events, search]);
 
   function handleLogout() {
     logout();
     navigate("/login");
-  }
-
-  function formatType(value: string) {
-    return value
-      .replaceAll("_", " ")
-      .toLowerCase()
-      .replace(/\b\w/g, (letter) =>
-        letter.toUpperCase(),
-      );
   }
 
   return (
@@ -85,7 +73,6 @@ export default function HomePage() {
           onClick={() => navigate("/")}
         >
           <span className="brand-mark">RS</span>
-
           <span className="brand-copy">
             <strong>Rahat Setu</strong>
             <small>Event intelligence</small>
@@ -93,10 +80,7 @@ export default function HomePage() {
         </button>
 
         <div className="topbar-actions">
-          <span className="topbar-active">
-            Events
-          </span>
-
+          <span className="topbar-active">Events</span>
           <button
             type="button"
             className="quiet-button"
@@ -108,26 +92,19 @@ export default function HomePage() {
       </header>
 
       <main className="page">
-        <section className="page-intro">
-          <span className="kicker">
-            EVENT DISCOVERY
-          </span>
-
-          <h1>Find your event.</h1>
-
+        <section className="page-intro hero">
+          <h1>Find your event</h1>
           <p>
-            Crowd forecasts, facilities, live alerts and
-            attendee offers — together in one place.
+            Crowd forecasts, facilities, live alerts and attendee
+            offers, together in one place.
           </p>
 
           <div className="search-box">
             <input
               type="search"
               value={search}
-              onChange={(event) =>
-                setSearch(event.target.value)
-              }
-              placeholder="Search events"
+              onChange={(event) => setSearch(event.target.value)}
+              placeholder="Search by name, type or description"
               aria-label="Search events"
             />
           </div>
@@ -136,30 +113,31 @@ export default function HomePage() {
         <section className="events-area">
           <div className="section-bar">
             <div>
-              <h2>Live & upcoming</h2>
+              <h2>Live and upcoming</h2>
               <p>
                 {filteredEvents.length} event
-                {filteredEvents.length === 1
-                  ? ""
-                  : "s"}{" "}
-                available
+                {filteredEvents.length === 1 ? "" : "s"} available
               </p>
             </div>
           </div>
 
           {error && (
-            <div className="error-message">
+            <div className="error-message" role="alert">
               {error}
             </div>
           )}
 
           {loading ? (
-            <div className="simple-empty">
-              Loading events…
+            <div className="event-list" aria-busy="true">
+              {[0, 1, 2].map((n) => (
+                <div className="event-row skeleton" key={n} />
+              ))}
             </div>
           ) : filteredEvents.length === 0 ? (
             <div className="simple-empty">
-              No matching events found.
+              {search
+                ? "No events match your search. Try a different word."
+                : "No live or upcoming events right now."}
             </div>
           ) : (
             <div className="event-list">
@@ -168,9 +146,7 @@ export default function HomePage() {
                   type="button"
                   className="event-row"
                   key={event.id}
-                  onClick={() =>
-                    navigate(`/events/${event.id}`)
-                  }
+                  onClick={() => navigate(`/events/${event.id}`)}
                 >
                   <div className="event-row-main">
                     <div className="event-row-tags">
@@ -179,11 +155,8 @@ export default function HomePage() {
                       >
                         {event.status}
                       </span>
-
                       <span className="muted-tag">
-                        {formatType(
-                          event.eventType,
-                        )}
+                        {formatType(event.eventType)}
                       </span>
                     </div>
 
@@ -201,14 +174,11 @@ export default function HomePage() {
                       <strong>
                         {new Date(
                           event.startTime,
-                        ).toLocaleDateString(
-                          undefined,
-                          {
-                            day: "numeric",
-                            month: "short",
-                            year: "numeric",
-                          },
-                        )}
+                        ).toLocaleDateString(undefined, {
+                          day: "numeric",
+                          month: "short",
+                          year: "numeric",
+                        })}
                       </strong>
                     </div>
 
@@ -217,17 +187,14 @@ export default function HomePage() {
                       <strong>
                         {new Date(
                           event.startTime,
-                        ).toLocaleTimeString(
-                          undefined,
-                          {
-                            hour: "numeric",
-                            minute: "2-digit",
-                          },
-                        )}
+                        ).toLocaleTimeString(undefined, {
+                          hour: "numeric",
+                          minute: "2-digit",
+                        })}
                       </strong>
                     </div>
 
-                    <span className="event-arrow">
+                    <span className="event-arrow" aria-hidden="true">
                       →
                     </span>
                   </div>
@@ -237,6 +204,11 @@ export default function HomePage() {
           )}
         </section>
       </main>
+
+      <footer className="site-footer">
+        <strong>Rahat Setu</strong>
+        <span>Event intelligence for attendees</span>
+      </footer>
     </div>
   );
 }
