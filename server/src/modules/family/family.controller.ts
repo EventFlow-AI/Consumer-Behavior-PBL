@@ -2,6 +2,10 @@ import { Request, Response } from "express";
 import { FamilyService } from "./family.service.js";
 import { AuthenticatedRequest } from "../../middleware/auth.middleware.js";
 
+function getParamId(param: string | string[]): string {
+  return Array.isArray(param) ? param[0] : param;
+}
+
 export const createGroup = async (req: AuthenticatedRequest, res: Response) => {
   try {
     const userId = req.user?.userId || req.body.userId || "usr_guest";
@@ -124,8 +128,7 @@ export const updateLocation = async (req: AuthenticatedRequest, res: Response) =
 
 export const addMeetingPoint = async (req: Request, res: Response) => {
   try {
-    const rawGroupId = req.params.groupId;
-    const groupId = Array.isArray(rawGroupId) ? rawGroupId[0] : rawGroupId;
+    const groupId = getParamId(req.params.groupId);
     const { name, landmark, latitude, longitude } = req.body;
 
     if (!groupId || !name || latitude === undefined || longitude === undefined) {
