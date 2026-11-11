@@ -8,7 +8,7 @@ import RegisterPage from "./pages/RegisterPage";
 import HomePage from "./pages/HomePage";
 import { getToken } from "./api/client";
 import EventDetailsPage from "./pages/EventDetailsPage";
-import "./App.css";
+import "./pages/rahat-setu.css";
 
 function ProtectedRoute({
   children,
