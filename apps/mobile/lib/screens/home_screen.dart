@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../services/supabase_mobile_service.dart';
 import '../theme/app_theme.dart';
 import 'queue_radar_screen.dart';
 import 'water_wc_screen.dart';
@@ -80,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ClipRRect(
             borderRadius: BorderRadius.circular(8),
             child: Image.asset(
-              'assets/images/Logo.png',
+              'assets/images/logo.webp',
               width: 32,
               height: 32,
               errorBuilder: (context, error, stackTrace) => Container(
@@ -1677,7 +1678,7 @@ class _QuietSpotReservationDialogState extends State<_QuietSpotReservationDialog
     super.dispose();
   }
 
-  void _onConfirm() {
+  Future<void> _onConfirm() async {
     final name = _nameController.text.trim();
 
     if (name.isEmpty) {
@@ -1692,14 +1693,30 @@ class _QuietSpotReservationDialogState extends State<_QuietSpotReservationDialog
     FocusScope.of(context).unfocus();
     Navigator.of(context).pop();
 
-    ScaffoldMessenger.of(widget.parentContext).showSnackBar(
-      SnackBar(
-        content: Text(
-          'Reservation request recorded locally for '
-          '$name ($_selectedPeople people).',
+    try {
+      await SupabaseMobileService.instance.createQuietReservation(
+        visitorName: name,
+        peopleCount: _selectedPeople,
+      );
+      if (!widget.parentContext.mounted) return;
+      ScaffoldMessenger.of(widget.parentContext).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Quiet spot confirmed for $name ($_selectedPeople people) and synced to Admin Dashboard.',
+          ),
+          backgroundColor: AppTheme.secondary,
         ),
-      ),
-    );
+      );
+    } catch (_) {
+      if (!widget.parentContext.mounted) return;
+      ScaffoldMessenger.of(widget.parentContext).showSnackBar(
+        SnackBar(
+          content: Text(
+            'Reservation recorded locally for $name ($_selectedPeople people).',
+          ),
+        ),
+      );
+    }
   }
 
   @override

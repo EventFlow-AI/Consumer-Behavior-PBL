@@ -72,7 +72,7 @@ export default function HomePage() {
           className="brand-button"
           onClick={() => navigate("/")}
         >
-          <span className="brand-mark">RS</span>
+          <img className="brand-mark" src="/logo.webp" alt="Rahat Setu logo" />
           <span className="brand-copy">
             <strong>Rahat Setu</strong>
             <small>Event intelligence</small>

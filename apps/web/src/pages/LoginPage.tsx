@@ -34,7 +34,7 @@ export default function LoginPage() {
     <div className="auth-page">
       <aside className="auth-aside">
         <div className="auth-aside-brand">
-          <span className="brand-mark">RS</span>
+          <img className="brand-mark" src="/logo.webp" alt="Rahat Setu logo" />
           <strong>Rahat Setu</strong>
         </div>
 

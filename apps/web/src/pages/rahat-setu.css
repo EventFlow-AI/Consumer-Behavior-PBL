@@ -46,8 +46,7 @@ button { cursor: pointer; }
 .topbar-active { font-weight: 700; font-size: 0.92rem; color: var(--primary); }
 .brand-button { display: flex; align-items: center; gap: 10px; background: none; border: 0; padding: 0; text-align: left; }
 .brand-mark {
-  display: grid; place-items: center; width: 38px; height: 38px; border-radius: 9px; background: var(--primary);
-  color: #fff; font-weight: 800; font-size: 0.9rem; letter-spacing: 0.02em;
+  display: block; width: 38px; height: 38px; object-fit: contain; flex-shrink: 0;
 }
 .brand-copy { display: grid; line-height: 1.2; }
 .brand-copy strong { font-size: 1rem; }
@@ -88,7 +87,11 @@ button { cursor: pointer; }
 .auth-aside {
   background: var(--primary); color: #fff; padding: 48px; display: flex; flex-direction: column; justify-content: space-between;
 }
-.auth-aside .brand-mark { background: #fff; color: var(--primary); }
+.auth-aside .brand-mark {
+  background: transparent;
+  border-radius: 9px;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.16);
+}
 .auth-aside-brand { display: flex; align-items: center; gap: 12px; font-size: 1.1rem; }
 .auth-aside-copy h2 { font-size: clamp(1.8rem, 3vw, 2.5rem); line-height: 1.15; letter-spacing: -0.02em; font-weight: 800; max-width: 14em; }
 .auth-aside-copy p { margin-top: 16px; max-width: 30em; color: rgba(255, 255, 255, 0.82); }

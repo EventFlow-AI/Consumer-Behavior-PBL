@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../services/supabase_mobile_service.dart';
 import '../theme/app_theme.dart';
 
 enum WaterWcCategory {
@@ -1047,20 +1048,41 @@ class _WaterWcScreenState extends State<WaterWcScreen> {
                   child: const Text('Cancel'),
                 ),
                 ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     Navigator.of(ctx).pop();
                     setState(() {
                       _reportedFacilityIds.add(facility.id);
                     });
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        content: Text(
-                          'Demo Report Logged: "$selectedIssue" for ${facility.name}. (Note: This is demo mode; no report was dispatched to actual authorities.)',
+                    try {
+                      await SupabaseMobileService.instance.createFacilityReport(
+                        facilityId: facility.id,
+                        facilityName: facility.name,
+                        facilityType: facility.category == WaterWcCategory.waterAtm
+                            ? 'WATER_ATM'
+                            : 'TOILET',
+                        sector: facility.location,
+                        issueType: selectedIssue,
+                      );
+                      if (!mounted) return;
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(
+                            'Report sent: "$selectedIssue" for ${facility.name}. Visible in Admin & Volunteer Portal.',
+                          ),
+                          backgroundColor: AppTheme.secondary,
+                          duration: const Duration(seconds: 4),
                         ),
-                        backgroundColor: AppTheme.secondary,
-                        duration: const Duration(seconds: 4),
-                      ),
-                    );
+                      );
+                    } catch (e) {
+                      if (!mounted) return;
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Could not send report: $e'),
+                          backgroundColor: AppTheme.error,
+                          duration: const Duration(seconds: 4),
+                        ),
+                      );
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppTheme.error,

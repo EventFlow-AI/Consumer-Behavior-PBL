@@ -1,8 +1,9 @@
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
-import { logoutAdmin } from "../api/auth";
+import { getStoredAdminUser, logoutAdmin } from "../api/auth";
 
 export default function AdminLayout() {
   const navigate = useNavigate();
+  const adminUser = getStoredAdminUser();
 
   function handleLogout() {
     logoutAdmin();
@@ -13,7 +14,11 @@ export default function AdminLayout() {
     <div className="admin-shell">
       <aside className="admin-sidebar">
         <div className="admin-brand">
-          <span className="admin-brand-mark">RS</span>
+          <img
+            className="admin-brand-mark"
+            src="/logo.webp"
+            alt="Rahat Setu logo"
+          />
           <div>
             <strong>Rahat Setu</strong>
             <span>Admin Portal</span>
@@ -39,6 +44,9 @@ export default function AdminLayout() {
 <NavLink to="/consumer-insights">
   Consumer Insights
 </NavLink>
+<NavLink to="/mobile-ops">
+  Field &amp; Mobile Ops
+</NavLink>
         </nav>
 
         <button
@@ -56,9 +64,9 @@ export default function AdminLayout() {
             <span className="admin-topbar-label">Operations Console</span>
           </div>
 
-          <div className="admin-profile">
+          <div className="admin-profile" title={adminUser?.email}>
             <span className="admin-profile-dot" />
-            <span>Administrator</span>
+            <span>{adminUser?.name ?? "Administrator"}</span>
           </div>
         </header>
 

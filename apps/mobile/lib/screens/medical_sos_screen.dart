@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../services/supabase_mobile_service.dart';
 import '../theme/app_theme.dart';
 
 class MedicalFacility {
@@ -44,6 +45,7 @@ class _MedicalSosScreenState extends State<MedicalSosScreen> {
   bool _isSosActive = false;
   int _sosCountdown = 10;
   Timer? _countdownTimer;
+  String? _activeSosAlertId;
 
   // Realistic mock data for Kumbh Sector 4 medical points
   final List<MedicalFacility> _facilities = const [
@@ -120,7 +122,7 @@ class _MedicalSosScreenState extends State<MedicalSosScreen> {
     super.dispose();
   }
 
-  void _triggerSosAlarm() {
+  Future<void> _triggerSosAlarm() async {
     setState(() {
       _isSosActive = true;
       _sosCountdown = 10;
@@ -136,16 +138,59 @@ class _MedicalSosScreenState extends State<MedicalSosScreen> {
         timer.cancel();
       }
     });
+
+    try {
+      final alertId = await SupabaseMobileService.instance.createSosAlert(
+        alertType: 'SOS_ALARM',
+        severity: 'CRITICAL',
+        title: 'Emergency SOS Broadcast',
+        description:
+            'High-priority distress slider triggered from Sector 4 Pole #E-42.',
+      );
+      if (!mounted) return;
+      _activeSosAlertId = alertId;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'SOS broadcast sent to Admin Control Room & Field Volunteers.',
+          ),
+          backgroundColor: AppTheme.error,
+          duration: Duration(seconds: 3),
+        ),
+      );
+    } catch (_) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'SOS active locally (offline fallback — check internet connection).',
+          ),
+          duration: Duration(seconds: 3),
+        ),
+      );
+    }
   }
 
-  void _cancelSosAlarm() {
+  Future<void> _cancelSosAlarm() async {
     _countdownTimer?.cancel();
+    final activeId = _activeSosAlertId;
+    _activeSosAlertId = null;
     setState(() {
       _isSosActive = false;
       _sliderValue = 0.0;
       _sosCountdown = 10;
     });
 
+    if (activeId != null) {
+      try {
+        await SupabaseMobileService.instance.updateSosAlertStatus(
+          activeId,
+          status: 'CANCELLED',
+        );
+      } catch (_) {}
+    }
+
+    if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text('Emergency distress broadcast cancelled.'),
@@ -1263,23 +1308,48 @@ class _MedicalSosScreenState extends State<MedicalSosScreen> {
               child: const Text('Cancel'),
             ),
             ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 Navigator.of(ctx).pop();
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(
-                      'Demo alert logged: "$alertTitle". Sector 4 marshal desk simulated.',
+                final mappedType = alertTitle.contains('Crowd')
+                    ? 'CROWD'
+                    : alertTitle.contains('Missing')
+                        ? 'LOST_PERSON'
+                        : alertTitle.contains('Mobility')
+                            ? 'MOBILITY'
+                            : 'MEDICAL';
+                try {
+                  await SupabaseMobileService.instance.createSosAlert(
+                    alertType: mappedType,
+                    severity: 'HIGH',
+                    title: alertTitle,
+                    description:
+                        'Requested $dispatchedUnit at Sector 4 Pole #E-42.',
+                  );
+                  if (!mounted) return;
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        'Live alert sent: "$alertTitle" ($dispatchedUnit). Visible in Admin & Volunteer Portal.',
+                      ),
+                      backgroundColor: AppTheme.secondary,
+                      duration: const Duration(seconds: 4),
                     ),
-                    backgroundColor: AppTheme.secondary,
-                    duration: const Duration(seconds: 4),
-                  ),
-                );
+                  );
+                } catch (e) {
+                  if (!mounted) return;
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text('Failed to send alert ($e).'),
+                      backgroundColor: AppTheme.error,
+                    ),
+                  );
+                }
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppTheme.error,
                 foregroundColor: Colors.white,
               ),
-              child: const Text('Confirm Demo Dispatch'),
+              child: const Text('Confirm Dispatch'),
             ),
           ],
         );

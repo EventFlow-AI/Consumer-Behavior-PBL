@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../services/supabase_mobile_service.dart';
 import '../theme/app_theme.dart';
 
 enum QueueCategory {
@@ -251,6 +252,10 @@ class _QueueRadarScreenState extends State<QueueRadarScreen> {
     ],
   };
 
+  late final Map<QueueCategory, List<QueueGateInfo>> _gatesByCategory = {
+    for (final entry in _mockData.entries) entry.key: List.of(entry.value),
+  };
+
   @override
   void initState() {
     super.initState();
@@ -258,10 +263,66 @@ class _QueueRadarScreenState extends State<QueueRadarScreen> {
     if (gates.isNotEmpty) {
       _selectedGateId = gates.first.id;
     }
+    _loadLiveGates();
+  }
+
+  Future<bool> _loadLiveGates() async {
+    try {
+      final live = await SupabaseMobileService.instance.fetchQueueGates();
+      if (!mounted || live.isEmpty) return false;
+      final grouped = <QueueCategory, List<QueueGateInfo>>{
+        QueueCategory.general: [],
+        QueueCategory.senior: [],
+        QueueCategory.vip: [],
+        QueueCategory.prasad: [],
+      };
+      for (final g in live) {
+        final category = switch (g.category) {
+          'senior' => QueueCategory.senior,
+          'vip' => QueueCategory.vip,
+          'prasad' => QueueCategory.prasad,
+          _ => QueueCategory.general,
+        };
+        grouped[category]!.add(
+          QueueGateInfo(
+            id: g.id,
+            name: g.name,
+            sector: g.sector,
+            waitMinutes: g.waitMinutes,
+            walkDistanceMeters: g.walkDistanceMeters,
+            walkMinutes: g.walkMinutes,
+            activeLanes: g.activeLanes,
+            totalLanes: g.totalLanes,
+            throughputPerMin: g.throughputPerMin,
+            capacityRatio: g.capacityRatio,
+            trend: g.trend,
+            isFastest: g.isFastest,
+            isRampAccessible: g.isRampAccessible,
+            directions: g.directions,
+          ),
+        );
+      }
+      setState(() {
+        for (final entry in grouped.entries) {
+          if (entry.value.isNotEmpty) {
+            _gatesByCategory[entry.key] = entry.value;
+          }
+        }
+        _lastUpdated = DateTime.now();
+        final current = _currentGates;
+        if (current.isNotEmpty &&
+            !current.any((gate) => gate.id == _selectedGateId)) {
+          _selectedGateId = current.first.id;
+        }
+      });
+      return true;
+    } catch (_) {
+      return false;
+    }
   }
 
   List<QueueGateInfo> get _currentGates {
-    final list = _mockData[_selectedCategory] ?? [];
+    final list = _gatesByCategory[_selectedCategory] ?? [];
     if (_stepFreeOnly) {
       return list.where((g) => g.isRampAccessible).toList();
     }
@@ -277,16 +338,20 @@ class _QueueRadarScreenState extends State<QueueRadarScreen> {
 
   void _refreshData() async {
     setState(() => _isRefreshing = true);
-    await Future.delayed(const Duration(milliseconds: 600));
+    final synced = await _loadLiveGates();
     if (!mounted) return;
     setState(() {
       _isRefreshing = false;
       _lastUpdated = DateTime.now();
     });
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Queue feed refreshed from venue sensors & BLE mesh.'),
-        duration: Duration(seconds: 2),
+      SnackBar(
+        content: Text(
+          synced
+              ? 'Live queue wait times synced from Control Room.'
+              : 'Offline fallback active (could not reach Supabase).',
+        ),
+        duration: const Duration(seconds: 2),
       ),
     );
   }

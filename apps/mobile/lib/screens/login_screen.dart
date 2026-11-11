@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../services/supabase_mobile_service.dart';
 import '../theme/app_theme.dart';
 import 'home_screen.dart';
+import 'volunteer_dashboard_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -210,7 +212,7 @@ class _LoginScreenState extends State<LoginScreen> {
           ClipRRect(
             borderRadius: BorderRadius.circular(8),
             child: Image.asset(
-              'assets/images/Logo.png',
+              'assets/images/logo.webp',
               width: 32,
               height: 32,
               errorBuilder: (context, error, stackTrace) => Container(
@@ -386,10 +388,8 @@ class _LoginScreenState extends State<LoginScreen> {
           Container(
             width: 76,
             height: 76,
-            padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: AppTheme.primary,
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(18),
               boxShadow: [
                 BoxShadow(
                   color: AppTheme.secondary.withValues(alpha: 0.35),
@@ -398,13 +398,16 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ],
             ),
-            child: Image.asset(
-              'assets/images/Logo.png',
-              fit: BoxFit.contain,
-              errorBuilder: (context, error, stackTrace) => const Icon(
-                Icons.hub,
-                color: AppTheme.secondaryContainer,
-                size: 38,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(18),
+              child: Image.asset(
+                'assets/images/logo.webp',
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) => const Icon(
+                  Icons.hub,
+                  color: AppTheme.secondaryContainer,
+                  size: 38,
+                ),
               ),
             ),
           ),
@@ -546,11 +549,16 @@ class _LoginScreenState extends State<LoginScreen> {
           ElevatedButton(
             onPressed: () {
               final phone = _phoneController.text.trim();
+              final effectivePhone = phone.isNotEmpty ? phone : '98765 43210';
+              SupabaseMobileService.instance.setVisitorSession(
+                phone: effectivePhone,
+                isGuest: false,
+              );
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                   builder: (context) => HomeScreen(
-                    phoneNumber: phone.isNotEmpty ? phone : '98765 43210',
+                    phoneNumber: effectivePhone,
                     isGuest: false,
                   ),
                 ),
@@ -603,6 +611,7 @@ class _LoginScreenState extends State<LoginScreen> {
           // Fast-Path: Continue as Pilgrim / Guest Card
           GestureDetector(
             onTap: () {
+              SupabaseMobileService.instance.setVisitorSession(isGuest: true);
               Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
@@ -782,7 +791,7 @@ class _LoginScreenState extends State<LoginScreen> {
             ),
           ),
           ElevatedButton(
-            onPressed: () {},
+            onPressed: _showVolunteerLoginDialog,
             style: ElevatedButton.styleFrom(
               backgroundColor: AppTheme.primary,
               foregroundColor: Colors.white,
@@ -802,6 +811,157 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ],
       ),
+    );
+  }
+
+  void _showVolunteerLoginDialog() {
+    final badgeController = TextEditingController(text: 'VOL-101');
+    final pinController = TextEditingController(text: '1234');
+    String? errorText;
+    bool submitting = false;
+
+    showDialog<void>(
+      context: context,
+      builder: (dialogContext) {
+        return StatefulBuilder(
+          builder: (ctx, setDialogState) {
+            Future<void> submit() async {
+              final badge = badgeController.text.trim();
+              final pin = pinController.text.trim();
+              if (badge.isEmpty || pin.isEmpty) {
+                setDialogState(
+                  () => errorText = 'Enter your badge code and PIN.',
+                );
+                return;
+              }
+              setDialogState(() {
+                submitting = true;
+                errorText = null;
+              });
+              try {
+                final volunteer = await SupabaseMobileService.instance
+                    .authenticateVolunteer(badgeCode: badge, pin: pin);
+                if (!dialogContext.mounted) return;
+                if (volunteer == null) {
+                  setDialogState(() {
+                    submitting = false;
+                    errorText = 'Invalid badge code or PIN.';
+                  });
+                  return;
+                }
+                Navigator.of(dialogContext).pop();
+                if (!mounted) return;
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) =>
+                        VolunteerDashboardScreen(volunteer: volunteer),
+                  ),
+                );
+              } catch (e) {
+                if (!dialogContext.mounted) return;
+                setDialogState(() {
+                  submitting = false;
+                  errorText = 'Login failed: $e';
+                });
+              }
+            }
+
+            return AlertDialog(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(18),
+              ),
+              title: Row(
+                children: [
+                  const Icon(Icons.shield_outlined, color: AppTheme.primary),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      'Volunteer Portal Login',
+                      style: GoogleFonts.plusJakartaSans(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w800,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              content: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Sign in with your Field Marshal badge to manage live SOS alerts, facility issues, and gate queues.',
+                      style: GoogleFonts.inter(
+                        fontSize: 12,
+                        color: AppTheme.onSurfaceVariant,
+                      ),
+                    ),
+                    const SizedBox(height: 14),
+                    TextField(
+                      controller: badgeController,
+                      textCapitalization: TextCapitalization.characters,
+                      decoration: const InputDecoration(
+                        labelText: 'Badge Code',
+                        hintText: 'VOL-101',
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    TextField(
+                      controller: pinController,
+                      obscureText: true,
+                      keyboardType: TextInputType.number,
+                      decoration: const InputDecoration(
+                        labelText: 'PIN',
+                        hintText: '1234',
+                        border: OutlineInputBorder(),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      'Demo badges: VOL-101 or VOL-102 (PIN: 1234)',
+                      style: GoogleFonts.inter(
+                        fontSize: 11,
+                        color: AppTheme.secondary,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    if (errorText != null) ...[
+                      const SizedBox(height: 8),
+                      Text(
+                        errorText!,
+                        style: GoogleFonts.inter(
+                          fontSize: 12,
+                          color: AppTheme.error,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ],
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: submitting
+                      ? null
+                      : () => Navigator.of(dialogContext).pop(),
+                  child: const Text('Cancel'),
+                ),
+                ElevatedButton(
+                  onPressed: submitting ? null : submit,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppTheme.primary,
+                    foregroundColor: Colors.white,
+                  ),
+                  child: Text(submitting ? 'Signing in...' : 'Open Console'),
+                ),
+              ],
+            );
+          },
+        );
+      },
     );
   }
 

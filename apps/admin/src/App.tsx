@@ -17,6 +17,7 @@ import AnnouncementsPage from "./pages/AnnouncementsPage";
 import BrandsPage from "./pages/BrandsPage";
 import OffersPage from "./pages/OffersPage";
 import ConsumerInsightsPage from "./pages/ConsumerInsightsPage";
+import MobileOpsPage from "./pages/MobileOpsPage";
 import "./App.css";
 
 function App() {
@@ -50,6 +51,7 @@ function App() {
   path="consumer-insights"
   element={<ConsumerInsightsPage />}
 />
+        <Route path="mobile-ops" element={<MobileOpsPage />} />
       </Route>
 
       <Route
