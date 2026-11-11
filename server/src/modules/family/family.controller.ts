@@ -124,7 +124,8 @@ export const updateLocation = async (req: AuthenticatedRequest, res: Response) =
 
 export const addMeetingPoint = async (req: Request, res: Response) => {
   try {
-    const { groupId } = req.params;
+    const rawGroupId = req.params.groupId;
+    const groupId = Array.isArray(rawGroupId) ? rawGroupId[0] : rawGroupId;
     const { name, landmark, latitude, longitude } = req.body;
 
     if (!groupId || !name || latitude === undefined || longitude === undefined) {
