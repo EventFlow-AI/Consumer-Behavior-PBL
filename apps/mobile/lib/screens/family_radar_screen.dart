@@ -346,6 +346,11 @@ class _FamilyRadarScreenState extends State<FamilyRadarScreen>
       ),
       actions: [
         IconButton(
+          tooltip: 'Show / Scan QR Code',
+          icon: const Icon(Icons.qr_code_2, color: Colors.white, size: 24),
+          onPressed: _showInviteSheet,
+        ),
+        IconButton(
           tooltip: 'Invite / Add Member',
           icon: const Icon(Icons.person_add_alt_1, color: Colors.white),
           onPressed: _showInviteSheet,
@@ -1071,7 +1076,9 @@ class _FamilyRadarScreenState extends State<FamilyRadarScreen>
   }
 
   void _showInviteSheet() {
+    int activeTab = 0; // 0 = Show My QR, 1 = Scan Camera, 2 = Type Code
     final codeCtrl = TextEditingController();
+
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -1080,149 +1087,309 @@ class _FamilyRadarScreenState extends State<FamilyRadarScreen>
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
       builder: (ctx) {
-        return Padding(
-          padding: EdgeInsets.fromLTRB(24, 24, 24, MediaQuery.of(ctx).viewInsets.bottom + 24),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                width: 40,
-                height: 4,
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade300,
-                  borderRadius: BorderRadius.circular(2),
-                ),
-              ),
-              const SizedBox(height: 16),
-              Text(
-                'Link Family & Kin',
-                style: GoogleFonts.plusJakartaSans(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w800,
-                  color: AppTheme.primary,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                'Share your code or enter another family member\'s code to link radar.',
-                textAlign: TextAlign.center,
-                style: GoogleFonts.plusJakartaSans(
-                  fontSize: 12,
-                  color: AppTheme.outline,
-                ),
-              ),
-              const SizedBox(height: 16),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                decoration: BoxDecoration(
-                  color: AppTheme.surfaceContainerLow,
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: AppTheme.secondary.withOpacity(0.3)),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+        return StatefulBuilder(
+          builder: (context, setSheetState) {
+            return Container(
+              padding: EdgeInsets.fromLTRB(20, 16, 20, MediaQuery.of(ctx).viewInsets.bottom + 24),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Container(
+                    width: 40,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      color: Colors.grey.shade300,
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                  const SizedBox(height: 14),
+                  Text(
+                    'Family Circle QR & Code',
+                    style: GoogleFonts.plusJakartaSans(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w800,
+                      color: AppTheme.primary,
+                    ),
+                  ),
+                  const SizedBox(height: 14),
+
+                  // 3-Segment Tab Bar
+                  Container(
+                    decoration: BoxDecoration(
+                      color: AppTheme.surfaceContainerHigh,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    padding: const EdgeInsets.all(3),
+                    child: Row(
                       children: [
-                        Text(
-                          'YOUR ACTIVE CODE',
-                          style: GoogleFonts.plusJakartaSans(
-                            fontSize: 10,
-                            fontWeight: FontWeight.w700,
-                            color: AppTheme.outline,
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () => setSheetState(() => activeTab = 0),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(vertical: 8),
+                              decoration: BoxDecoration(
+                                color: activeTab == 0 ? Colors.white : Colors.transparent,
+                                borderRadius: BorderRadius.circular(9),
+                                boxShadow: activeTab == 0
+                                    ? [BoxShadow(color: Colors.black.withOpacity(0.06), blurRadius: 4)]
+                                    : null,
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.qr_code, size: 16, color: activeTab == 0 ? AppTheme.primary : AppTheme.outline),
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    'My QR',
+                                    style: GoogleFonts.plusJakartaSans(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w700,
+                                      color: activeTab == 0 ? AppTheme.primary : AppTheme.outline,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                         ),
-                        Text(
-                          _groupCode,
-                          style: GoogleFonts.plusJakartaSans(
-                            fontSize: 24,
-                            fontWeight: FontWeight.w900,
-                            letterSpacing: 2,
-                            color: AppTheme.primary,
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () => setSheetState(() => activeTab = 1),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(vertical: 8),
+                              decoration: BoxDecoration(
+                                color: activeTab == 1 ? Colors.white : Colors.transparent,
+                                borderRadius: BorderRadius.circular(9),
+                                boxShadow: activeTab == 1
+                                    ? [BoxShadow(color: Colors.black.withOpacity(0.06), blurRadius: 4)]
+                                    : null,
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.camera_alt_outlined, size: 16, color: activeTab == 1 ? AppTheme.primary : AppTheme.outline),
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    'Scan Camera',
+                                    style: GoogleFonts.plusJakartaSans(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w700,
+                                      color: activeTab == 1 ? AppTheme.primary : AppTheme.outline,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () => setSheetState(() => activeTab = 2),
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(vertical: 8),
+                              decoration: BoxDecoration(
+                                color: activeTab == 2 ? Colors.white : Colors.transparent,
+                                borderRadius: BorderRadius.circular(9),
+                                boxShadow: activeTab == 2
+                                    ? [BoxShadow(color: Colors.black.withOpacity(0.06), blurRadius: 4)]
+                                    : null,
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.keyboard, size: 16, color: activeTab == 2 ? AppTheme.primary : AppTheme.outline),
+                                  const SizedBox(width: 4),
+                                  Text(
+                                    'Type Code',
+                                    style: GoogleFonts.plusJakartaSans(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w700,
+                                      color: activeTab == 2 ? AppTheme.primary : AppTheme.outline,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
                         ),
                       ],
                     ),
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        IconButton(
-                          tooltip: 'Show QR Code',
-                          icon: const Icon(Icons.qr_code, color: AppTheme.secondary),
-                          onPressed: () {
-                            Navigator.pop(ctx);
-                            _showMyQrCodeModal(context);
-                          },
+                  ),
+
+                  const SizedBox(height: 18),
+
+                  // TAB 0: SHOW MY QR CODE
+                  if (activeTab == 0) ...[
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(color: AppTheme.outlineVariant.withOpacity(0.4)),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withOpacity(0.04),
+                            blurRadius: 10,
+                            offset: const Offset(0, 4),
+                          ),
+                        ],
+                      ),
+                      child: QrImageView(
+                        data: 'EVENTFLOW:FAMILY:$_groupCode',
+                        version: QrVersions.auto,
+                        size: 190.0,
+                        eyeStyle: const QrEyeStyle(
+                          eyeShape: QrEyeShape.square,
+                          color: AppTheme.primary,
                         ),
-                        IconButton(
-                          tooltip: 'Copy Code',
-                          icon: const Icon(Icons.copy, color: AppTheme.secondary),
-                          onPressed: () {
-                            Navigator.pop(ctx);
-                            _showInfoSnackbar('Code $_groupCode copied to clipboard!');
-                          },
+                        dataModuleStyle: const QrDataModuleStyle(
+                          dataModuleShape: QrDataModuleShape.square,
+                          color: AppTheme.primary,
                         ),
-                      ],
+                      ),
+                    ),
+                    const SizedBox(height: 14),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                      decoration: BoxDecoration(
+                        color: AppTheme.surfaceContainerLow,
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(color: AppTheme.secondary.withOpacity(0.2)),
+                      ),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            _groupCode,
+                            style: GoogleFonts.plusJakartaSans(
+                              fontSize: 22,
+                              fontWeight: FontWeight.w900,
+                              letterSpacing: 2,
+                              color: AppTheme.primary,
+                            ),
+                          ),
+                          const SizedBox(width: 10),
+                          IconButton(
+                            icon: const Icon(Icons.copy, size: 18, color: AppTheme.secondary),
+                            onPressed: () {
+                              _showInfoSnackbar('Code $_groupCode copied to clipboard!');
+                            },
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Hold up this QR code for your family member to scan',
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.plusJakartaSans(
+                        fontSize: 12,
+                        color: AppTheme.outline,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ],
-                ),
-              ),
-              const SizedBox(height: 16),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextField(
+
+                  // TAB 1: SCAN CAMERA QR
+                  if (activeTab == 1) ...[
+                    Container(
+                      height: 250,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.circular(18),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(18),
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            MobileScanner(
+                              onDetect: (capture) {
+                                final barcodes = capture.barcodes;
+                                for (final barcode in barcodes) {
+                                  if (barcode.rawValue != null) {
+                                    final raw = barcode.rawValue!;
+                                    final code = raw.replaceFirst('EVENTFLOW:FAMILY:', '').trim();
+                                    if (code.isNotEmpty) {
+                                      Navigator.pop(ctx);
+                                      _joinGroupByApi(code);
+                                      break;
+                                    }
+                                  }
+                                }
+                              },
+                            ),
+                            Container(
+                              width: 180,
+                              height: 180,
+                              decoration: BoxDecoration(
+                                border: Border.all(color: AppTheme.secondaryContainer, width: 2.5),
+                                borderRadius: BorderRadius.circular(16),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 10),
+                    Text(
+                      'Align the family QR code within the frame to join automatically',
+                      textAlign: TextAlign.center,
+                      style: GoogleFonts.plusJakartaSans(
+                        fontSize: 12,
+                        color: AppTheme.outline,
+                      ),
+                    ),
+                  ],
+
+                  // TAB 2: TYPE CODE
+                  if (activeTab == 2) ...[
+                    const SizedBox(height: 10),
+                    TextField(
                       controller: codeCtrl,
                       textCapitalization: TextCapitalization.characters,
                       decoration: InputDecoration(
                         hintText: 'Enter 6-char code (e.g. EVF-123)',
-                        hintStyle: GoogleFonts.plusJakartaSans(fontSize: 12),
-                        contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+                        hintStyle: GoogleFonts.plusJakartaSans(fontSize: 13),
+                        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: const BorderSide(color: AppTheme.outlineVariant),
                         ),
                       ),
                     ),
-                  ),
-                  const SizedBox(width: 8),
-                  IconButton.filled(
-                    style: IconButton.styleFrom(
-                      backgroundColor: AppTheme.primary,
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.all(12),
-                    ),
-                    icon: const Icon(Icons.qr_code_scanner, size: 22),
-                    tooltip: 'Scan Family QR Code',
-                    onPressed: () {
-                      Navigator.pop(ctx);
-                      _openCameraQrScanner(context);
-                    },
-                  ),
-                  const SizedBox(width: 8),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppTheme.secondary,
-                      foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                    const SizedBox(height: 14),
+                    ElevatedButton.icon(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppTheme.secondary,
+                        foregroundColor: Colors.white,
+                        minimumSize: const Size.fromHeight(48),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                       ),
+                      icon: const Icon(Icons.link),
+                      label: Text(
+                        'Join Family Group',
+                        style: GoogleFonts.plusJakartaSans(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 14,
+                        ),
+                      ),
+                      onPressed: () async {
+                        final input = codeCtrl.text.trim();
+                        if (input.isNotEmpty) {
+                          Navigator.pop(ctx);
+                          await _joinGroupByApi(input);
+                        }
+                      },
                     ),
-                    child: const Text('Join'),
-                    onPressed: () async {
-                      final input = codeCtrl.text.trim();
-                      if (input.isNotEmpty) {
-                        Navigator.pop(ctx);
-                        await _joinGroupByApi(input);
-                      }
-                    },
-                  ),
+                  ],
                 ],
               ),
-            ],
-          ),
+            );
+          },
         );
       },
     );
