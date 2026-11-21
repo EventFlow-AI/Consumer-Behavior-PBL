@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../services/supabase_mobile_service.dart';
@@ -27,6 +28,53 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   int _currentNavIndex = 0;
   bool _isPlayingAnnouncement = false;
+  final FlutterTts _flutterTts = FlutterTts();
+
+  @override
+  void initState() {
+    super.initState();
+    _initTts();
+  }
+
+  void _initTts() async {
+    try {
+      await _flutterTts.setLanguage("hi-IN");
+      await _flutterTts.setSpeechRate(0.48);
+      await _flutterTts.setVolume(1.0);
+      await _flutterTts.setPitch(1.0);
+      _flutterTts.setCompletionHandler(() {
+        if (mounted) {
+          setState(() {
+            _isPlayingAnnouncement = false;
+          });
+        }
+      });
+    } catch (_) {}
+  }
+
+  @override
+  void dispose() {
+    _flutterTts.stop();
+    super.dispose();
+  }
+
+  Future<void> _toggleAudioAnnouncement() async {
+    if (_isPlayingAnnouncement) {
+      await _flutterTts.stop();
+      setState(() {
+        _isPlayingAnnouncement = false;
+      });
+    } else {
+      setState(() {
+        _isPlayingAnnouncement = true;
+      });
+      try {
+        await _flutterTts.speak(
+          "ध्यान दें: पोंटून पुल संख्या 3 केवल निकास के लिए खुला है। गेट 4-बी पर प्रतीक्षा समय सबसे कम है, केवल 5 मिनट। Attention: Pontoon Bridge 3 is open exclusively for exit flow. Gate 4-B has the shortest wait time, under 5 minutes."
+        );
+      } catch (_) {}
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -493,11 +541,7 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Row(
               children: [
                 GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      _isPlayingAnnouncement = !_isPlayingAnnouncement;
-                    });
-                  },
+                  onTap: _toggleAudioAnnouncement,
                   child: Container(
                     width: 32,
                     height: 32,
@@ -1732,6 +1776,7 @@ class _HomeScreenState extends State<HomeScreen> {
           IconButton(
             icon: const Icon(Icons.close, size: 16, color: Colors.white70),
             onPressed: () {
+              _flutterTts.stop();
               setState(() {
                 _isPlayingAnnouncement = false;
               });

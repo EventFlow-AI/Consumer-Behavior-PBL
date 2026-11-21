@@ -4,6 +4,8 @@ import 'dart:io';
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import '../theme/app_theme.dart';
 import 'medical_sos_screen.dart';
 
@@ -1142,12 +1144,26 @@ class _FamilyRadarScreenState extends State<FamilyRadarScreen>
                         ),
                       ],
                     ),
-                    IconButton(
-                      icon: const Icon(Icons.copy, color: AppTheme.secondary),
-                      onPressed: () {
-                        Navigator.pop(ctx);
-                        _showInfoSnackbar('Code $_groupCode copied to clipboard!');
-                      },
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          tooltip: 'Show QR Code',
+                          icon: const Icon(Icons.qr_code, color: AppTheme.secondary),
+                          onPressed: () {
+                            Navigator.pop(ctx);
+                            _showMyQrCodeModal(context);
+                          },
+                        ),
+                        IconButton(
+                          tooltip: 'Copy Code',
+                          icon: const Icon(Icons.copy, color: AppTheme.secondary),
+                          onPressed: () {
+                            Navigator.pop(ctx);
+                            _showInfoSnackbar('Code $_groupCode copied to clipboard!');
+                          },
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -1171,11 +1187,25 @@ class _FamilyRadarScreenState extends State<FamilyRadarScreen>
                     ),
                   ),
                   const SizedBox(width: 8),
+                  IconButton.filled(
+                    style: IconButton.styleFrom(
+                      backgroundColor: AppTheme.primary,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.all(12),
+                    ),
+                    icon: const Icon(Icons.qr_code_scanner, size: 22),
+                    tooltip: 'Scan Family QR Code',
+                    onPressed: () {
+                      Navigator.pop(ctx);
+                      _openCameraQrScanner(context);
+                    },
+                  ),
+                  const SizedBox(width: 8),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppTheme.secondary,
                       foregroundColor: Colors.white,
-                      padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -1220,6 +1250,164 @@ class _FamilyRadarScreenState extends State<FamilyRadarScreen>
     } catch (_) {
       _showInfoSnackbar('Linked with code $code in offline mock mode');
     }
+  }
+
+  void _showMyQrCodeModal(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        backgroundColor: Colors.white,
+        title: Column(
+          children: [
+            Text(
+              'Family Circle QR',
+              style: GoogleFonts.plusJakartaSans(
+                fontWeight: FontWeight.w800,
+                fontSize: 18,
+                color: AppTheme.primary,
+              ),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              _groupName,
+              style: GoogleFonts.plusJakartaSans(
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
+                color: AppTheme.secondary,
+              ),
+            ),
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: AppTheme.outlineVariant.withOpacity(0.5)),
+              ),
+              child: QrImageView(
+                data: 'EVENTFLOW:FAMILY:$_groupCode',
+                version: QrVersions.auto,
+                size: 200.0,
+                eyeStyle: const QrEyeStyle(
+                  eyeShape: QrEyeShape.square,
+                  color: AppTheme.primary,
+                ),
+                dataModuleStyle: const QrDataModuleStyle(
+                  dataModuleShape: QrDataModuleShape.square,
+                  color: AppTheme.primary,
+                ),
+              ),
+            ),
+            const SizedBox(height: 14),
+            Text(
+              'Invite Code: $_groupCode',
+              style: GoogleFonts.plusJakartaSans(
+                fontSize: 16,
+                fontWeight: FontWeight.w900,
+                letterSpacing: 2,
+                color: AppTheme.primary,
+              ),
+            ),
+            const SizedBox(height: 6),
+            Text(
+              'Other members can point their Rahat Setu camera at this screen to instantly connect.',
+              textAlign: TextAlign.center,
+              style: GoogleFonts.plusJakartaSans(
+                fontSize: 11,
+                color: AppTheme.outline,
+              ),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            child: const Text('Close'),
+            onPressed: () => Navigator.pop(ctx),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _openCameraQrScanner(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (ctx) => Scaffold(
+          appBar: AppBar(
+            backgroundColor: AppTheme.primary,
+            title: Text(
+              'Scan Family QR Code',
+              style: GoogleFonts.plusJakartaSans(
+                color: Colors.white,
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            leading: IconButton(
+              icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 20),
+              onPressed: () => Navigator.pop(ctx),
+            ),
+          ),
+          body: Stack(
+            children: [
+              MobileScanner(
+                onDetect: (capture) {
+                  final barcodes = capture.barcodes;
+                  for (final barcode in barcodes) {
+                    if (barcode.rawValue != null) {
+                      final raw = barcode.rawValue!;
+                      final code = raw.replaceFirst('EVENTFLOW:FAMILY:', '').trim();
+                      if (code.isNotEmpty) {
+                        Navigator.pop(ctx);
+                        _joinGroupByApi(code);
+                        break;
+                      }
+                    }
+                  }
+                },
+              ),
+              Center(
+                child: Container(
+                  width: 240,
+                  height: 240,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: AppTheme.secondaryContainer, width: 3),
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                ),
+              ),
+              Positioned(
+                bottom: 40,
+                left: 20,
+                right: 20,
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.7),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Text(
+                    'Point camera at family member\'s QR code to join automatically',
+                    textAlign: TextAlign.center,
+                    style: GoogleFonts.plusJakartaSans(
+                      color: Colors.white,
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   void _navigateToSos() {
