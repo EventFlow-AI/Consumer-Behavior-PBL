@@ -1,6 +1,8 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../services/supabase_mobile_service.dart';
 import '../theme/app_theme.dart';
 
@@ -123,6 +125,10 @@ class _MedicalSosScreenState extends State<MedicalSosScreen> {
   }
 
   Future<void> _triggerSosAlarm() async {
+    HapticFeedback.heavyImpact();
+    Clipboard.setData(const ClipboardData(
+      text: 'EMERGENCY SOS: Sector 4 North Pathway Ramp (Pole #E-42) | Coordinates: 25.4358° N, 81.8463° E | Rahat Setu Pilgrim Distress Broadcast',
+    ));
     setState(() {
       _isSosActive = true;
       _sosCountdown = 10;
@@ -130,11 +136,13 @@ class _MedicalSosScreenState extends State<MedicalSosScreen> {
 
     _countdownTimer?.cancel();
     _countdownTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      HapticFeedback.mediumImpact();
       if (_sosCountdown > 1) {
         setState(() {
           _sosCountdown--;
         });
       } else {
+        HapticFeedback.heavyImpact();
         timer.cancel();
       }
     });
@@ -1357,8 +1365,30 @@ class _MedicalSosScreenState extends State<MedicalSosScreen> {
     );
   }
 
-  // Simulated emergency call dialog
-  void _showSimulatedCallDialog(String name, String number) {
+  // Direct emergency call with real Android dialer integration
+  Future<void> _showSimulatedCallDialog(String name, String number) async {
+    final cleanNumber = number.replaceAll(RegExp(r'[^\d+]'), '');
+    final uri = Uri.parse('tel:$cleanNumber');
+    HapticFeedback.mediumImpact();
+
+    try {
+      final launched = await launchUrl(uri, mode: LaunchMode.externalApplication);
+      if (launched) {
+        if (!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Opening dialer for $name ($cleanNumber)...'),
+            backgroundColor: AppTheme.secondary,
+            duration: const Duration(seconds: 2),
+          ),
+        );
+        return;
+      }
+    } catch (_) {
+      // Fallback to dialog if device lacks telephony or is restricted
+    }
+
+    if (!mounted) return;
     showDialog<void>(
       context: context,
       builder: (ctx) {
@@ -1384,17 +1414,17 @@ class _MedicalSosScreenState extends State<MedicalSosScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Emergency Helpline Number: $number',
+                'Emergency Helpline Number: $cleanNumber',
                 style: GoogleFonts.inter(
-                  fontSize: 13,
+                  fontSize: 14,
                   fontWeight: FontWeight.w700,
                   color: AppTheme.primary,
                 ),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 10),
               Text(
-                'On actual physical phones with SIM cards, this will trigger the system phone dialer. In this presentation demo, the action is simulated.',
-                style: GoogleFonts.inter(fontSize: 11, color: AppTheme.onSurfaceVariant),
+                'Number copied to clipboard. You can paste it into your phone dialer or dial immediately.',
+                style: GoogleFonts.inter(fontSize: 12, color: AppTheme.onSurfaceVariant),
               ),
             ],
           ),
@@ -1404,17 +1434,20 @@ class _MedicalSosScreenState extends State<MedicalSosScreen> {
               child: const Text('Dismiss'),
             ),
             ElevatedButton.icon(
-              onPressed: () {
+              onPressed: () async {
+                await Clipboard.setData(ClipboardData(text: cleanNumber));
+                if (!ctx.mounted) return;
                 Navigator.of(ctx).pop();
+                if (!mounted) return;
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: Text('Simulated dialer initiated for $number ($name).'),
+                    content: Text('Helpline $cleanNumber copied to clipboard!'),
                     backgroundColor: AppTheme.primaryContainer,
                   ),
                 );
               },
-              icon: const Icon(Icons.call, size: 14, color: Colors.white),
-              label: Text('Dial $number'),
+              icon: const Icon(Icons.copy, size: 14, color: Colors.white),
+              label: Text('Copy $cleanNumber'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppTheme.secondary,
                 foregroundColor: Colors.white,

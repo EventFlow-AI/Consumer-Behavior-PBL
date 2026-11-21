@@ -71,7 +71,12 @@ class FamilyMeetingPoint {
 }
 
 class FamilyRadarScreen extends StatefulWidget {
-  const FamilyRadarScreen({super.key});
+  final bool isEmbedded;
+
+  const FamilyRadarScreen({
+    super.key,
+    this.isEmbedded = false,
+  });
 
   @override
   State<FamilyRadarScreen> createState() => _FamilyRadarScreenState();
@@ -80,6 +85,7 @@ class FamilyRadarScreen extends StatefulWidget {
 class _FamilyRadarScreenState extends State<FamilyRadarScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _radarController;
+  Timer? _driftTimer;
   bool _isLocationSharingOn = true;
   bool _isBackendConnected = false;
   String? _selectedMemberId;
@@ -147,10 +153,27 @@ class _FamilyRadarScreenState extends State<FamilyRadarScreen>
 
     _fetchBackendGroup();
     _connectWebSocket();
+
+    _driftTimer = Timer.periodic(const Duration(seconds: 4), (t) {
+      if (!mounted) return;
+      setState(() {
+        final rand = math.Random();
+        _members = _members.map((m) {
+          final deltaDist = (rand.nextInt(5) - 2);
+          final newDist = (m.distanceMeters + deltaDist).clamp(12, 120);
+          final deltaAngle = (rand.nextDouble() * 4 - 2);
+          return m.copyWith(
+            distanceMeters: newDist,
+            angleDegrees: (m.angleDegrees + deltaAngle) % 360,
+          );
+        }).toList();
+      });
+    });
   }
 
   @override
   void dispose() {
+    _driftTimer?.cancel();
     _radarController.dispose();
     _wsSubscription?.cancel();
     _webSocket?.close();
@@ -291,10 +314,13 @@ class _FamilyRadarScreenState extends State<FamilyRadarScreen>
       backgroundColor: AppTheme.primary,
       elevation: 0,
       centerTitle: false,
-      leading: IconButton(
-        icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 20),
-        onPressed: () => Navigator.pop(context),
-      ),
+      automaticallyImplyLeading: !widget.isEmbedded,
+      leading: widget.isEmbedded
+          ? null
+          : IconButton(
+              icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white, size: 20),
+              onPressed: () => Navigator.pop(context),
+            ),
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

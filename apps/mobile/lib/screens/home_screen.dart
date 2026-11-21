@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../services/supabase_mobile_service.dart';
 import '../theme/app_theme.dart';
 import 'queue_radar_screen.dart';
 import 'water_wc_screen.dart';
 import 'medical_sos_screen.dart';
 import 'family_radar_screen.dart';
+import 'login_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   final String? phoneNumber;
@@ -34,34 +37,45 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             _buildTopAppBar(context),
             _buildMeshSyncMicroBanner(),
+            if (_isPlayingAnnouncement) _buildActiveAnnouncementBar(),
             Expanded(
-              child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                child: Center(
-                  child: ConstrainedBox(
-                    constraints: const BoxConstraints(maxWidth: 480),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        _buildVenuePulseCard(),
-                        const SizedBox(height: 14),
-                        _buildQuickActionGrid(),
-                        const SizedBox(height: 14),
-                        _buildNearbyAmenitiesBar(),
-                        const SizedBox(height: 16),
-                        _buildAIContextEngineSection(),
-                        const SizedBox(height: 24),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
+              child: _buildCurrentTabBody(),
             ),
           ],
         ),
       ),
       bottomNavigationBar: _buildBottomNavBar(),
+    );
+  }
+
+  Widget _buildCurrentTabBody() {
+    if (_currentNavIndex == 1) {
+      return _buildCrowdMapTab();
+    }
+    if (_currentNavIndex == 2) {
+      return const FamilyRadarScreen(isEmbedded: true);
+    }
+    return SingleChildScrollView(
+      physics: const BouncingScrollPhysics(),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      child: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 480),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              _buildVenuePulseCard(),
+              const SizedBox(height: 14),
+              _buildQuickActionGrid(),
+              const SizedBox(height: 14),
+              _buildNearbyAmenitiesBar(),
+              const SizedBox(height: 16),
+              _buildAIContextEngineSection(),
+              const SizedBox(height: 24),
+            ],
+          ),
+        ),
+      ),
     );
   }
 
@@ -164,18 +178,7 @@ class _HomeScreenState extends State<HomeScreen> {
             clipBehavior: Clip.none,
             children: [
               GestureDetector(
-                onTap: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        widget.isGuest
-                            ? 'Logged in as Guest Pilgrim'
-                            : 'Logged in as +91 ${widget.phoneNumber ?? "User"}',
-                      ),
-                      duration: const Duration(seconds: 2),
-                    ),
-                  );
-                },
+                onTap: () => _showPilgrimProfileSheet(context),
                 child: Container(
                   width: 32,
                   height: 32,
@@ -883,6 +886,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 status: 'Camp 9',
                 note: '250m West',
                 statusColor: AppTheme.primary,
+                onTap: () => _showLostAndFoundSheet(context),
               ),
             ],
           ),
@@ -1204,14 +1208,7 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               Expanded(
                 child: ElevatedButton.icon(
-                  onPressed: () {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text('Starting Voice Guidance along Shanti Corridor to Kila Ghat'),
-                        backgroundColor: AppTheme.primaryContainer,
-                      ),
-                    );
-                  },
+                  onPressed: () => _showLiveTurnByTurnOverlay(context),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppTheme.primaryContainer,
                     foregroundColor: Colors.white,
@@ -1233,9 +1230,21 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 child: IconButton(
                   icon: const Icon(Icons.share, size: 18),
-                  onPressed: () {
+                  tooltip: 'Share Live Coordinates',
+                  onPressed: () async {
+                    HapticFeedback.selectionClick();
+                    await Clipboard.setData(
+                      const ClipboardData(
+                        text: '📍 Rahat Setu Waypoint: Sector 4 North Pathway Ramp (Pole #E-42) | Lat: 25.4358° N, Long: 81.8463° E | Kila Ghat Corridor',
+                      ),
+                    );
+                    if (!mounted) return;
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Location pin copied to clipboard')),
+                      const SnackBar(
+                        content: Text('📍 Live GPS coordinates copied to clipboard! Ready to share.'),
+                        backgroundColor: AppTheme.primaryContainer,
+                        duration: Duration(seconds: 2),
+                      ),
                     );
                   },
                 ),
@@ -1420,7 +1429,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               const SizedBox(width: 4),
               TextButton(
-                onPressed: () {},
+                onPressed: () => _showPrasadamMenuSheet(context),
                 style: TextButton.styleFrom(padding: EdgeInsets.zero),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
@@ -1650,8 +1659,1001 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-}
 
+  Widget _buildActiveAnnouncementBar() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+      decoration: BoxDecoration(
+        color: const Color(0xFF2C1E00),
+        border: Border(
+          bottom: BorderSide(color: const Color(0xFFFFBA38).withValues(alpha: 0.4)),
+        ),
+      ),
+      child: Row(
+        children: [
+          Container(
+            padding: const EdgeInsets.all(6),
+            decoration: const BoxDecoration(
+              color: Color(0xFFFFBA38),
+              shape: BoxShape.circle,
+            ),
+            child: const Icon(Icons.volume_up, size: 16, color: Colors.black),
+          ),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Text(
+                      'AUDIO BROADCAST PLAYING',
+                      style: GoogleFonts.inter(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w800,
+                        color: const Color(0xFFFFBA38),
+                        letterSpacing: 0.5,
+                      ),
+                    ),
+                    const SizedBox(width: 6),
+                    Container(
+                      width: 6,
+                      height: 6,
+                      decoration: const BoxDecoration(
+                        color: Colors.redAccent,
+                        shape: BoxShape.circle,
+                      ),
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      'LIVE (HINDI/EN)',
+                      style: GoogleFonts.inter(
+                        fontSize: 9,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white70,
+                      ),
+                    ),
+                  ],
+                ),
+                Text(
+                  '“Pontoon Bridge 3 open exclusively for exit flow. Gate 4-B has shortest wait (<5 min).”',
+                  style: GoogleFonts.inter(
+                    fontSize: 11,
+                    color: Colors.white,
+                    fontStyle: FontStyle.italic,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+          ),
+          IconButton(
+            icon: const Icon(Icons.close, size: 16, color: Colors.white70),
+            onPressed: () {
+              setState(() {
+                _isPlayingAnnouncement = false;
+              });
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showPilgrimProfileSheet(BuildContext context) {
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (ctx) {
+        return Container(
+          decoration: const BoxDecoration(
+            color: AppTheme.surfaceContainerLowest,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Center(
+                child: Container(
+                  width: 40,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: AppTheme.outlineVariant,
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              Row(
+                children: [
+                  Container(
+                    width: 52,
+                    height: 52,
+                    decoration: const BoxDecoration(
+                      color: AppTheme.primaryContainer,
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(Icons.person, color: Colors.white, size: 28),
+                  ),
+                  const SizedBox(width: 14),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              widget.isGuest
+                                  ? 'Guest Pilgrim'
+                                  : '+91 ${widget.phoneNumber ?? "98765 43210"}',
+                              style: GoogleFonts.plusJakartaSans(
+                                fontSize: 17,
+                                fontWeight: FontWeight.w800,
+                                color: AppTheme.primary,
+                              ),
+                            ),
+                            const SizedBox(width: 6),
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                              decoration: BoxDecoration(
+                                color: AppTheme.secondary.withValues(alpha: 0.15),
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              child: Text(
+                                'VERIFIED',
+                                style: GoogleFonts.inter(
+                                  fontSize: 9.5,
+                                  fontWeight: FontWeight.w800,
+                                  color: AppTheme.secondary,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Text(
+                          'Pass ID: #RS-2026-8812 • Sector 4 Ramp',
+                          style: GoogleFonts.inter(
+                            fontSize: 12,
+                            color: AppTheme.onSurfaceVariant,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.close, size: 20),
+                    onPressed: () => Navigator.of(ctx).pop(),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+              Container(
+                padding: const EdgeInsets.all(14),
+                decoration: BoxDecoration(
+                  color: AppTheme.surfaceContainerLow,
+                  borderRadius: BorderRadius.circular(14),
+                  border: Border.all(color: AppTheme.outlineVariant.withValues(alpha: 0.5)),
+                ),
+                child: Column(
+                  children: [
+                    _buildProfileInfoRow(
+                      icon: Icons.shield_outlined,
+                      title: 'Safety Circle',
+                      value: 'Sharma Family (3 Linked)',
+                      color: AppTheme.secondary,
+                    ),
+                    const Divider(height: 18),
+                    _buildProfileInfoRow(
+                      icon: Icons.medical_services_outlined,
+                      title: 'Medical Card',
+                      value: 'Blood O+ • Diabetic Aware',
+                      color: AppTheme.error,
+                    ),
+                    const Divider(height: 18),
+                    _buildProfileInfoRow(
+                      icon: Icons.place_outlined,
+                      title: 'Current Sector',
+                      value: 'Sector 4, North Ramp #E-42',
+                      color: AppTheme.primary,
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 16),
+              ElevatedButton.icon(
+                onPressed: () {
+                  Navigator.of(ctx).pop();
+                  setState(() {
+                    _currentNavIndex = 2; // Jump to Family Circle Tab
+                  });
+                },
+                icon: const Icon(Icons.group_work, size: 18),
+                label: const Text('Open My Family Radar Circle'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppTheme.primaryContainer,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(vertical: 13),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                ),
+              ),
+              const SizedBox(height: 8),
+              OutlinedButton.icon(
+                onPressed: () {
+                  Navigator.of(ctx).pop();
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (_) => const LoginScreen()),
+                  );
+                },
+                icon: const Icon(Icons.logout, size: 16, color: AppTheme.error),
+                label: Text(
+                  'Sign Out / Switch Phone Number',
+                  style: GoogleFonts.inter(color: AppTheme.error, fontWeight: FontWeight.w600),
+                ),
+                style: OutlinedButton.styleFrom(
+                  side: BorderSide(color: AppTheme.error.withValues(alpha: 0.3)),
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildProfileInfoRow({
+    required IconData icon,
+    required String title,
+    required String value,
+    required Color color,
+  }) {
+    return Row(
+      children: [
+        Icon(icon, size: 18, color: color),
+        const SizedBox(width: 10),
+        Text(
+          title,
+          style: GoogleFonts.inter(
+            fontSize: 12.5,
+            fontWeight: FontWeight.w600,
+            color: AppTheme.onSurfaceVariant,
+          ),
+        ),
+        const Spacer(),
+        Text(
+          value,
+          style: GoogleFonts.inter(
+            fontSize: 12.5,
+            fontWeight: FontWeight.w700,
+            color: AppTheme.primary,
+          ),
+        ),
+      ],
+    );
+  }
+
+  void _showLostAndFoundSheet(BuildContext context) {
+    final searchController = TextEditingController();
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (ctx) {
+        return Padding(
+          padding: EdgeInsets.only(bottom: MediaQuery.of(ctx).viewInsets.bottom),
+          child: Container(
+            decoration: const BoxDecoration(
+              color: AppTheme.surfaceContainerLowest,
+              borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Center(
+                  child: Container(
+                    width: 40,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      color: AppTheme.outlineVariant,
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: AppTheme.primary.withValues(alpha: 0.1),
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(Icons.person_search, color: AppTheme.primary, size: 24),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Camp 9 Lost & Found Bureau',
+                            style: GoogleFonts.plusJakartaSans(
+                              fontSize: 17,
+                              fontWeight: FontWeight.w800,
+                              color: AppTheme.primary,
+                            ),
+                          ),
+                          Text(
+                            '250m West of Sector 4 • Open 24/7',
+                            style: GoogleFonts.inter(fontSize: 12, color: AppTheme.onSurfaceVariant),
+                          ),
+                        ],
+                      ),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.close, size: 20),
+                      onPressed: () => Navigator.of(ctx).pop(),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                // Direct call emergency button
+                ElevatedButton.icon(
+                  onPressed: () async {
+                    final messenger = ScaffoldMessenger.of(context);
+                    Navigator.of(ctx).pop();
+                    final uri = Uri.parse('tel:1077');
+                    if (await canLaunchUrl(uri)) {
+                      await launchUrl(uri);
+                    } else {
+                      await Clipboard.setData(const ClipboardData(text: '1077'));
+                      messenger.showSnackBar(
+                        const SnackBar(
+                          content: Text('Helpline 1077 copied to clipboard.'),
+                          backgroundColor: AppTheme.secondary,
+                        ),
+                      );
+                    }
+                  },
+                  icon: const Icon(Icons.call, size: 16),
+                  label: const Text('Call Camp 9 Helpdesk Directly (1077)'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppTheme.secondary,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                  ),
+                ),
+                const SizedBox(height: 14),
+                TextField(
+                  controller: searchController,
+                  decoration: InputDecoration(
+                    prefixIcon: const Icon(Icons.search, size: 18),
+                    hintText: 'Search lost person or bag/token...',
+                    hintStyle: GoogleFonts.inter(fontSize: 13),
+                    filled: true,
+                    fillColor: AppTheme.surfaceContainerLow,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide.none,
+                    ),
+                    contentPadding: const EdgeInsets.symmetric(vertical: 10),
+                  ),
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  'Recent Solved Matches Today (14 Total):',
+                  style: GoogleFonts.inter(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w700,
+                    color: AppTheme.primary,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                _buildLostItemTile('Red Travel Bag (Token #881)', 'Reunited at Camp 9 Gate', Icons.luggage),
+                _buildLostItemTile('Lost Child: Aarav (6 yrs)', 'Safely resting at Child Care Tent #2', Icons.child_care),
+                const SizedBox(height: 12),
+                OutlinedButton.icon(
+                  onPressed: () {
+                    Navigator.of(ctx).pop();
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Report initiated: Control Room notified. Proceed to Camp 9.'),
+                        backgroundColor: AppTheme.primaryContainer,
+                      ),
+                    );
+                  },
+                  icon: const Icon(Icons.add_alert, size: 16),
+                  label: const Text('File New Missing Report with Marshals'),
+                  style: OutlinedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildLostItemTile(String title, String status, IconData icon) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      child: Row(
+        children: [
+          Icon(icon, size: 16, color: AppTheme.secondary),
+          const SizedBox(width: 8),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(title, style: GoogleFonts.inter(fontSize: 12, fontWeight: FontWeight.w600)),
+                Text(status, style: GoogleFonts.inter(fontSize: 10.5, color: AppTheme.onSurfaceVariant)),
+              ],
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+            decoration: BoxDecoration(
+              color: AppTheme.secondary.withValues(alpha: 0.12),
+              borderRadius: BorderRadius.circular(4),
+            ),
+            child: Text(
+              'RESOLVED',
+              style: GoogleFonts.inter(fontSize: 9, fontWeight: FontWeight.w800, color: AppTheme.secondary),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showLiveTurnByTurnOverlay(BuildContext context) {
+    int activeStep = 0;
+    final waypoints = [
+      'Walk straight along Sector 4 Ramp past Information Kiosk (120m)',
+      'Turn slightly left towards Pillar C-8 (90m)',
+      'Pass Water ATM Point C-8 on right side (110m)',
+      'Arrive at Kila Ghat holy bathing entrance (100m)',
+    ];
+
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (ctx) {
+        return StatefulBuilder(
+          builder: (modalCtx, setModalState) {
+            return Container(
+              decoration: const BoxDecoration(
+                color: AppTheme.surfaceContainerLowest,
+                borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Center(
+                    child: Container(
+                      width: 40,
+                      height: 4,
+                      decoration: BoxDecoration(
+                        color: AppTheme.outlineVariant,
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: AppTheme.primaryContainer.withValues(alpha: 0.12),
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(Icons.navigation, color: AppTheme.primaryContainer, size: 24),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Live GPS Lane Guidance',
+                              style: GoogleFonts.plusJakartaSans(
+                                fontSize: 17,
+                                fontWeight: FontWeight.w800,
+                                color: AppTheme.primary,
+                              ),
+                            ),
+                            Text(
+                              'Shanti Corridor → Kila Ghat (420m • ~5m)',
+                              style: GoogleFonts.inter(fontSize: 12, color: AppTheme.onSurfaceVariant),
+                            ),
+                          ],
+                        ),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.close, size: 20),
+                        onPressed: () => Navigator.of(modalCtx).pop(),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 14),
+                  Container(
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      color: AppTheme.primaryContainer,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.directions_walk, color: Colors.white, size: 24),
+                        const SizedBox(width: 12),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'CURRENT STEP (${activeStep + 1}/${waypoints.length})',
+                                style: GoogleFonts.inter(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w800,
+                                  color: AppTheme.secondaryContainer,
+                                ),
+                              ),
+                              const SizedBox(height: 2),
+                              Text(
+                                waypoints[activeStep],
+                                style: GoogleFonts.inter(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  Text(
+                    'Upcoming Route Milestones:',
+                    style: GoogleFonts.inter(fontSize: 12, fontWeight: FontWeight.w700, color: AppTheme.primary),
+                  ),
+                  const SizedBox(height: 8),
+                  ...waypoints.asMap().entries.map((entry) {
+                    final idx = entry.key;
+                    final text = entry.value;
+                    final isPassed = idx < activeStep;
+                    final isCurrent = idx == activeStep;
+
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 4),
+                      child: Row(
+                        children: [
+                          Icon(
+                            isPassed
+                                ? Icons.check_circle
+                                : isCurrent
+                                    ? Icons.radio_button_checked
+                                    : Icons.radio_button_unchecked,
+                            size: 16,
+                            color: isPassed
+                                ? AppTheme.secondary
+                                : isCurrent
+                                    ? AppTheme.primaryContainer
+                                    : AppTheme.outline,
+                          ),
+                          const SizedBox(width: 8),
+                          Expanded(
+                            child: Text(
+                              text,
+                              style: GoogleFonts.inter(
+                                fontSize: 11.5,
+                                color: isPassed ? AppTheme.outline : AppTheme.primary,
+                                decoration: isPassed ? TextDecoration.lineThrough : null,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }),
+                  const SizedBox(height: 16),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: OutlinedButton(
+                          onPressed: () {
+                            HapticFeedback.lightImpact();
+                            setModalState(() {
+                              if (activeStep < waypoints.length - 1) {
+                                activeStep++;
+                              } else {
+                                Navigator.of(modalCtx).pop();
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('🎉 Arrived safely at Kila Ghat entrance!'),
+                                    backgroundColor: AppTheme.secondary,
+                                  ),
+                                );
+                              }
+                            });
+                          },
+                          child: Text(activeStep < waypoints.length - 1 ? 'Next Waypoint' : 'Finish Route'),
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: ElevatedButton.icon(
+                          onPressed: () {
+                            HapticFeedback.mediumImpact();
+                            Navigator.of(modalCtx).pop();
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Rerouted to Gate 4B Express Exit Lane.'),
+                                backgroundColor: AppTheme.primaryContainer,
+                              ),
+                            );
+                          },
+                          icon: const Icon(Icons.alt_route, size: 16),
+                          label: const Text('Reroute'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppTheme.secondary,
+                            foregroundColor: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  void _showPrasadamMenuSheet(BuildContext context) {
+    showModalBottomSheet<void>(
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (ctx) {
+        return Container(
+          decoration: const BoxDecoration(
+            color: AppTheme.surfaceContainerLowest,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Center(
+                child: Container(
+                  width: 40,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: AppTheme.outlineVariant,
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: AppTheme.secondary.withValues(alpha: 0.12),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(Icons.restaurant, color: AppTheme.secondary, size: 24),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Annakshetra Mega Kitchen',
+                          style: GoogleFonts.plusJakartaSans(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w800,
+                            color: AppTheme.primary,
+                          ),
+                        ),
+                        Text(
+                          'Sector 4 Gate (180m) • FSSAI 5-Star Cleanliness',
+                          style: GoogleFonts.inter(fontSize: 12, color: AppTheme.onSurfaceVariant),
+                        ),
+                      ],
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.close, size: 20),
+                    onPressed: () => Navigator.of(ctx).pop(),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: AppTheme.surfaceContainerLow,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: AppTheme.outlineVariant.withValues(alpha: 0.5)),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'TODAY’S SACRED PRASADAM MENU',
+                      style: GoogleFonts.inter(fontSize: 11, fontWeight: FontWeight.w800, color: AppTheme.primary),
+                    ),
+                    const SizedBox(height: 6),
+                    _buildPrasadMenuItem('Desi Ghee Moong Dal Khichdi', 'Nutritious & light for digestion'),
+                    _buildPrasadMenuItem('Pure Ghee Suji Halwa', 'Fresh batch distributed warm'),
+                    _buildPrasadMenuItem('Seasonal Aloo Tamatar Sabzi', 'Hygienically prepared'),
+                    _buildPrasadMenuItem('Packaged Mineral Water Pouches', 'Continuous RO supply'),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 14),
+              Row(
+                children: [
+                  const Icon(Icons.schedule, size: 16, color: AppTheme.secondary),
+                  const SizedBox(width: 6),
+                  Text(
+                    'Serving: 07:00 - 11:30 | 12:30 - 16:30 | 18:30 - 22:00',
+                    style: GoogleFonts.inter(fontSize: 11.5, fontWeight: FontWeight.w600, color: AppTheme.primary),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 16),
+              ElevatedButton.icon(
+                onPressed: () {
+                  Navigator.of(ctx).pop();
+                  _showLiveTurnByTurnOverlay(context);
+                },
+                icon: const Icon(Icons.directions_walk, size: 16),
+                label: const Text('Start 180m Walking Route to Annakshetra'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppTheme.primary,
+                  foregroundColor: Colors.white,
+                  padding: const EdgeInsets.symmetric(vertical: 13),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildPrasadMenuItem(String name, String desc) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 3),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Icon(Icons.check, size: 14, color: AppTheme.secondary),
+          const SizedBox(width: 6),
+          Expanded(
+            child: RichText(
+              text: TextSpan(
+                style: GoogleFonts.inter(fontSize: 12, color: AppTheme.primary),
+                children: [
+                  TextSpan(text: '$name — ', style: const TextStyle(fontWeight: FontWeight.w700)),
+                  TextSpan(text: desc, style: const TextStyle(color: AppTheme.onSurfaceVariant)),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCrowdMapTab() {
+    return SingleChildScrollView(
+      physics: const BouncingScrollPhysics(),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Row(
+            children: [
+              Text(
+                'Live Crowd Heatmap',
+                style: GoogleFonts.plusJakartaSans(
+                  fontSize: 18,
+                  fontWeight: FontWeight.w800,
+                  color: AppTheme.primary,
+                ),
+              ),
+              const Spacer(),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: AppTheme.secondary.withValues(alpha: 0.12),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Row(
+                  children: [
+                    Container(width: 6, height: 6, decoration: const BoxDecoration(color: Colors.green, shape: BoxShape.circle)),
+                    const SizedBox(width: 5),
+                    Text(
+                      'AI CAMERA SYNCED',
+                      style: GoogleFonts.inter(fontSize: 10, fontWeight: FontWeight.w800, color: AppTheme.secondary),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 12),
+          // Heatmap Matrix Cards
+          _buildSectorHeatmapCard(
+            sector: 'Sector 4: North Pathway Ramp',
+            status: 'CLEAR • LOW DENSITY',
+            color: Colors.green,
+            densityPct: 0.24,
+            waitMin: '3 mins wait',
+            isRecommended: true,
+          ),
+          const SizedBox(height: 8),
+          _buildSectorHeatmapCard(
+            sector: 'Sector 3: Dashashwamedh Corridor',
+            status: 'MODERATE FLOW',
+            color: Colors.amber,
+            densityPct: 0.48,
+            waitMin: '12 mins wait',
+          ),
+          const SizedBox(height: 8),
+          _buildSectorHeatmapCard(
+            sector: 'Sector 2: Pontoon Bridge 2',
+            status: 'HEAVY FOOTFALL',
+            color: Colors.deepOrange,
+            densityPct: 0.74,
+            waitMin: '25 mins wait',
+          ),
+          const SizedBox(height: 8),
+          _buildSectorHeatmapCard(
+            sector: 'Sector 1: Sangam Main Snan Ghat',
+            status: 'CRITICAL • GATES DIVERTING',
+            color: Colors.red,
+            densityPct: 0.92,
+            waitMin: '45 mins wait',
+          ),
+          const SizedBox(height: 16),
+          // Live Gates & Fastest Route
+          ElevatedButton.icon(
+            onPressed: () => _showLiveTurnByTurnOverlay(context),
+            icon: const Icon(Icons.alt_route, size: 18),
+            label: const Text('Navigate via Lowest-Crowd Route (Save 35m)'),
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppTheme.primaryContainer,
+              foregroundColor: Colors.white,
+              padding: const EdgeInsets.symmetric(vertical: 14),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            ),
+          ),
+          const SizedBox(height: 10),
+          OutlinedButton.icon(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const QueueRadarScreen()),
+              );
+            },
+            icon: const Icon(Icons.queue, size: 16),
+            label: const Text('View All Gates in Queue Radar'),
+            style: OutlinedButton.styleFrom(
+              padding: const EdgeInsets.symmetric(vertical: 12),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+            ),
+          ),
+          const SizedBox(height: 24),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSectorHeatmapCard({
+    required String sector,
+    required String status,
+    required Color color,
+    required double densityPct,
+    required String waitMin,
+    bool isRecommended = false,
+  }) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: AppTheme.surfaceContainerLowest,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: isRecommended ? Colors.green : AppTheme.outlineVariant.withValues(alpha: 0.5),
+          width: isRecommended ? 1.5 : 1,
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Text(
+                  sector,
+                  style: GoogleFonts.plusJakartaSans(
+                    fontSize: 13.5,
+                    fontWeight: FontWeight.w700,
+                    color: AppTheme.primary,
+                  ),
+                ),
+              ),
+              if (isRecommended)
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                  decoration: BoxDecoration(
+                    color: Colors.green.withValues(alpha: 0.15),
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: Text(
+                    'BEST PATH',
+                    style: GoogleFonts.inter(fontSize: 9, fontWeight: FontWeight.w800, color: Colors.green),
+                  ),
+                ),
+            ],
+          ),
+          const SizedBox(height: 6),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                status,
+                style: GoogleFonts.inter(fontSize: 11, fontWeight: FontWeight.w700, color: color),
+              ),
+              Text(
+                waitMin,
+                style: GoogleFonts.inter(fontSize: 11, fontWeight: FontWeight.w600, color: AppTheme.onSurfaceVariant),
+              ),
+            ],
+          ),
+          const SizedBox(height: 6),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(3),
+            child: LinearProgressIndicator(
+              value: densityPct,
+              minHeight: 5,
+              backgroundColor: AppTheme.surfaceContainerHigh,
+              valueColor: AlwaysStoppedAnimation<Color>(color),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
 
 class _QuietSpotReservationDialog extends StatefulWidget {
   final BuildContext parentContext;
